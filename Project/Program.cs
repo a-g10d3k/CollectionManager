@@ -20,12 +20,12 @@ namespace Project
 
             builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 1;
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             }).AddEntityFrameworkStores<AppDbContext>();
 
             var app = builder.Build();
