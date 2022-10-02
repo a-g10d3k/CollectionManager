@@ -4,7 +4,7 @@ using Project.Data;
 using Project.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace AdminPanel.Controllers
+namespace Project.Controllers
 {
     public class AccountController : Controller
     {
