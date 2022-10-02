@@ -7,20 +7,22 @@ using Project.Models;
 
 namespace Project.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly AppDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<AdminController> _logger;
 
-        public AdminController(ILogger<AdminController> logger, AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AdminController(ILogger<AdminController> logger, AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
@@ -34,6 +36,7 @@ namespace Project.Controllers
         public async Task<IActionResult> GetUsers()
         {
             if (_context?.Users == null) return StatusCode(503);
+            var admins = await _userManager.GetUsersInRoleAsync("Admin");
             var users = await _context.Users.Select(u => new
             {
                 Id = u.Id,
@@ -41,7 +44,8 @@ namespace Project.Controllers
                 Email = u.Email,
                 LastLogin = u.LastLogin.ToString("dd/MM/yyyy HH:mm:ss"),
                 Created = u.Created.ToString("dd/MM/yyyy HH:mm:ss"),
-                Blocked = u.Blocked
+                Blocked = u.Blocked,
+                Admin = admins.Contains(u)
             }).ToListAsync();
             return Ok(users);
         }
@@ -67,6 +71,21 @@ namespace Project.Controllers
                 user.Blocked = status;
                 if(status == true) await _userManager.UpdateSecurityStampAsync(user);
                 _logger.LogInformation($"User {user.UserName} was {(status ? "blocked" : "unblocked")}.");
+            }
+            await _context.SaveChangesAsync();
+            return Ok(ids);
+        }
+
+        [HttpPost]
+        [Route("{controller}/setadminstatus")]
+        public async Task<IActionResult> SetAdmin([FromBody] List<string> ids, [FromQuery] bool status)
+        {
+            if (_context?.Users == null) return StatusCode(503);
+            var users = await _context.Users.Where(u => ids.Contains(u.Id)).ToListAsync();
+            foreach (var user in users)
+            {
+                if (status == true) await _userManager.AddToRoleAsync(user, "Admin");
+                else await _userManager.RemoveFromRoleAsync(user, "Admin");
             }
             await _context.SaveChangesAsync();
             return Ok(ids);

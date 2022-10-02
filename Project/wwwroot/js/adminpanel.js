@@ -10,17 +10,28 @@ const grid = new gridjs.Grid({
         'Id',
         'Name',
         'E-mail',
-        'Last login time',
-        'Registration time',
+        {
+            name: 'Last login time',
+            hidden: true
+        },
+        {
+            name: 'Registration time',
+            hidden: true
+        },
         {
             name: 'Status',
             id: 7,
             formatter: cell => gridjs.html(`<span class="fw-bold ${cell ? 'text-danger' : 'text-success'}">${cell ? 'Blocked' : 'Active'}</span>`)
+        },
+        {
+            name: 'Admin',
+            id: 8,
+            formatter: cell => gridjs.html(`<span class="fw-bold ${cell ? 'text-success' : 'text-dark'}">${cell ? 'Yes' : 'No'}</span>`)
         }
     ],
     data: () => {
         return fetchUsers().then(() =>
-            Array.from(users.values()).map(user => ['', user.id, user.name, user.email, user.lastLogin, user.created, user.blocked])
+            Array.from(users.values()).map(user => ['', user.id, user.name, user.email, user.lastLogin, user.created, user.blocked, user.admin])
         )
     },
     style:{
@@ -47,7 +58,7 @@ function fetchUsers() {
 
 function updateTable() {
     grid.updateConfig({
-        data: Array.from(users.values()).map(user => ['', user.id, user.name, user.email, user.lastLogin, user.created, user.blocked])
+        data: Array.from(users.values()).map(user => ['', user.id, user.name, user.email, user.lastLogin, user.created, user.blocked, user.admin])
     }).forceRender();
 }
 
@@ -102,6 +113,16 @@ function setBlockStatus(status) {
     return modifyUsers("setblockstatus", {status: status}).then(setIds => {
         setIds.forEach(id => {
             users.get(id).blocked = status;
+            selectUser(id, false);
+        });
+        updateTable();
+    });
+}
+
+function setAdminStatus(status) {
+    return modifyUsers("setadminstatus", { status: status }).then(setIds => {
+        setIds.forEach(id => {
+            users.get(id).admin = status;
             selectUser(id, false);
         });
         updateTable();

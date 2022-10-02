@@ -12,13 +12,15 @@ namespace Project.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(ILogger<AccountController> logger, AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(ILogger<AccountController> logger, AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
@@ -83,6 +85,7 @@ namespace Project.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "User");
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 _logger.LogInformation($"User {user.UserName} was created.");
                 return LocalRedirect("/");
@@ -101,6 +104,23 @@ namespace Project.Controllers
             await _signInManager.SignOutAsync();
             _logger.LogInformation($"User {User.Identity!.Name} logged out.");
             return LocalRedirect("/");
+        }
+
+        [Route("{controller}/CreateRoles")]
+        public async Task<IActionResult> CreateRoles()
+        {
+
+            if (!await _roleManager.RoleExistsAsync("Admin"))
+            {
+                var adminRole = new IdentityRole("Admin");
+                await _roleManager.CreateAsync(adminRole);
+            }
+            if (!await _roleManager.RoleExistsAsync("User"))
+            {
+                var adminRole = new IdentityRole("User");
+                await _roleManager.CreateAsync(adminRole);
+            }
+            return Ok();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Project
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            }).AddEntityFrameworkStores<AppDbContext>();
+            }).AddEntityFrameworkStores<AppDbContext>().AddRoles<IdentityRole>();
 
             var app = builder.Build();
 
