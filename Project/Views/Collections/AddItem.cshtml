@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@model CollectionItem
+@{
+    ViewData["Title"] = @Localizer["page_title"];
+}
+
+<form method="post">
+    <div class="mb-1">
+        <label asp-for="Name" class="form-label">@Localizer["item_name"]:</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    @for(int i = 0; i < 2; ++i)
+    {
+        <div class="input-group mb-1">
+            <span class="input-group-text">@Localizer["int_field"] @i</span>
+            <input asp-for="CustomIntFields[i].Name" class="form-control" />
+            <input asp-for="CustomIntFields[i].Value" class="form-control" />
+        </div>
+    }
+    <button type="submit" class="btn btn-primary">@Localizer["add_item"]</button>
+</form>
+<div>
+        @Html.ValidationSummary(false, "", new { @class = "text-danger mt-3" })
+</div>

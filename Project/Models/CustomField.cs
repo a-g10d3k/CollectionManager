@@ -13,7 +13,7 @@ namespace Project.Models
         [MaxLength(MaxNameLength)]
         public string Name { get; set; }
 
-        [ForeignKey("ItemID")]
-        public CollectionItem Item { get; set; }
+        [ForeignKey("ItemId")]
+        public CollectionItem? Item { get; set; }
     }
 }

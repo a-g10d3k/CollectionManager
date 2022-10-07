@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project.Data;
 
@@ -11,9 +12,10 @@ using Project.Data;
 namespace Project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221007133419_separate-custom-fields")]
+    partial class separatecustomfields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,15 +353,15 @@ namespace Project.Migrations
                 {
                     b.HasBaseType("Project.Models.CustomField");
 
-                    b.Property<int?>("ItemId")
+                    b.Property<int?>("ItemID")
                         .HasColumnType("int")
-                        .HasColumnName("CustomBoolField_ItemId");
+                        .HasColumnName("CustomBoolField_ItemID");
 
                     b.Property<bool>("Value")
                         .HasColumnType("bit")
                         .HasColumnName("CustomBoolField_Value");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex("ItemID");
 
                     b.HasDiscriminator().HasValue("CustomBoolField");
                 });
@@ -368,13 +370,13 @@ namespace Project.Migrations
                 {
                     b.HasBaseType("Project.Models.CustomField");
 
-                    b.Property<int?>("ItemId")
+                    b.Property<int?>("ItemID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Value")
                         .HasColumnType("datetime2");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex("ItemID");
 
                     b.HasDiscriminator().HasValue("CustomDateField");
                 });
@@ -383,15 +385,15 @@ namespace Project.Migrations
                 {
                     b.HasBaseType("Project.Models.CustomField");
 
-                    b.Property<int?>("ItemId")
+                    b.Property<int?>("ItemID")
                         .HasColumnType("int")
-                        .HasColumnName("CustomIntField_ItemId");
+                        .HasColumnName("CustomIntField_ItemID");
 
                     b.Property<int>("Value")
                         .HasColumnType("int")
                         .HasColumnName("CustomIntField_Value");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex("ItemID");
 
                     b.HasDiscriminator().HasValue("CustomIntField");
                 });
@@ -400,9 +402,9 @@ namespace Project.Migrations
                 {
                     b.HasBaseType("Project.Models.CustomField");
 
-                    b.Property<int?>("ItemId")
+                    b.Property<int?>("ItemID")
                         .HasColumnType("int")
-                        .HasColumnName("CustomStringField_ItemId");
+                        .HasColumnName("CustomStringField_ItemID");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -410,7 +412,7 @@ namespace Project.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("CustomStringField_Value");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex("ItemID");
 
                     b.HasDiscriminator().HasValue("CustomStringField");
                 });
@@ -419,9 +421,9 @@ namespace Project.Migrations
                 {
                     b.HasBaseType("Project.Models.CustomField");
 
-                    b.Property<int?>("ItemId")
+                    b.Property<int?>("ItemID")
                         .HasColumnType("int")
-                        .HasColumnName("CustomTextAreaField_ItemId");
+                        .HasColumnName("CustomTextAreaField_ItemID");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -429,7 +431,7 @@ namespace Project.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasColumnName("CustomTextAreaField_Value");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex("ItemID");
 
                     b.HasDiscriminator().HasValue("CustomTextAreaField");
                 });
@@ -518,7 +520,7 @@ namespace Project.Migrations
                 {
                     b.HasOne("Project.Models.CollectionItem", "Item")
                         .WithMany("CustomBoolFields")
-                        .HasForeignKey("ItemId");
+                        .HasForeignKey("ItemID");
 
                     b.Navigation("Item");
                 });
@@ -527,7 +529,7 @@ namespace Project.Migrations
                 {
                     b.HasOne("Project.Models.CollectionItem", "Item")
                         .WithMany("CustomDateFields")
-                        .HasForeignKey("ItemId");
+                        .HasForeignKey("ItemID");
 
                     b.Navigation("Item");
                 });
@@ -536,7 +538,7 @@ namespace Project.Migrations
                 {
                     b.HasOne("Project.Models.CollectionItem", "Item")
                         .WithMany("CustomIntFields")
-                        .HasForeignKey("ItemId");
+                        .HasForeignKey("ItemID");
 
                     b.Navigation("Item");
                 });
@@ -545,7 +547,7 @@ namespace Project.Migrations
                 {
                     b.HasOne("Project.Models.CollectionItem", "Item")
                         .WithMany("CustomStringFields")
-                        .HasForeignKey("ItemId");
+                        .HasForeignKey("ItemID");
 
                     b.Navigation("Item");
                 });
@@ -554,7 +556,7 @@ namespace Project.Migrations
                 {
                     b.HasOne("Project.Models.CollectionItem", "Item")
                         .WithMany("CustomTextAreaFields")
-                        .HasForeignKey("ItemId");
+                        .HasForeignKey("ItemID");
 
                     b.Navigation("Item");
                 });

@@ -32,9 +32,10 @@ namespace Project.Controllers
             return View(collection);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("{controller}/add")]
-        public IActionResult Add()
+        public IActionResult AddCollection()
         {
             return View();
         }
@@ -52,6 +53,32 @@ namespace Project.Controllers
             _context.Collections.Add(collection);
             await _context.SaveChangesAsync();
             return View("Add");
+        }
+
+        [HttpGet]
+        [Route("{controller}/{id}/add")]
+        public IActionResult AddItem()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("{controller}/{collectionId}/add")]
+        public async Task<IActionResult> PostItem([FromRoute] int collectionId, CollectionItem item)
+        {
+            var query = _context.Collections.Where(c => c.Id == collectionId).Include(c => c.Author);
+            if (!query.Any()) return NotFound();
+            Collection collection = await query.FirstAsync();
+            collection.Modified = DateTime.Now;
+            var user = await _userManager.GetUserAsync(User);
+            if (!await _userManager.IsInRoleAsync(user, "Admin") && user != collection.Author) return Forbid();
+            item.Created = DateTime.Now;
+            item.Modified = DateTime.Now;
+            collection.Items.Add(item);
+            if (!ModelState.IsValid) return View("AddItem", item);
+            _context.CollectionItems.Add(item);
+            await _context.SaveChangesAsync();
+            return View("AddItem");
         }
     }
 }
