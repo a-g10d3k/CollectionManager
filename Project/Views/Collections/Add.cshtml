@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@model Collection
+@{
+    ViewData["Title"] = @Localizer["page_title"];
+}
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<form method="post">
+    <div class="mb-1">
+        <label asp-for="Name" class="form-label">@Localizer["collection_name"]:</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="Topic" class="form-label">@Localizer["collection_topic"]:</label>
+        <select asp-for="Topic" class="form-select">
+            <option value="Books">@Localizer["books"]</option>
+            <option value="Stamps">@Localizer["stamps"]</option>
+            <option value="Coins">@Localizer["coins"]</option>
+        </select>
+    </div>
+    <div class="mb-1">
+        <label asp-for="Description" class="form-label">@Localizer["collection_description"]:</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">@Localizer["add_collection"]</button>
+</form>
+<div>
+        @Html.ValidationSummary(false, "", new { @class = "text-danger mt-3" })
+</div>

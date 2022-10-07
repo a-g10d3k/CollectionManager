@@ -32,9 +32,9 @@ namespace Project.Models
         [MaxLength(5 * 1_000_000)]
         public byte[]? Image { get; set; }
 
-        public ICollection<CollectionItem> Items { get; set; }
+        public List<CollectionItem> Items { get; set; } = new List<CollectionItem>();
 
-        public string AuthorId { get; set; }
-        public ApplicationUser Author { get; set; }
+        public string? AuthorId { get; set; }
+        public ApplicationUser? Author { get; set; }
     }
 }

@@ -12,6 +12,6 @@ namespace Project.Models
         public bool Blocked { get; set; }
 
         [ForeignKey("AuthorId")]
-        public ICollection<Collection> Collections { get; set; }
+        public List<Collection> Collections { get; set; } = new List<Collection>();
     }
 }

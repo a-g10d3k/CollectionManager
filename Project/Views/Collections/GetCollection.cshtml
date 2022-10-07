@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@model Collection
+@{
+    ViewData["Title"] = @Localizer["page_title"];
+}
+
+<div class="h-100 p-5 bg-light border rounded-3">
+    <p>
+        <span class="h1">@Model.Name</span>
+        <span class="text-secondary">@Localizer["by"]: @Model.Author?.UserName</span>
+    </p>
+    <p>@Model.Description</p>
+    <p class="text-secondary">@Localizer["last_modified"]: @Model.Modified</p>
+</div>
