@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@inject IHtmlLocalizer<Project.Localization.SharedResources> SharedLocalizer;
+@model ApplicationUser
+@{
+    ViewData["Title"] = @Localizer["page_title"];
+}
+    <p>
+        <span class="h1">@Model.UserName</span>
+    </p>
+    <div class="h-100 p-5 bg-light border rounded-3">
+    <h1>@Localizer["this_users_collections"]:</h1>
+    <div class="d-flex flex-wrap">
+        @foreach(var collection in Model.Collections)
+        {
+            <div class="card m-3" style="width: 18rem;">
+                @if(collection.Image == null)
+                {
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#868e96"></rect>
+                        <text x="50%" y="50%" fill="#dee2e6" dy=".3em">No image</text>
+                    </svg>
+                }
+                else{
+                    <img src="..." class="card-img-top" alt="...">
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@collection.Name</h5>
+                    <h6 class="card-subtitle text-muted">@SharedLocalizer[collection.Topic]</h6>
+                    <p class="card-text">@collection.Description</p>
+                    <a href="@Url.Action("GetCollection", "Collections", new { id = collection.Id })" class="btn btn-primary">@Localizer["view_collection"]</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

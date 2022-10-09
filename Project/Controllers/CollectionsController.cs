@@ -23,7 +23,7 @@ namespace Project.Controllers
             return View();
         }
 
-        [Route("{controller}/{id}")]
+        [Route("{controller}/{id}", Name = "GetCollection")]
         public async Task<IActionResult> GetCollection([FromRoute] int id)
         {
             var query = _context.Collections.Where(c => c.Id == id)
@@ -52,10 +52,10 @@ namespace Project.Controllers
             collection.Modified = collection.Created;
             var author = await _userManager.GetUserAsync(User);
             author.Collections.Add(collection);
-            if (!ModelState.IsValid) return View("Add", collection);
+            if (!ModelState.IsValid) return View("AddCollection", collection);
             _context.Collections.Add(collection);
             await _context.SaveChangesAsync();
-            return View("Add");
+            return View("AddCollection");
         }
 
         [HttpGet]
