@@ -11,6 +11,7 @@ namespace Project.Data
         { }
 
         public DbSet<Collection> Collections { get; set; }
+        public DbSet<CollectionImage> CollectionImages { get; set; }
         public DbSet<CollectionItem> CollectionItems { get; set; }
         public DbSet<CustomIntField> CustomIntFields { get; set; }
         public DbSet<CustomStringField> CustomStringFields { get; set; }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project.Data;
 
@@ -11,9 +12,10 @@ using Project.Data;
 namespace Project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221009103009_collection-image-separate")]
+    partial class collectionimageseparate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,9 +250,6 @@ namespace Project.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
 
@@ -267,10 +266,6 @@ namespace Project.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("ImageId")
-                        .IsUnique()
-                        .HasFilter("[ImageId] IS NOT NULL");
-
                     b.ToTable("Collections");
                 });
 
@@ -282,10 +277,8 @@ namespace Project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<int?>("CollectionId")
+                        .HasColumnType("int");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
@@ -294,7 +287,11 @@ namespace Project.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CollectionImages");
+                    b.HasIndex("CollectionId")
+                        .IsUnique()
+                        .HasFilter("[CollectionId] IS NOT NULL");
+
+                    b.ToTable("CollectionImage");
                 });
 
             modelBuilder.Entity("Project.Models.CollectionItem", b =>
@@ -517,13 +514,16 @@ namespace Project.Migrations
                         .WithMany("Collections")
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("Project.Models.CollectionImage", "Image")
-                        .WithOne("Collection")
-                        .HasForeignKey("Project.Models.Collection", "ImageId");
-
                     b.Navigation("Author");
+                });
 
-                    b.Navigation("Image");
+            modelBuilder.Entity("Project.Models.CollectionImage", b =>
+                {
+                    b.HasOne("Project.Models.Collection", "Collection")
+                        .WithOne("Image")
+                        .HasForeignKey("Project.Models.CollectionImage", "CollectionId");
+
+                    b.Navigation("Collection");
                 });
 
             modelBuilder.Entity("Project.Models.CollectionItem", b =>
@@ -598,12 +598,9 @@ namespace Project.Migrations
 
             modelBuilder.Entity("Project.Models.Collection", b =>
                 {
-                    b.Navigation("Items");
-                });
+                    b.Navigation("Image");
 
-            modelBuilder.Entity("Project.Models.CollectionImage", b =>
-                {
-                    b.Navigation("Collection");
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Project.Models.CollectionItem", b =>

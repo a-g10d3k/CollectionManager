@@ -6,34 +6,70 @@
 }
 
 <div class="h-100 p-5 bg-light border rounded-3">
-    <p>
-        <span class="h1">@Model.Name</span>
-        <span class="text-secondary">@Localizer["by"]: 
-            <a href="@Url.Action("GetUser", "Users", new { username = @Model.Author?.UserName })">@Model.Author?.UserName</a>
-            </span>
-    </p>
-    <p>@Model.Description</p>
-    <p class="text-secondary">@Localizer["last_modified"]: @Model.Modified</p>
-    <table class="table table-hover">
-        <tbody>
-            @foreach(var item in Model.Items)
-            {
-                <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("Items", "Collections", new { id = item.Id })'">
-                    <td>@item.Name</td>
-                    @for(int i = 0; i < 3; ++i)
-                    {
-                        <td>
-                            @if (item.CustomStringFields.Count > i)
+    <div class="card mb-3">
+        <div class="card-body">
+            <p class="card-title">
+                <span class="h1">@Model.Name</span>
+                <span class="text-secondary">@Localizer["by"]: 
+                    <a href="@Url.Action("GetUser", "Users", new { username = @Model.Author?.UserName })">@Model.Author?.UserName</a>
+                </span>
+                </p>
+            <p class="card-text"><small class="text-muted">@Localizer["last_modified"]: @Model.Modified</small></p>
+        </div>
+        @if(Model.ImageId != null)
+        {
+            <div class="ratio ratio-16x9">    
+                 <img src="@Url.Action("GetImage", "Collections", new { id = Model.ImageId })" class="card-img-top" style="object-fit:cover">
+            </div>
+        }
+    </div>
+
+    <div class="accordion">
+         <div class="accordion-item">
+             <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#descriptionCollapse">
+                    @Localizer["description"]
+                </button>
+            </h2>
+            <div id="descriptionCollapse" class="accordion-collapse collapse show">
+                <div class="accordion-body">@Model.Description</div>
+            </div>
+         </div>
+        <div class="accordion-item">
+             <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#itemCollapse">
+                    @Localizer["items"]
+                </button>
+            </h2>
+            <div id="itemCollapse" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            @foreach(var item in Model.Items)
                             {
-                                var field = item.CustomStringFields[i];
-                                <div class="form-floating">
-                                    <span style="font-size:0.7em" class="text-secondary">@(field.Name):</span>@field.Value
-                                </div>
+                                <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("Items", "Collections", new { id = item.Id })'">
+                                    <td>@item.Name</td>
+                                    @for(int i = 0; i < 3; ++i)
+                                    {
+                                        <td>
+                                            @if (item.CustomStringFields.Count > i)
+                                            {
+                                                var field = item.CustomStringFields[i];
+                                                <div class="form-floating">
+                                                    <span style="font-size:0.7em" class="text-secondary">@(field.Name):</span>@field.Value
+                                                </div>
+                                            }
+                                        </td>
+                                    }
+                                </tr>
                             }
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+         </div>
+    </div>
+     
+
+    
 </div>

@@ -4,6 +4,7 @@ using Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Project.Extensions;
 
 namespace Project.Controllers
 {
@@ -46,13 +47,20 @@ namespace Project.Controllers
         [Authorize]
         [HttpPost]
         [Route("{controller}/add")]
-        public async Task<IActionResult> PostCollection(Collection collection)
+        public async Task<IActionResult> PostCollection(Collection collection, [FromForm(Name = "collectionImage")] IFormFile collectionImage)
         {
             collection.Created = DateTime.Now;
             collection.Modified = collection.Created;
             var author = await _userManager.GetUserAsync(User);
             author.Collections.Add(collection);
             if (!ModelState.IsValid) return View("AddCollection", collection);
+            if (collectionImage != null && collectionImage.Length <= CollectionImage.MaxSize)
+            {
+                collection.Image = new CollectionImage(
+                    await collectionImage!.ToBytesAsync(),
+                    collectionImage.ContentType
+                    );
+            }
             _context.Collections.Add(collection);
             await _context.SaveChangesAsync();
             return View("AddCollection");
@@ -98,6 +106,16 @@ namespace Project.Controllers
             if(!query.Any()) return NotFound();
             var item = await query.FirstAsync();
             return View(item);
+        }
+
+        [HttpGet]
+        [Route("{controller}/Images/{id}", Name ="GetImage")]
+        public async Task<IActionResult> GetImage([FromRoute] int id)
+        {
+            var query = _context.CollectionImages.Where(i => i.Id == id);
+            if (!query.Any()) return NotFound();
+            var image = await query.FirstAsync();
+            return File(image.Image, image.ContentType);
         }
     }
 }

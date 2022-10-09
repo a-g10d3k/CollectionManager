@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project.Models
 {
@@ -29,8 +30,9 @@ namespace Project.Models
         [RegularExpression(AllowedTopics)] 
         public string Topic { get; set; }
 
-        [MaxLength(5 * 1_000_000)]
-        public byte[]? Image { get; set; }
+        [ForeignKey("CollectionImage")]
+        public int? ImageId { get; set; }
+        public CollectionImage? Image { get; set; }
 
         public List<CollectionItem> Items { get; set; } = new List<CollectionItem>();
 

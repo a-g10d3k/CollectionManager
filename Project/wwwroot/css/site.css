@@ -24,3 +24,13 @@ body {
 svg{
     text-anchor: middle;
 }
+
+.description-preview {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    white-space: pre-wrap;
+    max-height:6em;
+}
