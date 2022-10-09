@@ -26,7 +26,10 @@ namespace Project.Controllers
         [Route("{controller}/{id}")]
         public async Task<IActionResult> GetCollection([FromRoute] int id)
         {
-            var query = _context.Collections.Where(c => c.Id == id).Include(c => c.Author);
+            var query = _context.Collections.Where(c => c.Id == id)
+                .Include(c => c.Author)
+                .Include(c => c.Items)
+                .ThenInclude(i => i.CustomStringFields);
             if (!query.Any()) return NotFound();
             Collection collection = await query.FirstAsync();
             return View(collection);
@@ -75,10 +78,26 @@ namespace Project.Controllers
             item.Created = DateTime.Now;
             item.Modified = DateTime.Now;
             collection.Items.Add(item);
-            if (!ModelState.IsValid) return View("AddItem", item);
+            if (!ModelState.IsValid) return View("AddItem");
             _context.CollectionItems.Add(item);
             await _context.SaveChangesAsync();
             return View("AddItem");
+        }
+
+        [HttpGet]
+        [Route("{controller}/items/{id}")]
+        public async Task<IActionResult> GetItem([FromRoute] int id)
+        {
+            var query = _context.CollectionItems.Where(i => i.Id == id)
+                .Include(i => i.CustomIntFields)
+                .Include(i => i.CustomStringFields)
+                .Include(i => i.CustomTextAreaFields)
+                .Include(i => i.CustomBoolFields)
+                .Include(i => i.CustomDateFields)
+                .Include(i => i.Collection);
+            if(!query.Any()) return NotFound();
+            var item = await query.FirstAsync();
+            return View(item);
         }
     }
 }

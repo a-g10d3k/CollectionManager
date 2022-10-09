@@ -4,20 +4,71 @@
 @{
     ViewData["Title"] = @Localizer["page_title"];
 }
+@section Scripts{
+    <script src="~/js/formexpander.js"></script>
+}
 
 <form method="post">
     <div class="mb-1">
         <label asp-for="Name" class="form-label">@Localizer["item_name"]:</label>
         <input asp-for="Name" class="form-control" />
     </div>
-    @for(int i = 0; i < 2; ++i)
-    {
-        <div class="input-group mb-1">
-            <span class="input-group-text">@Localizer["int_field"] @i</span>
-            <input asp-for="CustomIntFields[i].Name" class="form-control" />
-            <input asp-for="CustomIntFields[i].Value" class="form-control" />
-        </div>
-    }
+    <div class="form-expandable">
+        <button type="button" class="btn btn-outline-primary form-expand">@Localizer["add_int_field"]</button>
+        <button type="button" class="btn btn-outline-danger form-collapse">@Localizer["remove_int_field"]</button>
+        @for(int i = 0; i < 3; ++i)
+        {
+            <div class="input-group expandable-input mb-1" hidden>
+                <input asp-for="CustomIntFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled />
+                <input asp-for="CustomIntFields[i].Value" class="form-control" placeholder="@Localizer["custom_field_value"]" disabled />
+            </div>
+        }
+    </div>
+    <div class="form-expandable">
+        <button type="button" class="btn btn-outline-primary form-expand">@Localizer["add_string_field"]</button>
+        <button type="button" class="btn btn-outline-danger form-collapse">@Localizer["remove_string_field"]</button>
+        @for(int i = 0; i < 3; ++i)
+        {
+            <div class="input-group expandable-input mb-1" hidden>
+                <input asp-for="CustomStringFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled />
+                <input asp-for="CustomStringFields[i].Value" class="form-control" placeholder="@Localizer["custom_field_value"]" disabled />
+            </div>
+        }
+    </div>
+    <div class="form-expandable">
+        <button type="button" class="btn btn-outline-primary form-expand">@Localizer["add_textarea_field"]</button>
+        <button type="button" class="btn btn-outline-danger form-collapse">@Localizer["remove_textarea_field"]</button>
+        @for(int i = 0; i < 3; ++i)
+        {
+            <div class="input-group expandable-input mb-1" hidden>
+                <textarea asp-for="CustomTextAreaFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled> </textarea>
+                <textarea asp-for="CustomTextAreaFields[i].Value" class="form-control" placeholder="@Localizer["custom_field_value"]" disabled> </textarea>
+            </div>
+        }
+    </div>
+    <div class="form-expandable">
+        <button type="button" class="btn btn-outline-primary form-expand">@Localizer["add_bool_field"]</button>
+        <button type="button" class="btn btn-outline-danger form-collapse">@Localizer["remove_bool_field"]</button>
+        @for(int i = 0; i < 3; ++i)
+        {
+            <div class="input-group expandable-input mb-1" hidden>
+                    <input asp-for="CustomBoolFields[i].Value" type="checkbox" class="form-check-input" disabled />
+                <input asp-for="CustomBoolFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled />
+            </div>
+        }
+    </div>
+    <div class="form-expandable">
+        <button type="button" class="btn btn-outline-primary form-expand">@Localizer["add_date_field"]</button>
+        <button type="button" class="btn btn-outline-danger form-collapse">@Localizer["remove_date_field"]</button>
+        @for(int i = 0; i < 3; ++i)
+        {
+            <div class="input-group expandable-input mb-1" hidden>
+                <input asp-for="CustomDateFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled />
+                <input asp-for="CustomDateFields[i].Value" type="date" class="form-control" disabled />
+            </div>
+        }
+    </div>
+    <input type="checkbox" name="abc" disabled>
     <button type="submit" class="btn btn-primary">@Localizer["add_item"]</button>
 </form>
 <div>

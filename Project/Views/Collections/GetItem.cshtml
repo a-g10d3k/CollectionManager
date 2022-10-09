@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@model CollectionItem
+@{
+    ViewData["Title"] = @Localizer["page_title"];
+}
+<div class="h-100 p-5 bg-light border rounded-3">
+<p>
+    <span class="h1">@Model.Name</span>
+    <span class="text-secondary">@Localizer["in"] 
+        <a asp-controller="Collections" asp-action="GetCollection" asp-route-id="@Model.Collection?.Id">@Model.Collection?.Name</a>
+    </span>
+</p>
+<p class="text-secondary">@Localizer["last_modified"]: @Model.Modified</p>
+
+<table class="table">
+    <tbody>
+        @foreach(var field in Model.CustomIntFields)
+        {
+            <tr>
+                <td>@field.Name</td>
+                <td>@field.Value</td>
+            </tr>
+        }
+        @foreach(var field in Model.CustomStringFields)
+        {
+            <tr>
+                <td>@field.Name</td>
+                <td>@field.Value</td>
+            </tr>
+        }
+        @foreach(var field in Model.CustomTextAreaFields)
+        {
+            <tr>
+                <td>@field.Name</td>
+                <td style="white-space:pre-wrap">@field.Value</td>
+            </tr>
+        }
+        @foreach(var field in Model.CustomBoolFields)
+        {
+            <tr>
+                <td>@field.Name</td>
+                <td><i class="bi @(field.Value ? "bi-check-lg text-success" : "bi-x-lg text-danger")"></i></td>
+            </tr>
+        }
+        @foreach(var field in Model.CustomDateFields)
+        {
+            <tr>
+                <td>@field.Name</td>
+                <td>@DateOnly.FromDateTime(field.Value)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
