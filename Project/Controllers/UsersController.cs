@@ -19,12 +19,12 @@ namespace Project.Controllers
 
         [HttpGet]
         [Route("{controller}/{username}", Name = "GetUser")]
-        public IActionResult GetUser(string username)
+        public async Task<IActionResult> GetUser(string username)
         {
             var query = _context.Users.Where(u => u.UserName == username)
                 .Include(u => u.Collections);
             if (!query.Any()) return NotFound();
-            var user = query.First();
+            var user = await query.FirstAsync();
             return View(user);
         }
     }

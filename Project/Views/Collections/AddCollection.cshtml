@@ -6,6 +6,7 @@
 }
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/formexpander.js"></script>
 }
 
 <form method="post" enctype="multipart/form-data">
@@ -28,6 +29,56 @@
     <div class="mb-1">
         <label for="image" class="form-label">@Localizer["image"]:</label>
         <input name="collectionImage" type="file" class="form-control">
+    </div>
+    <div class="form-expandable">
+        <button type="button" class="btn btn-outline-primary form-expand">@Localizer["add_int_field"]</button>
+        <button type="button" class="btn btn-outline-danger form-collapse">@Localizer["remove_int_field"]</button>
+        @for(int i = 0; i < 3; ++i)
+        {
+            <div class="input-group expandable-input mb-1" hidden>
+                <input asp-for="CustomIntFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled />
+            </div>
+        }
+    </div>
+    <div class="form-expandable">
+        <button type="button" class="btn btn-outline-primary form-expand">@Localizer["add_string_field"]</button>
+        <button type="button" class="btn btn-outline-danger form-collapse">@Localizer["remove_string_field"]</button>
+        @for(int i = 0; i < 3; ++i)
+        {
+            <div class="input-group expandable-input mb-1" hidden>
+                <input asp-for="CustomStringFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled />
+            </div>
+        }
+    </div>
+    <div class="form-expandable">
+        <button type="button" class="btn btn-outline-primary form-expand">@Localizer["add_textarea_field"]</button>
+        <button type="button" class="btn btn-outline-danger form-collapse">@Localizer["remove_textarea_field"]</button>
+        @for(int i = 0; i < 3; ++i)
+        {
+            <div class="input-group expandable-input mb-1" hidden>
+                <input asp-for="CustomTextAreaFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled> </input>
+            </div>
+        }
+    </div>
+    <div class="form-expandable">
+        <button type="button" class="btn btn-outline-primary form-expand">@Localizer["add_bool_field"]</button>
+        <button type="button" class="btn btn-outline-danger form-collapse">@Localizer["remove_bool_field"]</button>
+        @for(int i = 0; i < 3; ++i)
+        {
+            <div class="input-group expandable-input mb-1" hidden>
+                <input asp-for="CustomBoolFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled />
+            </div>
+        }
+    </div>
+    <div class="form-expandable">
+        <button type="button" class="btn btn-outline-primary form-expand">@Localizer["add_date_field"]</button>
+        <button type="button" class="btn btn-outline-danger form-collapse">@Localizer["remove_date_field"]</button>
+        @for(int i = 0; i < 3; ++i)
+        {
+            <div class="input-group expandable-input mb-1" hidden>
+                <input asp-for="CustomDateFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled />
+            </div>
+        }
     </div>
     <button type="submit" class="btn btn-primary">@Localizer["add_collection"]</button>
 </form>

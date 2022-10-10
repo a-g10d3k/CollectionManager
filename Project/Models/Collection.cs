@@ -38,5 +38,11 @@ namespace Project.Models
 
         public string? AuthorId { get; set; }
         public ApplicationUser? Author { get; set; }
+
+        public List<CustomIntField> CustomIntFields { get; set; } = new List<CustomIntField>();
+        public List<CustomStringField> CustomStringFields { get; set; } = new List<CustomStringField>();
+        public List<CustomTextAreaField> CustomTextAreaFields { get; set; } = new List<CustomTextAreaField>();
+        public List<CustomBoolField> CustomBoolFields { get; set; } = new List<CustomBoolField>();
+        public List<CustomDateField> CustomDateFields { get; set; } = new List<CustomDateField>();
     }
 }

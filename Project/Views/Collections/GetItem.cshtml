@@ -40,14 +40,14 @@
         {
             <tr>
                 <td>@field.Name</td>
-                <td><i class="bi @(field.Value ? "bi-check-lg text-success" : "bi-x-lg text-danger")"></i></td>
+                <td><i class="bi @((bool)field.Value! ? "bi-check-lg text-success" : "bi-x-lg text-danger")"></i></td>
             </tr>
         }
         @foreach(var field in Model.CustomDateFields)
         {
             <tr>
                 <td>@field.Name</td>
-                <td>@DateOnly.FromDateTime(field.Value)</td>
+                <td>@DateOnly.FromDateTime((DateTime)field.Value!)</td>
             </tr>
         }
     </tbody>

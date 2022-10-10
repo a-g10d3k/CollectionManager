@@ -47,13 +47,13 @@ namespace Project.Controllers
         [Authorize]
         [HttpPost]
         [Route("{controller}/add")]
-        public async Task<IActionResult> PostCollection(Collection collection, [FromForm(Name = "collectionImage")] IFormFile collectionImage)
+        public async Task<IActionResult> PostCollection(Collection collection, [FromForm(Name = "collectionImage")] IFormFile? collectionImage)
         {
             collection.Created = DateTime.Now;
             collection.Modified = collection.Created;
             var author = await _userManager.GetUserAsync(User);
             author.Collections.Add(collection);
-            if (!ModelState.IsValid) return View("AddCollection", collection);
+            if (!ModelState.IsValid) return View("AddCollection");
             if (collectionImage != null && collectionImage.Length <= CollectionImage.MaxSize)
             {
                 collection.Image = new CollectionImage(
@@ -63,16 +63,27 @@ namespace Project.Controllers
             }
             _context.Collections.Add(collection);
             await _context.SaveChangesAsync();
-            return View("AddCollection");
+            return RedirectToAction("GetCollection", new { id = collection.Id });
         }
 
+        [Authorize]
         [HttpGet]
         [Route("{controller}/{id}/add")]
-        public IActionResult AddItem()
+        public async Task<IActionResult> AddItem([FromRoute] int id)
         {
-            return View();
+            var query = _context.Collections.Where(c => c.Id == id)
+                .Include(c => c.CustomStringFields)
+                .Include(c => c.CustomBoolFields)
+                .Include(c => c.CustomIntFields)
+                .Include(c => c.CustomDateFields)
+                .Include(c => c.CustomTextAreaFields);
+            if (!query.Any()) return NotFound();
+            var collection = await query.FirstAsync();
+            CollectionItem item = new CollectionItem(collection);
+            return View(item);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("{controller}/{collectionId}/add")]
         public async Task<IActionResult> PostItem([FromRoute] int collectionId, CollectionItem item)
@@ -89,11 +100,11 @@ namespace Project.Controllers
             if (!ModelState.IsValid) return View("AddItem");
             _context.CollectionItems.Add(item);
             await _context.SaveChangesAsync();
-            return View("AddItem");
+            return RedirectToAction("GetItem", new { id = item.Id });
         }
 
         [HttpGet]
-        [Route("{controller}/items/{id}")]
+        [Route("{controller}/items/{id}", Name = "GetItem")]
         public async Task<IActionResult> GetItem([FromRoute] int id)
         {
             var query = _context.CollectionItems.Where(i => i.Id == id)

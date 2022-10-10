@@ -3,7 +3,6 @@ namespace Project.Models
 {
     public class CustomBoolField : CustomField
     {
-        [Required]
-        public bool Value { get; set; }
+        public bool Value { get; set; } = false;
     }
 }

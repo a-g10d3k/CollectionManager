@@ -15,5 +15,8 @@ namespace Project.Models
 
         [ForeignKey("ItemId")]
         public CollectionItem? Item { get; set; }
+
+        [ForeignKey("CollectionId")]
+        public Collection? Collection { get; set; }
     }
 }

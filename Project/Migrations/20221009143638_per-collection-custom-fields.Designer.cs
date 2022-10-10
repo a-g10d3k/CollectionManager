@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project.Data;
 
@@ -11,9 +12,10 @@ using Project.Data;
 namespace Project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221009143638_per-collection-custom-fields")]
+    partial class percollectioncustomfields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -385,7 +387,8 @@ namespace Project.Migrations
                         .HasColumnType("int")
                         .HasColumnName("CustomBoolField_ItemId");
 
-                    b.Property<bool>("Value")
+                    b.Property<bool?>("Value")
+                        .IsRequired()
                         .HasColumnType("bit")
                         .HasColumnName("CustomBoolField_Value");
 
@@ -407,6 +410,7 @@ namespace Project.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("Value")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.HasIndex("CollectionId");
@@ -429,6 +433,7 @@ namespace Project.Migrations
                         .HasColumnName("CustomIntField_ItemId");
 
                     b.Property<int?>("Value")
+                        .IsRequired()
                         .HasColumnType("int")
                         .HasColumnName("CustomIntField_Value");
 
@@ -452,6 +457,7 @@ namespace Project.Migrations
                         .HasColumnName("CustomStringField_ItemId");
 
                     b.Property<string>("Value")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("CustomStringField_Value");
@@ -476,6 +482,7 @@ namespace Project.Migrations
                         .HasColumnName("CustomTextAreaField_ItemId");
 
                     b.Property<string>("Value")
+                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)")
                         .HasColumnName("CustomTextAreaField_Value");
