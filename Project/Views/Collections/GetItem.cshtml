@@ -10,6 +10,10 @@
     <span class="text-secondary">@Localizer["in"] 
         <a asp-controller="Collections" asp-action="GetCollection" asp-route-id="@Model.Collection?.Id">@Model.Collection?.Name</a>
     </span>
+    @if(ViewData["IsOwner"] as bool? ?? false)
+    {
+        <a type="button" class="btn btn-danger" href="@Url.Action("DeleteItem", "Collections", new { id = Model.Id })">@Localizer["delete_item"]</a>
+    }
 </p>
 <p class="text-secondary">@Localizer["last_modified"]: @Model.Modified</p>
 

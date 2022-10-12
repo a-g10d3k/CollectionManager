@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project.Data;
 
@@ -11,9 +12,10 @@ using Project.Data;
 namespace Project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221012114231_clientsetnull")]
+    partial class clientsetnull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -311,9 +313,6 @@ namespace Project.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Hidden")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
 
@@ -337,6 +336,9 @@ namespace Project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("CollectionId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ItemId")
                         .HasColumnType("int");
 
@@ -349,6 +351,8 @@ namespace Project.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CollectionId");
 
                     b.HasIndex("ItemId");
 
@@ -363,6 +367,9 @@ namespace Project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("CollectionId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ItemId")
                         .HasColumnType("int");
 
@@ -375,6 +382,8 @@ namespace Project.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CollectionId");
 
                     b.HasIndex("ItemId");
 
@@ -389,6 +398,9 @@ namespace Project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("CollectionId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ItemId")
                         .HasColumnType("int");
 
@@ -402,6 +414,8 @@ namespace Project.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CollectionId");
+
                     b.HasIndex("ItemId");
 
                     b.ToTable("CustomIntFields");
@@ -414,6 +428,9 @@ namespace Project.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("CollectionId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ItemId")
                         .HasColumnType("int");
@@ -429,6 +446,8 @@ namespace Project.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CollectionId");
+
                     b.HasIndex("ItemId");
 
                     b.ToTable("CustomStringFields");
@@ -441,6 +460,9 @@ namespace Project.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("CollectionId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ItemId")
                         .HasColumnType("int");
@@ -455,6 +477,8 @@ namespace Project.Migrations
                         .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CollectionId");
 
                     b.HasIndex("ItemId");
 
@@ -563,50 +587,80 @@ namespace Project.Migrations
 
             modelBuilder.Entity("Project.Models.CustomBoolField", b =>
                 {
+                    b.HasOne("Project.Models.Collection", "Collection")
+                        .WithMany("CustomBoolFields")
+                        .HasForeignKey("CollectionId");
+
                     b.HasOne("Project.Models.CollectionItem", "Item")
                         .WithMany("CustomBoolFields")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Collection");
 
                     b.Navigation("Item");
                 });
 
             modelBuilder.Entity("Project.Models.CustomDateField", b =>
                 {
+                    b.HasOne("Project.Models.Collection", "Collection")
+                        .WithMany("CustomDateFields")
+                        .HasForeignKey("CollectionId");
+
                     b.HasOne("Project.Models.CollectionItem", "Item")
                         .WithMany("CustomDateFields")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Collection");
 
                     b.Navigation("Item");
                 });
 
             modelBuilder.Entity("Project.Models.CustomIntField", b =>
                 {
+                    b.HasOne("Project.Models.Collection", "Collection")
+                        .WithMany("CustomIntFields")
+                        .HasForeignKey("CollectionId");
+
                     b.HasOne("Project.Models.CollectionItem", "Item")
                         .WithMany("CustomIntFields")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Collection");
 
                     b.Navigation("Item");
                 });
 
             modelBuilder.Entity("Project.Models.CustomStringField", b =>
                 {
+                    b.HasOne("Project.Models.Collection", "Collection")
+                        .WithMany("CustomStringFields")
+                        .HasForeignKey("CollectionId");
+
                     b.HasOne("Project.Models.CollectionItem", "Item")
                         .WithMany("CustomStringFields")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Collection");
 
                     b.Navigation("Item");
                 });
 
             modelBuilder.Entity("Project.Models.CustomTextAreaField", b =>
                 {
+                    b.HasOne("Project.Models.Collection", "Collection")
+                        .WithMany("CustomTextAreaFields")
+                        .HasForeignKey("CollectionId");
+
                     b.HasOne("Project.Models.CollectionItem", "Item")
                         .WithMany("CustomTextAreaFields")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Collection");
 
                     b.Navigation("Item");
                 });
@@ -629,6 +683,16 @@ namespace Project.Migrations
 
             modelBuilder.Entity("Project.Models.Collection", b =>
                 {
+                    b.Navigation("CustomBoolFields");
+
+                    b.Navigation("CustomDateFields");
+
+                    b.Navigation("CustomIntFields");
+
+                    b.Navigation("CustomStringFields");
+
+                    b.Navigation("CustomTextAreaFields");
+
                     b.Navigation("Items");
                 });
 

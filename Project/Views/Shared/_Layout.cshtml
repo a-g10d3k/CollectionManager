@@ -24,7 +24,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@SharedLocalizer["home"].Value</a>
                         </li>
-                        @if (User.Identity!.Name != null)
+                        @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="UserManagement">@SharedLocalizer["admin_panel"]</a>
@@ -35,7 +35,8 @@
                         @if (User.Identity!.Name != null)
                         {
                                 <li class="navbar-text text-secondary">
-                                    @SharedLocalizer["logged_in_as"] @User.Identity.Name
+                                    @SharedLocalizer["logged_in_as"] 
+                                    <a href="@Url.Action("GetUser", "Users", new { username = @User.Identity.Name })" >@User.Identity.Name</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Account" asp-action="Logout">@SharedLocalizer["log_out"]</a>

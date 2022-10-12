@@ -25,6 +25,9 @@ namespace Project.Controllers
                 .Include(u => u.Collections);
             if (!query.Any()) return NotFound();
             var user = await query.FirstAsync();
+            var currentUser = await _userManager.GetUserAsync(User);
+            bool isOwner = await _userManager.IsInRoleAsync(user, "Admin") || user == currentUser;
+            ViewData["IsOwner"] = isOwner;
             return View(user);
         }
     }

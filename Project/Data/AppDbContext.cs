@@ -49,6 +49,7 @@ namespace Project.Data
                 .HasMany(u => u.Collections)
                 .WithOne(c => c.Author)
                 .OnDelete(DeleteBehavior.Cascade);
+
             base.OnModelCreating(builder);
         }
     }

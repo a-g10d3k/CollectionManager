@@ -12,11 +12,11 @@ namespace Project.Models
         public CollectionItem(Collection collection)
         {
             Collection = collection;
-            CopyCustomFields(CustomIntFields, collection.CustomIntFields);
-            CopyCustomFields(CustomStringFields, collection.CustomStringFields);
-            CopyCustomFields(CustomTextAreaFields, collection.CustomTextAreaFields);
-            CopyCustomFields(CustomBoolFields, collection.CustomBoolFields);
-            CopyCustomFields(CustomDateFields, collection.CustomDateFields);
+            CopyCustomFields(CustomIntFields, collection.Items[0].CustomIntFields);
+            CopyCustomFields(CustomStringFields, collection.Items[0].CustomStringFields);
+            CopyCustomFields(CustomTextAreaFields, collection.Items[0].CustomTextAreaFields);
+            CopyCustomFields(CustomBoolFields, collection.Items[0].CustomBoolFields);
+            CopyCustomFields(CustomDateFields, collection.Items[0].CustomDateFields);
         }
 
         private void CopyCustomFields<T>(List<T> destination, List<T> origin) where T : CustomField, new()
@@ -38,6 +38,8 @@ namespace Project.Models
 
         [DataType(DataType.DateTime)]
         public DateTime Modified { get; set; }
+
+        public bool Hidden { get; set; }
 
         public List<Tag> Tags { get; set; } = new List<Tag>();
 

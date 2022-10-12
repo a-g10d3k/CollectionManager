@@ -13,7 +13,12 @@
                 <span class="text-secondary">@Localizer["by"]: 
                     <a href="@Url.Action("GetUser", "Users", new { username = @Model.Author?.UserName })">@Model.Author?.UserName</a>
                 </span>
-                </p>
+                @if(ViewData["IsOwner"] as bool? ?? false)
+                {
+                    <a type="button" class="btn btn-primary" href="@Url.Action("AddItem", "Collections", new { id = Model.Id })">@Localizer["add_item"]</a>
+                    <a type="button" class="btn btn-danger" href="@Url.Action("DeleteCollection", "Collections", new { id = Model.Id })">@Localizer["delete_collection"]</a>
+                }
+            </p>
             <p class="card-text"><small class="text-muted">@Localizer["last_modified"]: @Model.Modified</small></p>
         </div>
         @if(Model.ImageId != null)
@@ -47,6 +52,7 @@
                         <tbody>
                             @foreach(var item in Model.Items)
                             {
+                                if (item.Hidden) continue;
                                 <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("Items", "Collections", new { id = item.Id })'">
                                     <td>@item.Name</td>
                                     @for(int i = 0; i < 3; ++i)

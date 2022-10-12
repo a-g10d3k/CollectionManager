@@ -10,6 +10,10 @@
     </p>
     <div class="h-100 p-5 bg-light border rounded-3">
     <h1>@Localizer["this_users_collections"]:</h1>
+    @if(ViewData["IsOwner"] as bool? ?? false)
+    {
+        <a type="button" class="btn btn-primary" href="@Url.Action("AddCollection", "Collections")">@Localizer["add_collection"]</a>
+    }
     <div class="d-flex flex-wrap align-content-start justify-content-center">
         @foreach(var collection in Model.Collections)
         {
