@@ -21,7 +21,34 @@ namespace Project.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<CustomField>().ToTable("CustomFields");
+            builder.Entity<CollectionItem>()
+                .HasMany(i => i.CustomIntFields)
+                .WithOne(f => f.Item)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<CollectionItem>()
+                .HasMany(i => i.CustomStringFields)
+                .WithOne(f => f.Item)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<CollectionItem>()
+                .HasMany(i => i.CustomTextAreaFields)
+                .WithOne(f => f.Item)
+                .OnDelete(DeleteBehavior.Cascade);            
+            builder.Entity<CollectionItem>()
+                .HasMany(i => i.CustomBoolFields)
+                .WithOne(f => f.Item)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<CollectionItem>()
+                .HasMany(i => i.CustomDateFields)
+                .WithOne(f => f.Item)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Collection>()
+                .HasMany(c => c.Items)
+                .WithOne(i => i.Collection)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<ApplicationUser>()
+                .HasMany(u => u.Collections)
+                .WithOne(c => c.Author)
+                .OnDelete(DeleteBehavior.Cascade);
             base.OnModelCreating(builder);
         }
     }

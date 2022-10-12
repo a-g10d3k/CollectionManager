@@ -12,8 +12,8 @@ using Project.Data;
 namespace Project.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221007133419_separate-custom-fields")]
-    partial class separatecustomfields
+    [Migration("20221012104009_cascade-item-fields")]
+    partial class cascadeitemfields
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -250,9 +250,8 @@ namespace Project.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<byte[]>("Image")
-                        .HasMaxLength(5000000)
-                        .HasColumnType("varbinary(max)");
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
@@ -270,7 +269,34 @@ namespace Project.Migrations
 
                     b.HasIndex("AuthorId");
 
+                    b.HasIndex("ImageId")
+                        .IsUnique()
+                        .HasFilter("[ImageId] IS NOT NULL");
+
                     b.ToTable("Collections");
+                });
+
+            modelBuilder.Entity("Project.Models.CollectionImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasMaxLength(5000000)
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CollectionImages");
                 });
 
             modelBuilder.Entity("Project.Models.CollectionItem", b =>
@@ -302,7 +328,7 @@ namespace Project.Migrations
                     b.ToTable("CollectionItems");
                 });
 
-            modelBuilder.Entity("Project.Models.CustomField", b =>
+            modelBuilder.Entity("Project.Models.CustomBoolField", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -310,20 +336,128 @@ namespace Project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Discriminator")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Value")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("CustomBoolFields");
+                });
+
+            modelBuilder.Entity("Project.Models.CustomDateField", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Value")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
-                    b.ToTable("CustomFields", (string)null);
+                    b.HasIndex("ParentId");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("CustomField");
+                    b.ToTable("CustomDateFields");
+                });
+
+            modelBuilder.Entity("Project.Models.CustomIntField", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("CustomIntFields");
+                });
+
+            modelBuilder.Entity("Project.Models.CustomStringField", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("CustomStringFields");
+                });
+
+            modelBuilder.Entity("Project.Models.CustomTextAreaField", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("CustomTextAreaFields");
                 });
 
             modelBuilder.Entity("Project.Models.Tag", b =>
@@ -347,93 +481,6 @@ namespace Project.Migrations
                     b.HasIndex("ItemID");
 
                     b.ToTable("Tag");
-                });
-
-            modelBuilder.Entity("Project.Models.CustomBoolField", b =>
-                {
-                    b.HasBaseType("Project.Models.CustomField");
-
-                    b.Property<int?>("ItemID")
-                        .HasColumnType("int")
-                        .HasColumnName("CustomBoolField_ItemID");
-
-                    b.Property<bool>("Value")
-                        .HasColumnType("bit")
-                        .HasColumnName("CustomBoolField_Value");
-
-                    b.HasIndex("ItemID");
-
-                    b.HasDiscriminator().HasValue("CustomBoolField");
-                });
-
-            modelBuilder.Entity("Project.Models.CustomDateField", b =>
-                {
-                    b.HasBaseType("Project.Models.CustomField");
-
-                    b.Property<int?>("ItemID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Value")
-                        .HasColumnType("datetime2");
-
-                    b.HasIndex("ItemID");
-
-                    b.HasDiscriminator().HasValue("CustomDateField");
-                });
-
-            modelBuilder.Entity("Project.Models.CustomIntField", b =>
-                {
-                    b.HasBaseType("Project.Models.CustomField");
-
-                    b.Property<int?>("ItemID")
-                        .HasColumnType("int")
-                        .HasColumnName("CustomIntField_ItemID");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int")
-                        .HasColumnName("CustomIntField_Value");
-
-                    b.HasIndex("ItemID");
-
-                    b.HasDiscriminator().HasValue("CustomIntField");
-                });
-
-            modelBuilder.Entity("Project.Models.CustomStringField", b =>
-                {
-                    b.HasBaseType("Project.Models.CustomField");
-
-                    b.Property<int?>("ItemID")
-                        .HasColumnType("int")
-                        .HasColumnName("CustomStringField_ItemID");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CustomStringField_Value");
-
-                    b.HasIndex("ItemID");
-
-                    b.HasDiscriminator().HasValue("CustomStringField");
-                });
-
-            modelBuilder.Entity("Project.Models.CustomTextAreaField", b =>
-                {
-                    b.HasBaseType("Project.Models.CustomField");
-
-                    b.Property<int?>("ItemID")
-                        .HasColumnType("int")
-                        .HasColumnName("CustomTextAreaField_ItemID");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)")
-                        .HasColumnName("CustomTextAreaField_Value");
-
-                    b.HasIndex("ItemID");
-
-                    b.HasDiscriminator().HasValue("CustomTextAreaField");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -491,18 +538,106 @@ namespace Project.Migrations
                 {
                     b.HasOne("Project.Models.ApplicationUser", "Author")
                         .WithMany("Collections")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Project.Models.CollectionImage", "Image")
+                        .WithOne("Collection")
+                        .HasForeignKey("Project.Models.Collection", "ImageId");
 
                     b.Navigation("Author");
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Project.Models.CollectionItem", b =>
                 {
                     b.HasOne("Project.Models.Collection", "Collection")
                         .WithMany("Items")
-                        .HasForeignKey("CollectionId");
+                        .HasForeignKey("CollectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Collection");
+                });
+
+            modelBuilder.Entity("Project.Models.CustomBoolField", b =>
+                {
+                    b.HasOne("Project.Models.Collection", "Collection")
+                        .WithMany("CustomBoolFields")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("Project.Models.CollectionItem", "Item")
+                        .WithMany("CustomBoolFields")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Collection");
+
+                    b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("Project.Models.CustomDateField", b =>
+                {
+                    b.HasOne("Project.Models.Collection", "Collection")
+                        .WithMany("CustomDateFields")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("Project.Models.CollectionItem", "Item")
+                        .WithMany("CustomDateFields")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Collection");
+
+                    b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("Project.Models.CustomIntField", b =>
+                {
+                    b.HasOne("Project.Models.Collection", "Collection")
+                        .WithMany("CustomIntFields")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("Project.Models.CollectionItem", "Item")
+                        .WithMany("CustomIntFields")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Collection");
+
+                    b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("Project.Models.CustomStringField", b =>
+                {
+                    b.HasOne("Project.Models.Collection", "Collection")
+                        .WithMany("CustomStringFields")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("Project.Models.CollectionItem", "Item")
+                        .WithMany("CustomStringFields")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Collection");
+
+                    b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("Project.Models.CustomTextAreaField", b =>
+                {
+                    b.HasOne("Project.Models.Collection", "Collection")
+                        .WithMany("CustomTextAreaFields")
+                        .HasForeignKey("ParentId");
+
+                    b.HasOne("Project.Models.CollectionItem", "Item")
+                        .WithMany("CustomTextAreaFields")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Collection");
+
+                    b.Navigation("Item");
                 });
 
             modelBuilder.Entity("Project.Models.Tag", b =>
@@ -516,51 +651,6 @@ namespace Project.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("Project.Models.CustomBoolField", b =>
-                {
-                    b.HasOne("Project.Models.CollectionItem", "Item")
-                        .WithMany("CustomBoolFields")
-                        .HasForeignKey("ItemID");
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("Project.Models.CustomDateField", b =>
-                {
-                    b.HasOne("Project.Models.CollectionItem", "Item")
-                        .WithMany("CustomDateFields")
-                        .HasForeignKey("ItemID");
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("Project.Models.CustomIntField", b =>
-                {
-                    b.HasOne("Project.Models.CollectionItem", "Item")
-                        .WithMany("CustomIntFields")
-                        .HasForeignKey("ItemID");
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("Project.Models.CustomStringField", b =>
-                {
-                    b.HasOne("Project.Models.CollectionItem", "Item")
-                        .WithMany("CustomStringFields")
-                        .HasForeignKey("ItemID");
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("Project.Models.CustomTextAreaField", b =>
-                {
-                    b.HasOne("Project.Models.CollectionItem", "Item")
-                        .WithMany("CustomTextAreaFields")
-                        .HasForeignKey("ItemID");
-
-                    b.Navigation("Item");
-                });
-
             modelBuilder.Entity("Project.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Collections");
@@ -568,7 +658,22 @@ namespace Project.Migrations
 
             modelBuilder.Entity("Project.Models.Collection", b =>
                 {
+                    b.Navigation("CustomBoolFields");
+
+                    b.Navigation("CustomDateFields");
+
+                    b.Navigation("CustomIntFields");
+
+                    b.Navigation("CustomStringFields");
+
+                    b.Navigation("CustomTextAreaFields");
+
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Project.Models.CollectionImage", b =>
+                {
+                    b.Navigation("Collection");
                 });
 
             modelBuilder.Entity("Project.Models.CollectionItem", b =>
