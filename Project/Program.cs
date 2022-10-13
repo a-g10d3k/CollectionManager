@@ -15,7 +15,8 @@ namespace Project
 
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                string connectionStringKey = builder.Configuration.GetValue<string>("ConnectionString");
+                options.UseSqlServer(builder.Configuration.GetConnectionString(connectionStringKey));
             });
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -44,10 +45,9 @@ namespace Project
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IViewLocalizer Localizer;
+@model SearchModel
+@{
+    ViewData["Title"] = @Localizer["page_title"];
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <td colspan="4">
+                @Localizer["search_results"]
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var collection in Model.Collections)
+        {
+            <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("GetCollection", "Collections", new { id = collection.Id })'">
+                <td>@collection.Name</td>
+                <td colspan="3">
+                    <p class="description-preview-search">
+                        @collection.Description
+                    </p>
+                </td>
+            </tr>
+        }
+        @foreach(var item in Model.Items)
+        {
+            if (item.Hidden) continue;
+            <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("Items", "Collections", new { id = item.Id })'">
+                <td>@item.Name</td>
+                @for(int i = 0; i < 3; ++i)
+                {
+                    <td>
+                        @if (item.CustomStringFields.Count > i)
+                        {
+                            var field = item.CustomStringFields[i];
+                            <div class="form-floating">
+                                <span style="font-size:0.7em" class="text-secondary">@(field.Name):</span>@field.Value
+                            </div>
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
