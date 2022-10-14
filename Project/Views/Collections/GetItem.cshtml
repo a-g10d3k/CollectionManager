@@ -4,13 +4,17 @@
 @{
     ViewData["Title"] = @Localizer["page_title"];
 }
+@section Scripts{
+    <script src="~/js/likes.js"></script>
+}
+
 <div class="h-100 p-5 bg-light border rounded-3">
 <p>
     <span class="h1">@Model.Name</span>
     <span class="text-secondary">@Localizer["in"] 
         <a asp-controller="Collections" asp-action="GetCollection" asp-route-id="@Model.Collection?.Id">@Model.Collection?.Name</a>
     </span>
-    <p><i class="bi bi-star">@Model.LikeCount</i></p>
+    <p class="like btn btn-outline-dark" data-liked="@Model.Liked" data-id="@Model.Id"><i class="bi bi-star @(Model.Liked ? "icon-liked" : "icon-unliked")"></i><span class="like-counter" data-value="@Model.LikeCount">@Model.LikeCount</span></p>
     @if(ViewData["IsOwner"] as bool? ?? false)
     {
         <a type="button" class="btn btn-danger" href="@Url.Action("DeleteItem", "Collections", new { id = Model.Id })">@Localizer["delete_item"]</a>

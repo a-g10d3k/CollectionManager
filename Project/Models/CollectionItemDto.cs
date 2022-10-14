@@ -12,6 +12,7 @@
         public List<CustomTextAreaField> CustomTextAreaFields { get; set; } = new List<CustomTextAreaField>();
         public List<CustomBoolField> CustomBoolFields { get; set; } = new List<CustomBoolField>();
         public List<CustomDateField> CustomDateFields { get; set; } = new List<CustomDateField>();
+        public bool Liked { get; set; }
 
         public int LikeCount { get; set; }
         public Collection? Collection { get; set; }

@@ -153,17 +153,18 @@ namespace Project.Controllers
             if(!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
+            item.Liked = user != null && await _context.Likes.Where(l => l.UserId == user.Id && l.ItemId == item.Id).AnyAsync();
             bool isOwner = user != null && (await _userManager.IsInRoleAsync(user, "Admin") || user == item.Collection!.Author);
             ViewData["IsOwner"] = isOwner;
             return View(item);
         }
 
-        [Authorize]
         [HttpGet]
         [Route("{controller}/Items/{id}/Like", Name = "LikeItem")]
         public async Task<IActionResult> LikeItem([FromRoute] int id)
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
+            if (user == null) return Forbid();
             var query = _context.CollectionItems.Where(i => i.Id == id && !i.Likes.Any(l => l.UserId == user.Id));
             if (!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
@@ -172,12 +173,12 @@ namespace Project.Controllers
             return Ok();
         }
 
-        [Authorize]
         [HttpGet]
         [Route("{controller}/Items/{id}/Unlike", Name = "UnlikeItem")]
         public async Task<IActionResult> UnLikeItem([FromRoute] int id)
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
+            if (user == null) return Forbid();
             var query = _context.Likes.Where(l => l.ItemId == id && l.UserId == user.Id);
             if (!await query.AnyAsync()) return NotFound();
             var like = await query.FirstAsync();
