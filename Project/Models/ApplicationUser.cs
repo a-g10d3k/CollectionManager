@@ -13,5 +13,7 @@ namespace Project.Models
 
         [ForeignKey("AuthorId")]
         public List<Collection> Collections { get; set; } = new List<Collection>();
+
+        public List<Like> Likes { get; set; } = new List<Like>();
     }
 }

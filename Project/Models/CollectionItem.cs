@@ -49,6 +49,7 @@ namespace Project.Models
         public List<CustomBoolField> CustomBoolFields { get; set; } = new List<CustomBoolField>();
         public List<CustomDateField> CustomDateFields { get; set; } = new List<CustomDateField>();
 
+        public List<Like> Likes { get; set; } = new List<Like>();
         [ForeignKey("CollectionId")]
         public Collection? Collection { get; set; }
     }

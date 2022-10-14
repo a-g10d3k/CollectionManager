@@ -18,6 +18,7 @@ namespace Project.Data
         public DbSet<CustomTextAreaField> CustomTextAreaFields { get; set; }
         public DbSet<CustomBoolField> CustomBoolFields { get; set; }
         public DbSet<CustomDateField> CustomDateFields { get; set; }
+        public DbSet<Like> Likes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -49,6 +50,14 @@ namespace Project.Data
                 .HasMany(u => u.Collections)
                 .WithOne(c => c.Author)
                 .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Like>()
+                .HasOne(l => l.Item)
+                .WithMany(i => i.Likes)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Like>()
+                .HasOne(l => l.User)
+                .WithMany(u => u.Likes)
+                .IsRequired(false);
 
             base.OnModelCreating(builder);
         }

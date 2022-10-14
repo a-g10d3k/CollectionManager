@@ -51,7 +51,7 @@ namespace Project.Controllers
             if (!await _userManager.IsInRoleAsync(user, "Admin") && user != collection.Author) return Forbid();
 
             _context.Collections.Remove(collection);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return RedirectToAction("GetUser", "Users", new { username = collection.Author!.UserName });
         }
 
@@ -125,23 +125,65 @@ namespace Project.Controllers
         }
 
         [HttpGet]
-        [Route("{controller}/items/{id}", Name = "GetItem")]
+        [Route("{controller}/Items/{id}", Name = "GetItem")]
         public async Task<IActionResult> GetItem([FromRoute] int id)
         {
-            var query = _context.CollectionItems.Where(i => i.Id == id)
+            var query = _context.CollectionItems.Where(i => i.Id == id && !i.Hidden)
                 .Include(i => i.CustomIntFields)
                 .Include(i => i.CustomStringFields)
                 .Include(i => i.CustomTextAreaFields)
                 .Include(i => i.CustomBoolFields)
                 .Include(i => i.CustomDateFields)
                 .Include(i => i.Collection)
-                .ThenInclude(c => c.Author);
+                .ThenInclude(c => c.Author)
+                .Select(i => new CollectionItemDto()
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Created = i.Created,
+                    Modified = i.Modified,
+                    CustomIntFields = i.CustomIntFields,
+                    CustomStringFields = i.CustomStringFields,
+                    CustomTextAreaFields = i.CustomTextAreaFields,
+                    CustomBoolFields = i.CustomBoolFields,
+                    CustomDateFields = i.CustomDateFields,
+                    Collection = i.Collection,
+                    LikeCount = i.Likes.Count()
+                });
             if(!query.Any()) return NotFound();
             var item = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
             bool isOwner = await _userManager.IsInRoleAsync(user, "Admin") || user == item.Collection!.Author;
             ViewData["IsOwner"] = isOwner;
             return View(item);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("{controller}/Items/{id}/Like", Name = "LikeItem")]
+        public async Task<IActionResult> LikeItem([FromRoute] int id)
+        {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            var query = _context.CollectionItems.Where(i => i.Id == id && !i.Likes.Any(l => l.UserId == user.Id));
+            if (!query.Any()) return NotFound();
+            var item = await query.FirstAsync();
+            item.Likes.Add(new Like() { Item = item, User = user });
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("{controller}/Items/{id}/Unlike", Name = "UnlikeItem")]
+        public async Task<IActionResult> UnLikeItem([FromRoute] int id)
+        {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            var query = _context.Likes.Where(l => l.ItemId == id && l.UserId == user.Id);
+            if (!query.Any()) return NotFound();
+            var like = await query.FirstAsync();
+            _context.Likes.Remove(like);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpGet]

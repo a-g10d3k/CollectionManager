@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization;
 @inject IViewLocalizer Localizer;
-@model CollectionItem
+@model CollectionItemDto
 @{
     ViewData["Title"] = @Localizer["page_title"];
 }
@@ -10,6 +10,7 @@
     <span class="text-secondary">@Localizer["in"] 
         <a asp-controller="Collections" asp-action="GetCollection" asp-route-id="@Model.Collection?.Id">@Model.Collection?.Name</a>
     </span>
+    <p><i class="bi bi-star">@Model.LikeCount</i></p>
     @if(ViewData["IsOwner"] as bool? ?? false)
     {
         <a type="button" class="btn btn-danger" href="@Url.Action("DeleteItem", "Collections", new { id = Model.Id })">@Localizer["delete_item"]</a>
