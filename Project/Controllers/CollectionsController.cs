@@ -34,7 +34,7 @@ namespace Project.Controllers
             if (!query.Any()) return NotFound();
             Collection collection = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
-            bool isOwner = await _userManager.IsInRoleAsync(user, "Admin") || user == collection.Author;
+            bool isOwner = user != null && (await _userManager.IsInRoleAsync(user, "Admin") || user == collection.Author);
             ViewData["IsOwner"] = isOwner;
             return View(collection);
         }
@@ -153,7 +153,7 @@ namespace Project.Controllers
             if(!query.Any()) return NotFound();
             var item = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
-            bool isOwner = await _userManager.IsInRoleAsync(user, "Admin") || user == item.Collection!.Author;
+            bool isOwner = user != null && (await _userManager.IsInRoleAsync(user, "Admin") || user == item.Collection!.Author);
             ViewData["IsOwner"] = isOwner;
             return View(item);
         }
