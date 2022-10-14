@@ -54,10 +54,6 @@ namespace Project.Data
                 .HasOne(l => l.Item)
                 .WithMany(i => i.Likes)
                 .OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<Like>()
-                .HasOne(l => l.User)
-                .WithMany(u => u.Likes)
-                .IsRequired(false);
 
             base.OnModelCreating(builder);
         }

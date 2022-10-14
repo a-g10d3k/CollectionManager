@@ -168,7 +168,7 @@ namespace Project.Controllers
             var query = _context.CollectionItems.Where(i => i.Id == id && !i.Likes.Any(l => l.UserId == user.Id));
             if (!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
-            item.Likes.Add(new Like() { Item = item, User = user });
+            item.Likes.Add(new Like() { Item = item, UserId = user.Id });
             await _context.SaveChangesAsync();
             return Ok();
         }

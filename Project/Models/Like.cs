@@ -8,9 +8,7 @@ namespace Project.Models
         [Required]
         public int Id { get; set; }
 
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
-        public ApplicationUser? User { get; set; }
+        public string? UserId { get; set; }
 
         public int ItemId { get; set; }
         [ForeignKey("ItemId")]
