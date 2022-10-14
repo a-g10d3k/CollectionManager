@@ -31,7 +31,7 @@ namespace Project.Controllers
                 .Include(c => c.Author)
                 .Include(c => c.Items)
                 .ThenInclude(i => i.CustomStringFields);
-            if (!query.Any()) return NotFound();
+            if (!await query.AnyAsync()) return NotFound();
             Collection collection = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
             bool isOwner = user != null && (await _userManager.IsInRoleAsync(user, "Admin") || user == collection.Author);
@@ -45,7 +45,7 @@ namespace Project.Controllers
         {
             var query = _context.Collections.Where(i => i.Id == id)
                 .Include(c => c.Author);
-            if (!query.Any()) return NotFound();
+            if (!await query.AnyAsync()) return NotFound();
             var collection = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
             if (!await _userManager.IsInRoleAsync(user, "Admin") && user != collection.Author) return Forbid();
@@ -98,7 +98,7 @@ namespace Project.Controllers
                 .Include(c => c.Items).ThenInclude(i => i.CustomTextAreaFields)
                 .Include(c => c.Items).ThenInclude(i => i.CustomBoolFields)
                 .Include(c => c.Items).ThenInclude(i => i.CustomDateFields);
-            if (!query.Any()) return NotFound();
+            if (!await query.AnyAsync()) return NotFound();
             var collection = await query.FirstAsync();
             CollectionItem item = new CollectionItem(collection);
             return View(item);
@@ -110,7 +110,7 @@ namespace Project.Controllers
         public async Task<IActionResult> PostItem([FromRoute] int collectionId, CollectionItem item)
         {
             var query = _context.Collections.Where(c => c.Id == collectionId).Include(c => c.Author);
-            if (!query.Any()) return NotFound();
+            if (!await query.AnyAsync()) return NotFound();
             Collection collection = await query.FirstAsync();
             collection.Modified = DateTime.Now;
             var user = await _userManager.GetUserAsync(User);
@@ -150,7 +150,7 @@ namespace Project.Controllers
                     Collection = i.Collection,
                     LikeCount = i.Likes.Count()
                 });
-            if(!query.Any()) return NotFound();
+            if(!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
             bool isOwner = user != null && (await _userManager.IsInRoleAsync(user, "Admin") || user == item.Collection!.Author);
@@ -165,7 +165,7 @@ namespace Project.Controllers
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
             var query = _context.CollectionItems.Where(i => i.Id == id && !i.Likes.Any(l => l.UserId == user.Id));
-            if (!query.Any()) return NotFound();
+            if (!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
             item.Likes.Add(new Like() { Item = item, User = user });
             await _context.SaveChangesAsync();
@@ -179,7 +179,7 @@ namespace Project.Controllers
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
             var query = _context.Likes.Where(l => l.ItemId == id && l.UserId == user.Id);
-            if (!query.Any()) return NotFound();
+            if (!await query.AnyAsync()) return NotFound();
             var like = await query.FirstAsync();
             _context.Likes.Remove(like);
             await _context.SaveChangesAsync();
@@ -193,7 +193,7 @@ namespace Project.Controllers
             var query = _context.CollectionItems.Where(i => i.Id == id)
                 .Include(i => i.Collection)
                 .ThenInclude(c => c.Author);
-            if (!query.Any()) return NotFound();
+            if (!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
             if (!await _userManager.IsInRoleAsync(user, "Admin") && user != item.Collection!.Author) return Forbid();
@@ -208,7 +208,7 @@ namespace Project.Controllers
         public async Task<IActionResult> GetImage([FromRoute] int id)
         {
             var query = _context.CollectionImages.Where(i => i.Id == id);
-            if (!query.Any()) return NotFound();
+            if (!await query.AnyAsync()) return NotFound();
             var image = await query.FirstAsync();
             return File(image.Image, image.ContentType);
         }
