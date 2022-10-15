@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Project.Extensions;
+using System.Text.Json;
+using Microsoft.AspNetCore.SignalR;
+using Project.Hubs;
 
 namespace Project.Controllers
 {
@@ -12,11 +15,13 @@ namespace Project.Controllers
     {
         private AppDbContext _context;
         private UserManager<ApplicationUser> _userManager;
+        private readonly IHubContext<CommentHub> _hubContext;
 
-        public CollectionsController(AppDbContext context, UserManager<ApplicationUser> userManager)
+        public CollectionsController(AppDbContext context, UserManager<ApplicationUser> userManager, IHubContext<CommentHub> hubContext)
         {
             _context = context;
             _userManager = userManager;
+            _hubContext = hubContext;
         }
 
         public IActionResult Index()
@@ -157,8 +162,7 @@ namespace Project.Controllers
             var user = await _userManager.GetUserAsync(User);
             item.CurrentUser = user;
             item.Liked = user != null && await _context.Likes.Where(l => l.UserId == user.Id && l.ItemId == item.Id).AnyAsync();
-            bool isAdmin = user != null && await _userManager.IsInRoleAsync(user, "Admin");
-            ViewData["IsAdmin"] = isAdmin;
+            item.IsAdmin = user != null && await _userManager.IsInRoleAsync(user, "Admin");
             return View(item);
         }
 
@@ -209,23 +213,37 @@ namespace Project.Controllers
 
         [HttpPost]
         [Route("{controller}/items/{itemId}/AddComment", Name = "AddComment")]
-        public async Task<IActionResult> AddComment([FromRoute] int itemId, [FromForm] string commentText)
+        public async Task<IActionResult> AddComment([FromRoute] int itemId, [FromBody] JsonElement data)
         {
+            string? commentText;
+            try
+            {
+                commentText = data.GetProperty("commentText").GetString();
+            }
+            catch(KeyNotFoundException e) { return BadRequest(); }
             ApplicationUser user = await _userManager.GetUserAsync(User);
             if (user == null) return Forbid();
             var query = _context.CollectionItems.Where(i => i.Id == itemId);
             if (!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
-            item.Comments.Add(new Comment() 
-            { 
+            var comment = new Comment()
+            {
                 Item = item,
                 UserId = user.Id,
                 Text = commentText,
                 UserName = user.UserName,
                 Created = DateTime.Now
-            });
+            };
+            item.Comments.Add(comment);
             await _context.SaveChangesAsync();
-            return RedirectToAction("GetItem", new { id = itemId });
+            _ = _hubContext.Clients.Group(itemId.ToString()).SendAsync("ReceiveComment", new
+            {
+                Id = comment.Id,
+                UserName = comment.UserName,
+                Text = comment.Text,
+                Created = comment.Created.ToString()
+            });
+            return Ok();
         }
 
         [HttpGet]
@@ -236,11 +254,11 @@ namespace Project.Controllers
             if(!query.Any()) return NotFound();
             var comment = await query.FirstAsync();
             ApplicationUser user = await _userManager.GetUserAsync(User);
-            if (user == null || !(await _userManager.IsInRoleAsync(user, "Admin") || user.Id == comment.UserId))
+            if (user == null || !await _userManager.IsInRoleAsync(user, "Admin"))
                 return Forbid();
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
-            return RedirectToAction("GetItem", new { id = comment.ItemId });
+            return Ok();
         }
 
         [HttpGet]

@@ -5,7 +5,13 @@
     ViewData["Title"] = @Localizer["page_title"];
 }
 @section Scripts{
+    <script type="text/javascript">
+        var itemId = @(Model.Id);
+        var isAdmin = @(Model.IsAdmin ? "true" : "false");
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@@6.0.10/dist/browser/signalr.min.js"></script>
     <script src="~/js/likes.js"></script>
+    <script src="~/js/comments.js"></script>
 }
 
 <div class="h-100 p-5 bg-light border rounded-3">
@@ -63,21 +69,22 @@
 </table>
 @if(User.Identity!.Name != null)
 {
-    <form class="mb-3" action="@Url.Action("AddComment", "Collections", new { itemId = @Model.Id })" method="post">
+    <form data-item-id="@Model.Id" class="add-comment mb-3" class="mb-3" action="@Url.Action("AddComment", "Collections", new { itemId = @Model.Id })" method="post">
         <textarea name="commentText" class="form-control mb-1"></textarea>
         <input type="submit" class="btn btn-primary" value="@Localizer["submit_comment"]">
     </form>
 }
+<div id="comments">
 @foreach(var comment in Model.Comments)
 {
-    <div class="card mb-3">
+    <div class="card mb-3 comment" data-comment-id="@comment.Id">
         <div class="card-header">
             <a class="link-dark" href="@Url.Action("GetUser", "Users", new { username = comment.UserName })">@comment.UserName</a>
             <span>@Localizer["commented"]:</span>
             <span class="text-muted">@comment.Created</span>
-            @if (comment.UserId == Model.CurrentUser?.Id || (bool)(ViewData["IsAdmin"] ?? false))
+            @if (Model.IsAdmin)
             {
-                <a class="link-danger" href="@Url.Action("DeleteComment", "Collections", new { id = comment.Id } )">@Localizer["delete_comment"]</a>
+                <a href="#!" class="link-danger delete-comment" data-comment-id="@comment.Id">@Localizer["delete_comment"]</a>
             }
         </div>
         <div class="card-body">
@@ -85,3 +92,21 @@
         </div>
     </div>
 }
+  </div>
+
+<script id="comment-template" type="x-tmpl-mustache">
+      <div class="card mb-3 comment" data-comment-id="{{ id }}">
+            <div class="card-header">
+                <a class="link-dark" href="{{ userName }}">{{ userName }}</a>
+                <span>@Localizer["commented"]:</span>
+                <span class="text-muted">{{ created }}</span>
+                {{ #isAdmin }}
+                    <a href="#!" class="link-danger delete-comment" data-comment-id="{{ id }}">@Localizer["delete_comment"]</a>
+                {{ /isAdmin }}
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ text }}</p>
+            </div>
+        </div>
+</script>
+</div>
