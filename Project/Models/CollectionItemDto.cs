@@ -13,6 +13,7 @@
         public List<CustomBoolField> CustomBoolFields { get; set; } = new List<CustomBoolField>();
         public List<CustomDateField> CustomDateFields { get; set; } = new List<CustomDateField>();
         public bool Liked { get; set; }
+        public List<Comment> Comments { get; set; } = new List<Comment>();
 
         public int LikeCount { get; set; }
         public Collection? Collection { get; set; }

@@ -50,6 +50,7 @@ namespace Project.Models
         public List<CustomDateField> CustomDateFields { get; set; } = new List<CustomDateField>();
 
         public List<Like> Likes { get; set; } = new List<Like>();
+        public List<Comment> Comments { get; set; } = new List<Comment>();
         [ForeignKey("CollectionId")]
         public Collection? Collection { get; set; }
     }

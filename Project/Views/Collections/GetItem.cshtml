@@ -61,4 +61,23 @@
         }
     </tbody>
 </table>
-</div>
+@if(User.Identity!.Name != null)
+{
+    <form class="mb-3" action="@Url.Action("AddComment", "Collections", new { itemId = @Model.Id })" method="post">
+        <textarea name="commentText" class="form-control mb-1"></textarea>
+        <input type="submit" class="btn btn-primary" value="@Localizer["submit_comment"]">
+    </form>
+}
+@foreach(var comment in Model.Comments)
+{
+    <div class="card mb-3">
+        <div class="card-header">
+            <a class="link-dark" href="@Url.Action("GetUser", "Users", new { username = comment.UserName })">@comment.UserName</a>
+            <span>@Localizer["commented"]:</span>
+            <span class="text-muted">@comment.Created</span>
+        </div>
+        <div class="card-body">
+            <p class="card-text">@comment.Text</p>
+        </div>
+    </div>
+}

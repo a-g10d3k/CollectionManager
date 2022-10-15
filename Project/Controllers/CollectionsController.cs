@@ -136,6 +136,7 @@ namespace Project.Controllers
                 .Include(i => i.CustomDateFields)
                 .Include(i => i.Collection)
                 .ThenInclude(c => c.Author)
+                .Include(i => i.Comments)
                 .Select(i => new CollectionItemDto()
                 {
                     Id = i.Id,
@@ -148,9 +149,10 @@ namespace Project.Controllers
                     CustomBoolFields = i.CustomBoolFields,
                     CustomDateFields = i.CustomDateFields,
                     Collection = i.Collection,
-                    LikeCount = i.Likes.Count()
+                    LikeCount = i.Likes.Count(),
+                    Comments = (List<Comment>)i.Comments.OrderByDescending(c => c.Created)
                 });
-            if(!await query.AnyAsync()) return NotFound();
+            if (!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
             item.Liked = user != null && await _context.Likes.Where(l => l.UserId == user.Id && l.ItemId == item.Id).AnyAsync();
@@ -200,8 +202,29 @@ namespace Project.Controllers
             if (!await _userManager.IsInRoleAsync(user, "Admin") && user != item.Collection!.Author) return Forbid();
 
             _context.CollectionItems.Remove(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return RedirectToAction("GetCollection", new { id = item.Collection!.Id });
+        }
+
+        [HttpPost]
+        [Route("{controller}/items/{itemId}/AddComment", Name = "AddComment")]
+        public async Task<IActionResult> AddComment([FromRoute] int itemId, [FromForm] string commentText)
+        {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            if (user == null) return Forbid();
+            var query = _context.CollectionItems.Where(i => i.Id == itemId);
+            if (!await query.AnyAsync()) return NotFound();
+            var item = await query.FirstAsync();
+            item.Comments.Add(new Comment() 
+            { 
+                Item = item,
+                UserId = user.Id,
+                Text = commentText,
+                UserName = user.UserName,
+                Created = DateTime.Now
+            });
+            await _context.SaveChangesAsync();
+            return RedirectToAction("GetItem", new { id = itemId });
         }
 
         [HttpGet]
