@@ -15,7 +15,7 @@
         <a asp-controller="Collections" asp-action="GetCollection" asp-route-id="@Model.Collection?.Id">@Model.Collection?.Name</a>
     </span>
     <p class="like btn btn-outline-dark" data-liked="@Model.Liked" data-id="@Model.Id"><i class="bi bi-star @(Model.Liked ? "icon-liked" : "icon-unliked")"></i><span class="like-counter" data-value="@Model.LikeCount">@Model.LikeCount</span></p>
-    @if(ViewData["IsOwner"] as bool? ?? false)
+    @if(Model.CurrentUser?.Id == Model.Collection!.AuthorId || (bool)(ViewData["IsAdmin"] ?? false))
     {
         <a type="button" class="btn btn-danger" href="@Url.Action("DeleteItem", "Collections", new { id = Model.Id })">@Localizer["delete_item"]</a>
     }
@@ -75,6 +75,10 @@
             <a class="link-dark" href="@Url.Action("GetUser", "Users", new { username = comment.UserName })">@comment.UserName</a>
             <span>@Localizer["commented"]:</span>
             <span class="text-muted">@comment.Created</span>
+            @if (comment.UserId == Model.CurrentUser?.Id || (bool)(ViewData["IsAdmin"] ?? false))
+            {
+                <a class="link-danger" href="@Url.Action("DeleteComment", "Collections", new { id = comment.Id } )">@Localizer["delete_comment"]</a>
+            }
         </div>
         <div class="card-body">
             <p class="card-text">@comment.Text</p>

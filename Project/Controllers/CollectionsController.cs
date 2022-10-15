@@ -155,9 +155,10 @@ namespace Project.Controllers
             if (!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
+            item.CurrentUser = user;
             item.Liked = user != null && await _context.Likes.Where(l => l.UserId == user.Id && l.ItemId == item.Id).AnyAsync();
-            bool isOwner = user != null && (await _userManager.IsInRoleAsync(user, "Admin") || user == item.Collection!.Author);
-            ViewData["IsOwner"] = isOwner;
+            bool isAdmin = user != null && await _userManager.IsInRoleAsync(user, "Admin");
+            ViewData["IsAdmin"] = isAdmin;
             return View(item);
         }
 
@@ -227,7 +228,20 @@ namespace Project.Controllers
             return RedirectToAction("GetItem", new { id = itemId });
         }
 
-        
+        [HttpGet]
+        [Route("{controller}/DeleteComment/{id}", Name = "DeleteComment")]
+        public async Task<IActionResult> DeleteComment([FromRoute] int id)
+        {
+            var query = _context.Comments.Where(c => c.Id == id);
+            if(!query.Any()) return NotFound();
+            var comment = await query.FirstAsync();
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            if (user == null || !(await _userManager.IsInRoleAsync(user, "Admin") || user.Id == comment.UserId))
+                return Forbid();
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("GetItem", new { id = comment.ItemId });
+        }
 
         [HttpGet]
         [Route("{controller}/Images/{id}", Name ="GetImage")]
