@@ -19,6 +19,7 @@ namespace Project.Data
         public DbSet<CustomBoolField> CustomBoolFields { get; set; }
         public DbSet<CustomDateField> CustomDateFields { get; set; }
         public DbSet<Like> Likes { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -53,6 +54,10 @@ namespace Project.Data
             builder.Entity<Like>()
                 .HasOne(l => l.Item)
                 .WithMany(i => i.Likes)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Comment>()
+                .HasOne(c => c.Item)
+                .WithMany(i => i.Comments)
                 .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(builder);
