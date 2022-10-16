@@ -26,7 +26,8 @@ namespace Project.Controllers
                 .Where(
                 i => EF.Functions.FreeText(i.Name, searchTerm) ||
                 i.CustomStringFields.Any(f => EF.Functions.FreeText(f.Value, searchTerm)) ||
-                i.CustomTextAreaFields.Any(f => EF.Functions.FreeText(f.Value, searchTerm))
+                i.CustomTextAreaFields.Any(f => EF.Functions.FreeText(f.Value, searchTerm)) ||
+                i.Tags.Any(t => EF.Functions.FreeText(t.Name, searchTerm))
                 )
                 .Include(i => i.CustomStringFields)
                 .Include(i => i.CustomDateFields)
