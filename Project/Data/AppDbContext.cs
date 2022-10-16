@@ -18,6 +18,7 @@ namespace Project.Data
         public DbSet<CustomTextAreaField> CustomTextAreaFields { get; set; }
         public DbSet<CustomBoolField> CustomBoolFields { get; set; }
         public DbSet<CustomDateField> CustomDateFields { get; set; }
+        public DbSet<Tag> Tags { get; set; }
         public DbSet<Like> Likes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

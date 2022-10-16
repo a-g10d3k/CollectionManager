@@ -33,5 +33,14 @@ namespace Project.Controllers
                 .ToListAsync();
             return View(model);
         }
+        [Route("{controller}/Tags", Name = "SearchTags")]
+        public async Task<IActionResult> SearchTags([FromQuery] string searchTerm)
+        {
+            var tags = await _context.Tags.Where(t => t.Name.StartsWith(searchTerm)).Select(t => new
+            {
+                Name = t.Name
+            }).ToListAsync();
+            return Ok(tags);
+        }
     }
 }
