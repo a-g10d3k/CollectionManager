@@ -107,7 +107,7 @@ namespace Project.Controllers
         [Authorize]
         [HttpPost]
         [Route("{controller}/{collectionId}/add")]
-        public async Task<IActionResult> PostItem([FromRoute] int collectionId, CollectionItem item)
+        public async Task<IActionResult> PostItem([FromRoute] int collectionId, CollectionItem item, [FromForm] List<string> tags)
         {
             var query = _context.Collections.Where(c => c.Id == collectionId).Include(c => c.Author);
             if (!await query.AnyAsync()) return NotFound();
@@ -117,6 +117,7 @@ namespace Project.Controllers
             if (!await _userManager.IsInRoleAsync(user, "Admin") && user != collection.Author) return Forbid();
             item.Created = DateTime.Now;
             item.Modified = DateTime.Now;
+            foreach (var tag in tags) item.Tags.Add(new Tag() { Name = tag });
             collection.Items.Add(item);
             if (!ModelState.IsValid) return View("AddItem");
             _context.CollectionItems.Add(item);
@@ -134,6 +135,7 @@ namespace Project.Controllers
                 .Include(i => i.CustomTextAreaFields)
                 .Include(i => i.CustomBoolFields)
                 .Include(i => i.CustomDateFields)
+                .Include(i => i.Tags)
                 .Include(i => i.Collection)
                 .ThenInclude(c => c.Author)
                 .Select(i => new CollectionItemDto()
@@ -148,8 +150,9 @@ namespace Project.Controllers
                     CustomBoolFields = i.CustomBoolFields,
                     CustomDateFields = i.CustomDateFields,
                     Collection = i.Collection,
-                    LikeCount = i.Likes.Count()
-                });
+                    LikeCount = i.Likes.Count(),
+                    Tags = i.Tags
+                }); ;
             if(!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);

@@ -59,6 +59,15 @@
                 <td>@DateOnly.FromDateTime((DateTime)field.Value!)</td>
             </tr>
         }
+        <tr>
+                <td>@Localizer["tags"]</td>
+                <td colspan="3">
+                @foreach(var tag in Model.Tags)
+                {
+                    <span class="badge bg-secondary">@tag.Name</span>
+                }
+                </td>
+        </tr>
     </tbody>
 </table>
 </div>

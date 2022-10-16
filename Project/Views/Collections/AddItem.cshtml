@@ -5,13 +5,19 @@
     ViewData["Title"] = @Localizer["page_title"];
 }
 @section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.14.0/js/selectize.min.js"></script>
     <script src="~/js/formexpander.js"></script>
+    <script src="~/js/tags.js"></script>
 }
 
 <form method="post">
     <div class="mb-1">
         <label asp-for="Name" class="form-label">@Localizer["item_name"]:</label>
         <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="mb-1">
+        <label for="tags" class="form-label">@Localizer["tags"]:</label>
+        <select multiple name="tags" class="form-control"> </select>
     </div>
     <div class="form-expandable">
         @for(int i = 0; i < Model.CustomIntFields.Count; ++i)
