@@ -55,6 +55,10 @@ namespace Project.Data
                 .HasOne(l => l.Item)
                 .WithMany(i => i.Likes)
                 .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Tag>()
+                .HasOne(t => t.Item)
+                .WithMany(i => i.Tags)
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(builder);
         }
