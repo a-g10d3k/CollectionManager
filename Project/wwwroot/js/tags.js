@@ -15,7 +15,7 @@ tagInput.selectize({
             if (!response.ok) return callback();
             response.json().then((options) => {
                 options = options.map(option => ({ name: option.name, label: option.name }))
-                tagInput[0].selectize.clearOptions();
+                //tagInput[0].selectize.clearOptions();
                 callback(options);
             });
         });
