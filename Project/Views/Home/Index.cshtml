@@ -3,7 +3,22 @@
 @{
     ViewData["Title"] = Localizer["page_title"];
 }
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-cloud@1.2.5/build/d3.layout.cloud.min.js"></script>
+    <script src="~/js/tagcloud.js"></script>
+}
+<div class="row">
+    <div class="col-6">
+        <div class="card text-center">
+            <div class="card-header">
+                <h2>Popular tags</h2>
+            </div>
+            <div id="tag-cloud-card" class="card-body" style="height:350px">
+                <svg id="tag-cloud">
 
-<div class="text-center">
-    <h1>@Localizer["hello_world"]</h1>
+                </svg>
+            </div>
+        </div>
+    </div>
 </div>

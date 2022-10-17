@@ -216,5 +216,20 @@ namespace Project.Controllers
             var image = await query.FirstAsync();
             return File(image.Image, image.ContentType);
         }
+
+        [HttpGet]
+        [Route("{controller}/GetTags", Name = "GetTags")]
+        public async Task<IActionResult> GetTags()
+        {
+            var tags = await _context.Tags.GroupBy(t => t.Name)
+            .Select(t => new
+            {
+                Name = t.Key,
+                Count = t.Count()
+            })
+            .OrderByDescending(t => t.Count).ToListAsync();
+
+            return Ok(tags);
+        }
     }
 }
