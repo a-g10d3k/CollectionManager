@@ -19,9 +19,7 @@
             <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("GetCollection", "Collections", new { id = collection.Id })'">
                 <td>@collection.Name</td>
                 <td colspan="3">
-                    <p class="description-preview-search">
-                        @collection.Description
-                    </p>
+                    <p class="description-preview-search markdown">@collection.Description</p>
                 </td>
             </tr>
         }

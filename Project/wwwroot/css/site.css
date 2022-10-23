@@ -35,12 +35,21 @@ svg{
     max-height:6em;
 }
 
+.description-preview * {
+    font-size: 16px;
+}
+
 .description-preview-search {
     text-overflow: ellipsis;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 1;
+    white-space: pre-wrap;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+}
+
+.description-preview-search * {
+    font-size: 16px;
 }
 
 .icon-liked{

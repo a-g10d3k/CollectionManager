@@ -33,7 +33,7 @@
                 <div class="card-body">
                     <h5 class="card-title">@collection.Name</h5>
                     <h6 class="card-subtitle text-muted">@SharedLocalizer[collection.Topic]</h6>
-                    <p class="card-text description-preview">@collection.Description</p>
+                    <p class="card-text description-preview markdown">@collection.Description</p>
                     <a href="@Url.Action("GetCollection", "Collections", new { id = collection.Id })" class="btn btn-primary">@Localizer["view_collection"]</a>
                 </div>
             </div>

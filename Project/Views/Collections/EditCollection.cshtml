@@ -6,6 +6,8 @@
 }
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://unpkg.com/stackedit-js@1.0.7/docs/lib/stackedit.min.js"></script>
+    <script src="~/js/description-editor.js"></script>
 }
 
 <form method="post" enctype="multipart/form-data">
@@ -23,7 +25,9 @@
     </div>
     <div class="mb-1">
         <label asp-for="Description" class="form-label">@Localizer["collection_description"]:</label>
-        <textarea asp-for="Description" class="form-control"></textarea>
+        <a id="edit-description" class="btn btn-primary">@Localizer["edit_description"]</a>
+        <textarea asp-for="Description" class="form-control" id="description-textarea" readonly hidden></textarea>
+        <div id="description" class="markdown">@Model.Description</div>
     </div>
     <div class="form-expandable">
         @for(int i = 0; i < Model.Items[0].CustomIntFields.Count; ++i)
