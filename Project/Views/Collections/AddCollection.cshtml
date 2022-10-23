@@ -8,7 +8,10 @@
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/formexpander.js"></script>
     <script src="https://unpkg.com/stackedit-js@1.0.7/docs/lib/stackedit.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
     <script src="~/js/description-editor.js"></script>
+    <script src="~/js/image-upload.js"></script>
 }
 
 <form method="post" enctype="multipart/form-data">
@@ -26,13 +29,13 @@
     </div>
     <div class="mb-1">
         <label asp-for="Description" class="form-label">@Localizer["collection_description"]:</label>
-        <button id="edit-description" class="btn btn-primary">@Localizer["edit_description"]</button>
+        <a id="edit-description" class="btn btn-primary">@Localizer["edit_description"]</a>
         <textarea asp-for="Description" class="form-control" id="description-textarea" readonly hidden></textarea>
         <div id="description"></div>
     </div>
     <div class="mb-1">
         <label for="image" class="form-label">@Localizer["image"]:</label>
-        <input name="collectionImage" type="file" class="form-control">
+        <input name="collectionImage" type="file" class="filepond" class="form-control">
     </div>
     <div class="form-expandable">
         <button type="button" class="btn btn-outline-primary form-expand">@Localizer["add_int_field"]</button>
