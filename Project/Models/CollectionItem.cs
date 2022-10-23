@@ -24,6 +24,22 @@ namespace Project.Models
             foreach (var item in origin)
                 destination.Add(new T() { Name = item.Name });
         }
+        
+        public void UpdateFrom(CollectionItem item)
+        {
+            CustomIntFields = item.CustomIntFields;
+            CustomStringFields = item.CustomStringFields;
+            CustomTextAreaFields = item.CustomTextAreaFields;
+            CustomBoolFields = item.CustomBoolFields;
+            CustomDateFields = item.CustomDateFields;
+            Name = item.Name;
+        }
+
+        public void UpdateTags(List<string> tags)
+        {
+            Tags.Clear();
+            foreach (var tag in tags) Tags.Add(new Tag { Name = tag });
+        }
 
         [Required]
         public int Id { get; set; }

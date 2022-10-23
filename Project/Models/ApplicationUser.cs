@@ -15,5 +15,10 @@ namespace Project.Models
         public List<Collection> Collections { get; set; } = new List<Collection>();
 
         public List<Like> Likes { get; set; } = new List<Like>();
+
+        public async Task<bool> OwnsCollectionAsync(Collection collection, UserManager<ApplicationUser> userManager)
+        {
+            return await userManager.IsInRoleAsync(this, "Admin") || Id == collection.AuthorId;
+        }
     }
 }

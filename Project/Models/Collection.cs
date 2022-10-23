@@ -38,5 +38,17 @@ namespace Project.Models
 
         public string? AuthorId { get; set; }
         public ApplicationUser? Author { get; set; }
+
+        public void UpdateFrom(Collection collection)
+        {
+            Name = collection.Name;
+            Topic = collection.Topic;
+            Description = collection.Description;
+            Items[0].CustomIntFields = collection.Items[0].CustomIntFields;
+            Items[0].CustomStringFields = collection.Items[0].CustomStringFields;
+            Items[0].CustomTextAreaFields = collection.Items[0].CustomTextAreaFields;
+            Items[0].CustomBoolFields = collection.Items[0].CustomBoolFields;
+            Items[0].CustomDateFields = collection.Items[0].CustomDateFields;
+        }
     }
 }

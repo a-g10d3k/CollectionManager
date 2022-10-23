@@ -34,8 +34,7 @@ namespace Project.Controllers
             if (!await query.AnyAsync()) return NotFound();
             Collection collection = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
-            bool isOwner = user != null && (await _userManager.IsInRoleAsync(user, "Admin") || user == collection.Author);
-            ViewData["IsOwner"] = isOwner;
+            ViewData["IsOwner"] = user == null ? false : await user.OwnsCollectionAsync(collection, _userManager);
             return View(collection);
         }
 
@@ -48,7 +47,7 @@ namespace Project.Controllers
             if (!await query.AnyAsync()) return NotFound();
             var collection = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
-            if (!await _userManager.IsInRoleAsync(user, "Admin") && user != collection.Author) return Forbid();
+            if (user == null ? true : !await user.OwnsCollectionAsync(collection, _userManager)) return Forbid();
 
             _context.Collections.Remove(collection);
             await _context.SaveChangesAsync();
@@ -89,6 +88,48 @@ namespace Project.Controllers
 
         [Authorize]
         [HttpGet]
+        [Route("{controller}/{id}/Edit", Name = "EditCollection")]
+        public async Task<IActionResult> EditCollection([FromRoute] int id)
+        {
+            var collectionQuery = _context.Collections.Where(c => c.Id == id);
+            if (!await collectionQuery.AnyAsync()) return NotFound();
+            var collection = await collectionQuery.FirstAsync();
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null ? true : !await user.OwnsCollectionAsync(collection, _userManager)) return Forbid();
+            var itemQuery = _context.CollectionItems.Where(i => i.Collection == collection && i.Hidden == true)
+                .Include(i => i.CustomIntFields)
+                .Include(i => i.CustomStringFields)
+                .Include(i => i.CustomTextAreaFields)
+                .Include(i => i.CustomBoolFields)
+                .Include(i => i.CustomDateFields);
+            var templateItem = await itemQuery.FirstOrDefaultAsync();
+            return View(collection);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("{controller}/{id}/Edit", Name = "PostEditCollection")]
+        public async Task<IActionResult> PostEditCollection([FromRoute] int id, Collection newCollection)
+        {
+            if (!ModelState.IsValid) return View("EditCollection");
+            var query = _context.Collections.Where(c => c.Id == id)
+                .Include(c => c.Items).ThenInclude(i => i.CustomIntFields)
+                .Include(c => c.Items).ThenInclude(i => i.CustomStringFields)
+                .Include(c => c.Items).ThenInclude(i => i.CustomTextAreaFields)
+                .Include(c => c.Items).ThenInclude(i => i.CustomBoolFields)
+                .Include(c => c.Items).ThenInclude(i => i.CustomDateFields);
+            if (!await query.AnyAsync()) return NotFound();
+            var oldCollection = await query.FirstAsync();
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null ? true : !await user.OwnsCollectionAsync(oldCollection, _userManager)) return Forbid();
+            oldCollection.Modified = DateTime.Now;
+            oldCollection.UpdateFrom(newCollection);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("GetCollection", new { id = oldCollection.Id });
+        }
+
+        [Authorize]
+        [HttpGet]
         [Route("{controller}/{id}/add", Name = "AddItem")]
         public async Task<IActionResult> AddItem([FromRoute] int id)
         {
@@ -114,7 +155,7 @@ namespace Project.Controllers
             Collection collection = await query.FirstAsync();
             collection.Modified = DateTime.Now;
             var user = await _userManager.GetUserAsync(User);
-            if (!await _userManager.IsInRoleAsync(user, "Admin") && user != collection.Author) return Forbid();
+            if (user == null ? true : !await user.OwnsCollectionAsync(collection, _userManager)) return Forbid();
             item.Created = DateTime.Now;
             item.Modified = DateTime.Now;
             foreach (var tag in tags) item.Tags.Add(new Tag() { Name = tag });
@@ -123,6 +164,51 @@ namespace Project.Controllers
             _context.CollectionItems.Add(item);
             await _context.SaveChangesAsync();
             return RedirectToAction("GetItem", new { id = item.Id });
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("{controller}/Items/{id}/Edit", Name = "EditItem")]
+        public async Task<IActionResult> EditItem([FromRoute] int id)
+        {
+            var query = _context.CollectionItems.Where(i => i.Id == id)
+                .Include(i => i.CustomIntFields)
+                .Include(i => i.CustomStringFields)
+                .Include(i => i.CustomTextAreaFields)
+                .Include(i => i.CustomBoolFields)
+                .Include(i => i.CustomDateFields)
+                .Include(i => i.Tags)
+                .Include(i => i.Collection);
+            if (!await query.AnyAsync()) return NotFound();
+            var item = await query.FirstAsync();
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null ? true : !await user.OwnsCollectionAsync(item.Collection!, _userManager)) return Forbid();
+            return View("AddItem", item);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("{controller}/Items/{itemId}/Edit", Name = "PostEditItem")]
+        public async Task<IActionResult> PostEditItem([FromRoute]int itemId, CollectionItem newItem, [FromForm] List<string> tags)
+        {
+            var query = _context.CollectionItems.Where(i => i.Id == itemId)
+                .Include(i => i.Collection)
+                .Include(i => i.Tags)
+                .Include(i => i.CustomIntFields)
+                .Include(i => i.CustomStringFields)
+                .Include(i => i.CustomTextAreaFields)
+                .Include(i => i.CustomBoolFields)
+                .Include(i => i.CustomDateFields);
+            if (!await query.AnyAsync()) return NotFound();
+            if (!ModelState.IsValid) return View("AddItem");
+            var oldItem = await query.FirstAsync();
+            oldItem.Modified = DateTime.Now;
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null ? true : !await user.OwnsCollectionAsync(oldItem.Collection!, _userManager)) return Forbid();
+            oldItem.UpdateFrom(newItem);
+            oldItem.UpdateTags(tags);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("GetItem", new { id = oldItem.Id });
         }
 
         [HttpGet]
@@ -157,7 +243,7 @@ namespace Project.Controllers
             var item = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
             item.Liked = user != null && await _context.Likes.Where(l => l.UserId == user.Id && l.ItemId == item.Id).AnyAsync();
-            bool isOwner = user != null && (await _userManager.IsInRoleAsync(user, "Admin") || user == item.Collection!.Author);
+            bool isOwner = user == null ? false : await user.OwnsCollectionAsync(item.Collection!, _userManager);
             ViewData["IsOwner"] = isOwner;
             return View(item);
         }
@@ -200,7 +286,7 @@ namespace Project.Controllers
             if (!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
-            if (!await _userManager.IsInRoleAsync(user, "Admin") && user != item.Collection!.Author) return Forbid();
+            if (user == null ? true : !await user.OwnsCollectionAsync(item.Collection!, _userManager)) return Forbid();
 
             _context.CollectionItems.Remove(item);
             _context.SaveChanges();
