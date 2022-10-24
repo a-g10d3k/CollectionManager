@@ -9,6 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\NewFolder\**" />
+    <Content Remove="wwwroot\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\NewFolder\**" />
+    <None Remove="wwwroot\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Remove="Resources\Views\Shared\_Layout.en.resx" />
     <EmbeddedResource Remove="Resources\Views\Shared\_Layout.pl.resx" />
   </ItemGroup>
@@ -35,6 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="compilerconfig.json" />
     <None Include="Resources\Localization.SharedResources.en.resx">
       <SubType>Designer</SubType>
     </None>
