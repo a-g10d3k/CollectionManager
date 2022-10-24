@@ -88,7 +88,7 @@
 {
     <div class="card mb-3 comment" data-comment-id="@comment.Id">
         <div class="card-header">
-            <a class="link-dark" href="@Url.Action("GetUser", "Users", new { username = comment.UserName })">@comment.UserName</a>
+            <a class="text-dark" href="@Url.Action("GetUser", "Users", new { username = comment.UserName })">@comment.UserName</a>
             <span>@Localizer["commented"]:</span>
             <span class="text-muted">@comment.Created</span>
             @if (Model.IsAdmin)
