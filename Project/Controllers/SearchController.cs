@@ -21,6 +21,7 @@ namespace Project.Controllers
             SearchModel model = new SearchModel();
             model.Collections = await _context.Collections
                 .FromSqlRaw("Select * FROM Collections WHERE FREETEXT((Name, Description), {0})", searchTerm)
+                .Include(c => c.Author)
                 .ToListAsync();
             model.Items = await _context.CollectionItems
                 .Where(
@@ -29,8 +30,8 @@ namespace Project.Controllers
                 i.CustomTextAreaFields.Any(f => EF.Functions.FreeText(f.Value, searchTerm)) ||
                 i.Tags.Any(t => EF.Functions.FreeText(t.Name, searchTerm))
                 )
-                .Include(i => i.CustomStringFields)
-                .Include(i => i.CustomDateFields)
+                .Include(i => i.Collection)
+                .ThenInclude(i => i.Author)
                 .ToListAsync();
             return View(model);
         }

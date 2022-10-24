@@ -6,9 +6,9 @@
 }
 
 <table class="table table-hover">
-    <thead>
+    <thead class="bg-light">
         <tr>
-            <td colspan="4">
+            <td colspan="4" class="h3">
                 @Localizer["search_results"]
             </td>
         </tr>
@@ -16,30 +16,30 @@
     <tbody>
         @foreach(var collection in Model.Collections)
         {
-            <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("GetCollection", "Collections", new { id = collection.Id })'">
-                <td>@collection.Name</td>
-                <td colspan="3">
-                    <p class="description-preview-search markdown">@collection.Description</p>
+            <tr>
+                <td>
+                    <a class="text-dark" href="@Url.Action("GetCollection", "Collections", new { id = collection!.Id })">@collection.Name</a>
+                    <span style="font-size:0.7em" class="text-secondary">
+                        @Localizer["by"]
+                    </span>
+                    <a class="text-dark" href="@Url.Action("GetUser", "Users", new { username = collection.Author!.UserName})">@collection.Author!.UserName</a>
                 </td>
             </tr>
         }
         @foreach(var item in Model.Items)
         {
-            if (item.Hidden) continue;
-            <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("Items", "Collections", new { id = item.Id })'">
-                <td>@item.Name</td>
-                @for(int i = 0; i < 3; ++i)
-                {
-                    <td>
-                        @if (item.CustomStringFields.Count > i)
-                        {
-                            var field = item.CustomStringFields[i];
-                            <div class="form-floating">
-                                <span style="font-size:0.7em" class="text-secondary">@(field.Name):</span>@field.Value
-                            </div>
-                        }
-                    </td>
-                }
+            <tr>
+                <td>
+                    <a class="text-dark" href="@Url.Action("Items", "Collections", new { id = item.Id })">@item.Name</a>
+                    <span style="font-size:0.7em" class="text-secondary">
+                        @Localizer["in"]
+                    </span>
+                    <a class="text-dark" href="@Url.Action("GetCollection", "Collections", new { id = item.Collection!.Id })">@item.Collection!.Name</a>
+                    <span style="font-size:0.7em" class="text-secondary">
+                        @Localizer["by"]
+                    </span>
+                    <a class="text-dark" href="@Url.Action("GetUser", "Users", new { username = item.Collection.Author!.UserName})">@item.Collection.Author!.UserName</a>
+                </td>
             </tr>
         }
     </tbody>
