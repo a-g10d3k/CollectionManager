@@ -5,6 +5,7 @@
     ViewData["Title"] = @Localizer["page_title"];
 }
 @section Scripts{
+    <partial name="_ValidationScriptsPartial" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.14.0/js/selectize.min.js"></script>
     <script src="~/js/formexpander.js"></script>
     <script src="~/js/tags.js"></script>
@@ -29,10 +30,14 @@
                             <div class="input-group expandable-input mb-1">
                                 <span class="input-group-text">@Localizer["tags"]</span>
                                 <select multiple name="tags" class="form-control">
-                                    @foreach (var tag in Model.Tags)
+                                @if (Model != null)
                                 {
-                                    <option selected value="@tag.Name">@tag.Name</option>
+                                    foreach (var tag in Model.Tags)
+                                    {
+                                        <option selected value="@tag.Name">@tag.Name</option>
+                                    }
                                 }
+                                
                             </select>
                         </div>
                     </div>
