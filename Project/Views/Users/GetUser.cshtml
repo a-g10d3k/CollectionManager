@@ -5,16 +5,12 @@
 @{
     ViewData["Title"] = @Localizer["page_title"];
 }
-    <p>
-        <span class="h1">@Model.UserName</span>
-    </p>
-    <div class="h-100 p-5 bg-light border rounded-3">
-    <h1>@Localizer["this_users_collections"]:</h1>
-    @if(ViewData["IsOwner"] as bool? ?? false)
-    {
-        <a type="button" class="btn btn-primary" href="@Url.Action("AddCollection", "Collections")">@Localizer["add_collection"]</a>
-    }
-    <div class="d-flex flex-wrap align-content-start justify-content-center">
+
+    <div class="card h-100">
+        <div class="card-header">
+            <span class="h1">@Localizer["users_collections", Model.UserName]</span>
+        </div>
+    <div class="d-flex flex-wrap align-content-start justify-content-center card-body">
         @foreach(var collection in Model.Collections)
         {
             <div class="card m-3" style="width:18rem;">
@@ -36,6 +32,14 @@
                     <p class="card-text description-preview markdown">@collection.Description</p>
                     <a href="@Url.Action("GetCollection", "Collections", new { id = collection.Id })" class="btn btn-primary">@Localizer["view_collection"]</a>
                 </div>
+            </div>
+        }
+        @if (ViewData["IsOwner"] as bool? ?? false)
+        {
+            <div class="m-3 d-flex justify-content-center align-items-center" style="width:18rem;">
+                <a class="btn btn-outline-primary" href="@Url.Action("AddCollection", "Collections")">
+                <i class="bi bi-plus"></i>
+            </a>
             </div>
         }
     </div>
