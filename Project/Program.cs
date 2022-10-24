@@ -2,6 +2,7 @@ using Project.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Project.Models;
+using Project.Hubs;
 
 namespace Project
 {
@@ -34,6 +35,8 @@ namespace Project
                 .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
 
             var supportedCultures = new[] { "en", "pl" };
@@ -54,6 +57,8 @@ namespace Project
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapHub<CommentHub>("/CommentHub");
 
             app.MapControllerRoute(
                 name: "default",

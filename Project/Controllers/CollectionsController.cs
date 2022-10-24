@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Project.Extensions;
+using System.Text.Json;
+using Microsoft.AspNetCore.SignalR;
+using Project.Hubs;
 
 namespace Project.Controllers
 {
@@ -12,11 +15,13 @@ namespace Project.Controllers
     {
         private AppDbContext _context;
         private UserManager<ApplicationUser> _userManager;
+        private readonly IHubContext<CommentHub> _hubContext;
 
-        public CollectionsController(AppDbContext context, UserManager<ApplicationUser> userManager)
+        public CollectionsController(AppDbContext context, UserManager<ApplicationUser> userManager, IHubContext<CommentHub> hubContext)
         {
             _context = context;
             _userManager = userManager;
+            _hubContext = hubContext;
         }
 
         public IActionResult Index()
@@ -224,6 +229,7 @@ namespace Project.Controllers
                 .Include(i => i.Tags)
                 .Include(i => i.Collection)
                 .ThenInclude(c => c.Author)
+                .Include(i => i.Comments)
                 .Select(i => new CollectionItemDto()
                 {
                     Id = i.Id,
@@ -237,12 +243,15 @@ namespace Project.Controllers
                     CustomDateFields = i.CustomDateFields,
                     Collection = i.Collection,
                     LikeCount = i.Likes.Count(),
+                    Comments = (List<Comment>)i.Comments.OrderByDescending(c => c.Created),
                     Tags = i.Tags
-                }); ;
+                });
             if(!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
+            item.CurrentUser = user;
             item.Liked = user != null && await _context.Likes.Where(l => l.UserId == user.Id && l.ItemId == item.Id).AnyAsync();
+            item.IsAdmin = user != null && await _userManager.IsInRoleAsync(user, "Admin");
             bool isOwner = user == null ? false : await user.OwnsCollectionAsync(item.Collection!, _userManager);
             ViewData["IsOwner"] = isOwner;
             return View(item);
@@ -289,8 +298,58 @@ namespace Project.Controllers
             if (user == null ? true : !await user.OwnsCollectionAsync(item.Collection!, _userManager)) return Forbid();
 
             _context.CollectionItems.Remove(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return RedirectToAction("GetCollection", new { id = item.Collection!.Id });
+        }
+
+        [HttpPost]
+        [Route("{controller}/items/{itemId}/AddComment", Name = "AddComment")]
+        public async Task<IActionResult> AddComment([FromRoute] int itemId, [FromBody] JsonElement data)
+        {
+            string? commentText;
+            try
+            {
+                commentText = data.GetProperty("commentText").GetString();
+            }
+            catch(KeyNotFoundException e) { return BadRequest(); }
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            if (user == null) return Forbid();
+            var query = _context.CollectionItems.Where(i => i.Id == itemId);
+            if (!await query.AnyAsync()) return NotFound();
+            var item = await query.FirstAsync();
+            var comment = new Comment()
+            {
+                Item = item,
+                UserId = user.Id,
+                Text = commentText,
+                UserName = user.UserName,
+                Created = DateTime.Now
+            };
+            item.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+            _ = _hubContext.Clients.Group(itemId.ToString()).SendAsync("ReceiveComment", new
+            {
+                Id = comment.Id,
+                UserName = comment.UserName,
+                Text = comment.Text,
+                Created = comment.Created.ToString()
+            });
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("{controller}/DeleteComment/{id}", Name = "DeleteComment")]
+        public async Task<IActionResult> DeleteComment([FromRoute] int id)
+        {
+            var query = _context.Comments.Where(c => c.Id == id);
+            if(!query.Any()) return NotFound();
+            var comment = await query.FirstAsync();
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            if (user == null || !await _userManager.IsInRoleAsync(user, "Admin"))
+                return Forbid();
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpGet]
