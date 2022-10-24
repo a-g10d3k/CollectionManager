@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Project.Data;
 using Project.Models;
 using System.Diagnostics;
 
@@ -7,15 +9,28 @@ namespace Project.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AppDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var model = new HomePageModel();
+            model.RecentItems = await _context.CollectionItems.Where(i => !i.Hidden)
+                .Include(i => i.Collection)
+                .ThenInclude(c => c.Author)
+                .OrderByDescending(i => i.Created)
+                .Take(5)
+                .ToListAsync();
+            model.LargestCollections = await _context.Collections.OrderByDescending(c => c.Items.Count())
+                .Include(c => c.Author)
+                .Take(5)
+                .ToListAsync();
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization;
 @inject IViewLocalizer Localizer;
+@model HomePageModel
 @{
     ViewData["Title"] = Localizer["page_title"];
 }
@@ -12,12 +13,64 @@
     <div class="col-6">
         <div class="card text-center">
             <div class="card-header">
-                <h2>Popular tags</h2>
+                <h2>@Localizer["popular_tags"]</h2>
             </div>
             <div id="tag-cloud-card" class="card-body" style="height:350px">
                 <svg id="tag-cloud">
 
                 </svg>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card text-center">
+            <div class="card-header">
+                <h2>@Localizer["recent_items"]</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                        <tbody>
+                            @foreach(var item in Model.RecentItems)
+                            {
+                                <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("Items", "Collections", new { id = item.Id })'">
+                                    <td>
+                                        @item.Name
+                                        <span style="font-size:0.7em" class="text-secondary">
+                                            @Localizer["in"]:
+                                        </span>
+                                        @item.Collection!.Name
+                                        <span style="font-size:0.7em" class="text-secondary">
+                                            @Localizer["by"]:
+                                        </span>
+                                        @item.Collection.Author!.UserName
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+        <div class="card text-center">
+            <div class="card-header">
+                <h2>@Localizer["largest_collections"]</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                        <tbody>
+                            @foreach(var collection in Model.LargestCollections)
+                            {
+                                <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("GetCollection", "Collections", new { id = collection.Id })'">
+                                    <td>
+                                        @collection.Name
+                                        <span style="font-size:0.7em" class="text-secondary">
+                                            @Localizer["by"]:
+                                        </span>
+                                        @collection.Author!.UserName
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
             </div>
         </div>
     </div>
