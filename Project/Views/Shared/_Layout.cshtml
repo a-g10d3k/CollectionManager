@@ -13,8 +13,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.14.0/css/selectize.bootstrap5.min.css"/>
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
     <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet"/>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
+    <script src="~/js/darkmode.js"></script>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light box-shadow border-bottom mb-3">
             <div class="container-fluid">
@@ -36,11 +38,12 @@
                         }
                     </ul>
                     <div>
-                        <div class="input-group rounded">
+                        <div class="input-group">
                             <input type="radio" class="btn-check" name="darkmode-toggle" id="darkmode-toggle-light" value="false" autocomplete="off" checked>
-                            <label class="btn btn-outline-primary" for="darkmode-toggle-light"><i class="bi bi-brightness-high"></i></label>
+                            <label class="btn btn-outline-dark" for="darkmode-toggle-light"><i class="bi bi-brightness-high"></i></label>
                             <input type="radio" class="btn-check" name="darkmode-toggle" id="darkmode-toggle-dark" value="true" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="darkmode-toggle-dark"><i class="bi bi-moon"></i></label>
+                            <label class="btn btn-outline-dark" for="darkmode-toggle-dark"><i class="bi bi-moon"></i></label>
+                            <script src="~/js/darkmode-toggle.js"></script>
                         </div>
                     </div>
                     <form class="d-flex px-3" role="search" action="@Url.Action("Search", "Search")">
@@ -85,11 +88,9 @@
             &copy; 2022 - Ariadna Głodek
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script>
     <script src="~/js/markdown-display.js"></script>
-    <script src="~/js/darkmode.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
