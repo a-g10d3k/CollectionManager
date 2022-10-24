@@ -55,3 +55,7 @@ svg{
 .icon-liked{
     color: yellow;
 }
+
+textarea{
+    resize: none;
+}

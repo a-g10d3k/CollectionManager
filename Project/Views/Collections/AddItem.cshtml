@@ -11,69 +11,109 @@
 }
 
 <form method="post">
-    <div class="mb-1">
-        <label asp-for="Name" class="form-label">@Localizer["item_name"]:</label>
-        <input asp-for="Name" class="form-control" />
-    </div>
-    <div class="mb-1">
-        <label for="tags" class="form-label">@Localizer["tags"]:</label>
-        <select multiple name="tags" class="form-control">
-            @foreach(var tag in Model.Tags)
-            {
-                <option selected value="@tag.Name">@tag.Name</option>
-            }
-        </select>
-    </div>
-    <div class="form-expandable">
-        @for(int i = 0; i < Model.CustomIntFields.Count; ++i)
-        {
-            <div class="input-group expandable-input mb-1" >
-                <span class="input-group-text">@Model.CustomIntFields[i].Name</span>
-                <input asp-for="CustomIntFields[i].Name" type="hidden">
-                <input asp-for="CustomIntFields[i].Value" class="form-control">
-            </div>
-        }
-    </div>
-    <div class="form-expandable">
-        @for(int i = 0; i < Model.CustomStringFields.Count; ++i)
-        {
-            <div class="input-group expandable-input mb-1" >
-                <span class="input-group-text">@Model.CustomStringFields[i].Name</span>
-                <input asp-for="CustomStringFields[i].Name" type="hidden">
-                <input asp-for="CustomStringFields[i].Value" class="form-control">
-            </div>
-        }
-    </div>
-    <div class="form-expandable">
-        @for(int i = 0; i < Model.CustomTextAreaFields.Count; ++i)
-        {
-            <div class="input-group expandable-input mb-1" >
-                <input hidden asp-for="CustomTextAreaFields[i].Name">
-                <textarea asp-for="CustomTextAreaFields[i].Value" class="form-control" placeholder="@Model.CustomTextAreaFields[i].Name" > </textarea>
-            </div>
-        }
-    </div>
-    <div class="form-expandable">
-        @for(int i = 0; i < Model.CustomBoolFields.Count; ++i)
-        {
-            <div class="input-group expandable-input mb-1" >
-                <span class="input-group-text">@Model.CustomBoolFields[i].Name</span>
-                <span class="input-group-text"><input asp-for="CustomBoolFields[i].Value" type="checkbox" class="form-check-input"  /></span>
-                <input hidden asp-for="CustomBoolFields[i].Name">
-            </div>
-        }
-    </div>
-    <div class="form-expandable">
-        @for(int i = 0; i < Model.CustomDateFields.Count; ++i)
-        {
-            <div class="input-group expandable-input mb-1" >
-                <span class="input-group-text">@Model.CustomDateFields[i].Name</span>
-                <input hidden asp-for="CustomDateFields[i].Name">
-                <input asp-for="CustomDateFields[i].Value" type="date" class="form-control"  />
-            </div>
-        }
-    </div>
-    <button type="submit" class="btn btn-primary">@Localizer["add_item"]</button>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="mb-1">
+                            <div class="input-group expandable-input mb-1">
+                                <span class="input-group-text">@Localizer["item_name"]</span>
+                                <input asp-for="Name" class="form-control" />
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="mb-1">
+                            <div class="input-group expandable-input mb-1">
+                                <span class="input-group-text">@Localizer["tags"]</span>
+                                <select multiple name="tags" class="form-control">
+                                    @foreach (var tag in Model.Tags)
+                                {
+                                    <option selected value="@tag.Name">@tag.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-expandable">
+                        @for (int i = 0; i < Model.CustomIntFields.Count; ++i)
+                        {
+                            <div class="input-group expandable-input mb-1">
+                                <span class="input-group-text">@Model.CustomIntFields[i].Name</span>
+                                <input asp-for="CustomIntFields[i].Name" type="hidden">
+                                <input asp-for="CustomIntFields[i].Value" class="form-control">
+                            </div>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-expandable">
+                        @for (int i = 0; i < Model.CustomStringFields.Count; ++i)
+                        {
+                            <div class="input-group expandable-input mb-1">
+                                <span class="input-group-text">@Model.CustomStringFields[i].Name</span>
+                                <input asp-for="CustomStringFields[i].Name" type="hidden">
+                                <input asp-for="CustomStringFields[i].Value" class="form-control">
+                            </div>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-expandable">
+                        @for (int i = 0; i < Model.CustomTextAreaFields.Count; ++i)
+                        {
+                            <div class="input-group expandable-input mb-1">
+                                <input hidden asp-for="CustomTextAreaFields[i].Name">
+                                <textarea asp-for="CustomTextAreaFields[i].Value" class="form-control rounded" placeholder="@Model.CustomTextAreaFields[i].Name"> </textarea>
+                            </div>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-expandable">
+                        @for (int i = 0; i < Model.CustomBoolFields.Count; ++i)
+                        {
+                            <div class="input-group expandable-input mb-1">
+                                <span class="input-group-text">@Model.CustomBoolFields[i].Name</span>
+                                <span class="input-group-text"><input asp-for="CustomBoolFields[i].Value" type="checkbox" class="form-check-input" /></span>
+                                <input hidden asp-for="CustomBoolFields[i].Name">
+                            </div>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-expandable">
+                        @for (int i = 0; i < Model.CustomDateFields.Count; ++i)
+                        {
+                            <div class="input-group expandable-input mb-1">
+                                <span class="input-group-text">@Model.CustomDateFields[i].Name</span>
+                                <input hidden asp-for="CustomDateFields[i].Name">
+                                <input asp-for="CustomDateFields[i].Value" type="date" class="form-control" />
+                            </div>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="submit" class="btn btn-primary">@Localizer["add_item"]</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </form>
 <div>
         @Html.ValidationSummary(false, "", new { @class = "text-danger mt-3" })
