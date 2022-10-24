@@ -9,13 +9,13 @@
     <script src="https://cdn.jsdelivr.net/npm/d3-cloud@1.2.5/build/d3.layout.cloud.min.js"></script>
     <script src="~/js/tagcloud.js"></script>
 }
-<div class="row">
+<div class="row mb-3">
     <div class="col-6">
-        <div class="card text-center">
+        <div class="card text-center h-100">
             <div class="card-header">
-                <h2>@Localizer["popular_tags"]</h2>
+                <h4>@Localizer["popular_tags"]</h4>
             </div>
-            <div id="tag-cloud-card" class="card-body" style="height:350px">
+            <div id="tag-cloud-card" class="card-body">
                 <svg id="tag-cloud">
 
                 </svg>
@@ -23,26 +23,26 @@
         </div>
     </div>
     <div class="col-6">
-        <div class="card text-center">
+        <div class="card text-center mb-3">
             <div class="card-header">
-                <h2>@Localizer["recent_items"]</h2>
+                <h4>@Localizer["recent_items"]</h4>
             </div>
             <div class="card-body">
-                <table class="table table-hover">
+                <table class="table">
                         <tbody>
                             @foreach(var item in Model.RecentItems)
                             {
-                                <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("Items", "Collections", new { id = item.Id })'">
+                                <tr>
                                     <td>
-                                        @item.Name
+                                        <a class="text-dark" href="@Url.Action("Items", "Collections", new { id = item.Id })">@item.Name</a>
                                         <span style="font-size:0.7em" class="text-secondary">
-                                            @Localizer["in"]:
+                                            @Localizer["in"]
                                         </span>
-                                        @item.Collection!.Name
+                                        <a class="text-dark" href="@Url.Action("GetCollection", "Collections", new { id = item.Collection!.Id })">@item.Collection!.Name</a>
                                         <span style="font-size:0.7em" class="text-secondary">
-                                            @Localizer["by"]:
+                                            @Localizer["by"]
                                         </span>
-                                        @item.Collection.Author!.UserName
+                                        <a class="text-dark" href="@Url.Action("GetUser", "Users", new { username = item.Collection.Author!.UserName})">@item.Collection.Author!.UserName</a>
                                     </td>
                                 </tr>
                             }
@@ -52,20 +52,20 @@
         </div>
         <div class="card text-center">
             <div class="card-header">
-                <h2>@Localizer["largest_collections"]</h2>
+                <h4>@Localizer["largest_collections"]</h4>
             </div>
             <div class="card-body">
-                <table class="table table-hover">
+                <table class="table">
                         <tbody>
                             @foreach(var collection in Model.LargestCollections)
                             {
-                                <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("GetCollection", "Collections", new { id = collection.Id })'">
+                                <tr>
                                     <td>
-                                        @collection.Name
+                                        <a class="text-dark" href="@Url.Action("GetCollection", "Collections", new { id = collection!.Id })">@collection.Name</a>
                                         <span style="font-size:0.7em" class="text-secondary">
-                                            @Localizer["by"]:
+                                            @Localizer["by"]
                                         </span>
-                                        @collection.Author!.UserName
+                                        <a class="text-dark" href="@Url.Action("GetUser", "Users", new { username = collection.Author!.UserName})">@collection.Author!.UserName</a>
                                     </td>
                                 </tr>
                             }
