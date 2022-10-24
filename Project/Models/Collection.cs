@@ -21,10 +21,9 @@ namespace Project.Models
         [DataType(DataType.DateTime)]
         public DateTime Modified { get; set; }
 
-        [Required]
         [DataType(DataType.MultilineText)]
         [MaxLength(MaxDescriptionLength)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         [RegularExpression(AllowedTopics)] 
