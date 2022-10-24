@@ -26,6 +26,7 @@
 .dark .btn-outline-dark {
   --bs-btn-color: #d7dadc !important;
   --bs-btn-border-color: #d7dadc !important;
+  --bs-btn-active-border-color: #d7dadc !important;
 }
 
 /*!

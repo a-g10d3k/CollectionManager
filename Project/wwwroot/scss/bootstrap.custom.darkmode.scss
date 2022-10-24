@@ -36,6 +36,7 @@ $light: #2b2b2b;
 .dark .btn-outline-dark {
     --bs-btn-color: #{$dark} !important;
     --bs-btn-border-color: #{$dark} !important;
+    --bs-btn-active-border-color: #{$dark} !important;
 }
 
 
