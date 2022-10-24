@@ -11,66 +11,111 @@
 }
 
 <form method="post" enctype="multipart/form-data">
-    <div class="mb-1">
-        <label asp-for="Name" class="form-label">@Localizer["collection_name"]:</label>
-        <input asp-for="Name" class="form-control" />
-    </div>
-    <div class="mb-1">
-        <label asp-for="Topic" class="form-label">@Localizer["collection_topic"]:</label>
-        <select asp-for="Topic" class="form-select">
-            <option value="Books">@Localizer["books"]</option>
-            <option value="Stamps">@Localizer["stamps"]</option>
-            <option value="Coins">@Localizer["coins"]</option>
-        </select>
-    </div>
-    <div class="mb-1">
-        <label asp-for="Description" class="form-label">@Localizer["collection_description"]:</label>
-        <a id="edit-description" class="btn btn-primary">@Localizer["edit_description"]</a>
-        <textarea asp-for="Description" class="form-control" id="description-textarea" readonly hidden></textarea>
-        <div id="description" class="markdown">@Model.Description</div>
-    </div>
-    <div class="form-expandable">
-        @for(int i = 0; i < Model.Items[0].CustomIntFields.Count; ++i)
-        {
-            <div class="input-group expandable-input mb-1">
-                <input asp-for="Items[0].CustomIntFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" />
-            </div>
-        }
-    </div>
-    <div class="form-expandable">
-        @for(int i = 0; i < Model.Items[0].CustomStringFields.Count; ++i)
-        {
-            <div class="input-group expandable-input mb-1">
-                <input asp-for="Items[0].CustomStringFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" />
-            </div>
-        }
-    </div>
-    <div class="form-expandable">
-        @for(int i = 0; i < Model.Items[0].CustomTextAreaFields.Count; ++i)
-        {
-            <div class="input-group expandable-input mb-1">
-                <input asp-for="Items[0].CustomTextAreaFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" />
-            </div>
-        }
-    </div>
-    <div class="form-expandable">
-        @for(int i = 0; i < Model.Items[0].CustomBoolFields.Count; ++i)
-        {
-            <div class="input-group expandable-input mb-1">
-                <input asp-for="Items[0].CustomBoolFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" />
-            </div>
-        }
-    </div>
-    <div class="form-expandable">
-        @for(int i = 0; i < Model.Items[0].CustomDateFields.Count; ++i)
-        {
-            <div class="input-group expandable-input mb-1">
-                <input asp-for="Items[0].CustomDateFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" />
-            </div>
-        }
-    </div>
-    <input asp-for="Items[0].Name" value="hiddenItem" hidden/>
-    <button type="submit" class="btn btn-primary">@Localizer["add_collection"]</button>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    <div class="mb-1">
+                        <label asp-for="Name" class="form-label">@Localizer["collection_name"]</label>
+                        <input asp-for="Name" class="form-control" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="mb-1">
+                        <label asp-for="Topic" class="form-label">@Localizer["collection_topic"]</label>
+                        <select asp-for="Topic" class="form-select">
+                            <option value="Books">@Localizer["books"]</option>
+                            <option value="Stamps">@Localizer["stamps"]</option>
+                            <option value="Coins">@Localizer["coins"]</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">@Localizer["collection_description"]</label>
+                        <a id="edit-description" class="btn btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                        <textarea asp-for="Description" class="form-control" id="description-textarea" readonly hidden></textarea>
+                        <div id="description" class="bg-light p-2 mt-3 rounded border" style="min-height:30px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                    <td>
+                        <div class="form-expandable">
+                            <h6>@Localizer["int_fields"]</h6>
+                            @for (int i = 0; i < Model.Items[0].CustomIntFields.Count; ++i)
+                            {
+                            <div class="input-group expandable-input mb-1">
+                                <input asp-for="Items[0].CustomIntFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" />
+                            </div>
+                            }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-expandable">
+                        <h6>@Localizer["string_fields"]</h6>
+                        @for (int i = 0; i < Model.Items[0].CustomStringFields.Count; ++i)
+                        {
+                            <div class="input-group expandable-input mb-1">
+                                <input asp-for="Items[0].CustomStringFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" />
+                            </div>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-expandable">
+                        <h6>@Localizer["textarea_fields"]</h6>
+                        @for (int i = 0; i < Model.Items[0].CustomTextAreaFields.Count; ++i)
+                        {
+                            <div class="input-group expandable-input mb-1">
+                                <input asp-for="Items[0].CustomTextAreaFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" />
+                            </div>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-expandable">
+                        <h6>@Localizer["bool_fields"]</h6>
+                        @for (int i = 0; i < Model.Items[0].CustomBoolFields.Count; ++i)
+                        {
+                            <div class="input-group expandable-input mb-1">
+                                <input asp-for="Items[0].CustomBoolFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" />
+                            </div>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-expandable">
+                        <h6>@Localizer["date_fields"]</h6>
+                        @for (int i = 0; i < Model.Items[0].CustomDateFields.Count; ++i)
+                        {
+                            <div class="input-group expandable-input mb-1">
+                                <input asp-for="Items[0].CustomDateFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" />
+                            </div>
+                        }
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input asp-for="Items[0].Name" value="hiddenItem" hidden/>
+                    <button type="submit" class="btn btn-primary">@Localizer["edit_collection"]</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </form>
 <div>
         @Html.ValidationSummary(false, "", new { @class = "text-danger mt-3" })
