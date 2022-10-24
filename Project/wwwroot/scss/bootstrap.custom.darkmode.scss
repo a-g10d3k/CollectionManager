@@ -1,0 +1,42 @@
+﻿@import "../lib/bootstrap/scss/functions";
+@import "../lib/bootstrap/scss/variables";
+@import "../lib/bootstrap/scss/mixins";
+
+$primary: #012345;
+$secondary: #6f7071;
+$success: #222222;
+$dark: #d7dadc;
+$white: #262626;
+$light: #2b2b2b;
+
+.dark, .dark * {
+    $theme-colors: ( "primary": $primary, "secondary": $secondary, "success": $success, "danger": $danger, "info": $indigo, "dark": $dark, "light": $light, );
+    $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+
+    @each $color, $value in $theme-colors-rgb {
+        --bs-#{$color}-rgb: #{$value};
+    }
+
+    --bs-body-bg: #{$white};
+    --bs-body-color: #{$dark};
+    --bs-border-color: #5959592e;
+    --bs-card-bg: #{$light} !important;
+    --bs-card-cap-bg: #{$light};
+    --bs-border-color-translucent: #5959592e;
+    --bs-nav-link-color: #{$dark};
+    --bs-navbar-hover-color: #{$secondary};
+    --bs-navbar-active-color: #{$dark};
+    --bs-navbar-brand-color: #{$dark};
+    --bs-navbar-brand-hover-color: #{$secondary};
+    --bs-accordion-bg: #{$light};
+    --bs-accordion-active-bg: #{$light};
+    --bs-accordion-color: #{$dark};
+}
+
+.dark .btn-outline-dark {
+    --bs-btn-color: #{$dark} !important;
+    --bs-btn-border-color: #{$dark} !important;
+}
+
+
+@import "../lib/bootstrap/scss/bootstrap";

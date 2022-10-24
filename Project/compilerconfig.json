@@ -2,5 +2,9 @@
   {
     "outputFile": "wwwroot/scss/bootstrap.custom.css",
     "inputFile": "wwwroot/scss/bootstrap.custom.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/bootstrap.custom.darkmode.css",
+    "inputFile": "wwwroot/scss/bootstrap.custom.darkmode.scss"
   }
 ]
