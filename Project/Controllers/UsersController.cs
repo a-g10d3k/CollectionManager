@@ -35,7 +35,7 @@ namespace Project.Controllers
             if (!query.Any()) return NotFound();
             var user = await query.FirstAsync();
             var currentUser = await _userManager.GetUserAsync(User);
-            bool isOwner = await _userManager.IsInRoleAsync(user.User, "Admin") || user.User == currentUser;
+            bool isOwner = currentUser != null && (await _userManager.IsInRoleAsync(currentUser, "Admin") || user.User == currentUser);
             user.IsOwner = isOwner;
             user.Page = page;
             return View(user);
