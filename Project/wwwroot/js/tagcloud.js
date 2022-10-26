@@ -34,9 +34,13 @@ function draw(words) {
         .style("font-size", function (d) { return d.size + "px"; })
         .style("font-family", "Impact")
         .style("fill", function (d) { return d.color; })
+        .style("cursor", "pointer")
         .attr("text-anchor", "middle")
         .attr("transform", function (d) {
             return "translate(" + [d.x, d.y] + ")";
+        })
+        .on('click', function (e, d) {
+            window.location.href = `/Search?searchTerm=${encodeURIComponent(d.text)}`
         })
         .text(function (d) { return d.text; });
 }

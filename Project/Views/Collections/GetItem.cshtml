@@ -70,7 +70,7 @@
                 <td colspan="3">
                 @foreach(var tag in Model.Tags)
                 {
-                    <span class="badge bg-secondary">@tag.Name</span>
+                    <a href="@Url.Action("Search", "Search", new { searchTerm = @tag.Name } )" class="badge bg-secondary">@tag.Name</a>
                 }
                 </td>
         </tr>
