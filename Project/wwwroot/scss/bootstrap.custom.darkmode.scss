@@ -4,7 +4,6 @@
 
 $primary: #012345;
 $secondary: #6f7071;
-$success: #222222;
 $dark: #d7dadc;
 $white: #262626;
 $light: #2b2b2b;
@@ -29,7 +28,10 @@ $light: #2b2b2b;
     --bs-navbar-brand-color: #{$dark};
     --bs-navbar-brand-hover-color: #{$secondary};
     --bs-accordion-bg: #{$light};
+    --bs-accordion-btn-bg: #{$light};
+    --bs-accordion-btn-color: #0c63e4;
     --bs-accordion-active-bg: #{$light};
+    --bs-accordion-btn-active-color: #0c63e4;
     --bs-accordion-color: #{$dark};
 }
 
