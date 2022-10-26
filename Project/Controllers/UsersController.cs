@@ -30,7 +30,7 @@ namespace Project.Controllers
                 Collections = u.Collections.OrderByDescending(c => c.Created)
                 .Skip((page - 1) * CollectionsPerPage)
                 .Take(CollectionsPerPage).ToList(),
-                MaxPage = u.Collections.Count() / (CollectionsPerPage + 1) + 1
+                MaxPage = (u.Collections.Count() - 1) / CollectionsPerPage + 1
             });
             if (!query.Any()) return NotFound();
             var user = await query.FirstAsync();

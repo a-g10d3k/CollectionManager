@@ -44,7 +44,7 @@ namespace Project.Controllers
                     Items = c.Items.OrderBy(i => i.Created)
                     .Skip((page - 1) * ItemsPerPage)
                     .Take(ItemsPerPage).ToList(),
-                    MaxPage = c.Items.Count() / (ItemsPerPage + 1) + 1
+                    MaxPage = (c.Items.Count() - 1) / ItemsPerPage + 1
                 });
             if (!await query.AnyAsync()) return NotFound();
             CollectionDto collection = await query.FirstAsync();
