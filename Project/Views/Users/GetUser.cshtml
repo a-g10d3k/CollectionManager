@@ -1,14 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization;
 @inject IViewLocalizer Localizer;
 @inject IHtmlLocalizer<Project.Localization.SharedResources> SharedLocalizer;
-@model ApplicationUser
+@model UserDto
 @{
     ViewData["Title"] = @Localizer["page_title"];
 }
 
     <div class="card h-100">
         <div class="card-header">
-            <span class="h1">@Localizer["users_collections", Model.UserName]</span>
+            <span class="h1">@Localizer["users_collections", Model.User.UserName]</span>
         </div>
     <div class="d-flex flex-wrap align-content-start justify-content-center card-body">
         @foreach(var collection in Model.Collections)
@@ -34,7 +34,7 @@
                 </div>
             </div>
         }
-        @if (ViewData["IsOwner"] as bool? ?? false)
+        @if (Model.IsOwner)
         {
             <div class="m-3 d-flex justify-content-center align-items-center" style="width:18rem;">
                 <a class="btn btn-outline-primary" href="@Url.Action("AddCollection", "Collections")">
@@ -42,5 +42,10 @@
             </a>
             </div>
         }
+    </div>
+    <div class="d-flex flex-row align-items-center justify-content-center p-3">
+        <a href="@Url.Action("GetUser", "Users", new { username = @Model.User.UserName, page = @Model.page - 1 > 0 ? Model.page - 1 : 1 })" class="btn btn-primary m-2"><i class="bi bi-caret-left-fill"></i></a>
+        <p>@Localizer["Page"] @Model.page</p>
+        <a href="@Url.Action("GetUser", "Users", new { username = @Model.User.UserName, page = @Model.page < Model.maxPage ? Model.page + 1 : Model.page })" class="btn btn-primary m-2"><i class="bi bi-caret-right-fill"></i></a>
     </div>
 </div>

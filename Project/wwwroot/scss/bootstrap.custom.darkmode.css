@@ -1,6 +1,6 @@
 ﻿@charset "UTF-8";
 .dark, .dark * {
-  --bs-primary-rgb: 1, 35, 69;
+  --bs-primary-rgb: 13, 110, 253;
   --bs-secondary-rgb: 111, 112, 113;
   --bs-success-rgb: 25, 135, 84;
   --bs-danger-rgb: 220, 53, 69;
@@ -3338,7 +3338,7 @@ textarea.form-control-lg {
   --bs-btn-disabled-color: #6c757d;
   --bs-btn-disabled-border-color: transparent;
   --bs-btn-box-shadow: none;
-  --bs-btn-focus-shadow-rgb: 39, 68, 97;
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
   text-decoration: underline;
 }
 .btn-link:focus-visible {
