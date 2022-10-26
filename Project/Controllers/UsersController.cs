@@ -30,14 +30,14 @@ namespace Project.Controllers
                 Collections = u.Collections.OrderByDescending(c => c.Created)
                 .Skip((page - 1) * CollectionsPerPage)
                 .Take(CollectionsPerPage).ToList(),
-                maxPage = u.Collections.Count() / (CollectionsPerPage + 1) + 1
+                MaxPage = u.Collections.Count() / (CollectionsPerPage + 1) + 1
             });
             if (!query.Any()) return NotFound();
             var user = await query.FirstAsync();
             var currentUser = await _userManager.GetUserAsync(User);
             bool isOwner = await _userManager.IsInRoleAsync(user.User, "Admin") || user.User == currentUser;
             user.IsOwner = isOwner;
-            user.page = page;
+            user.Page = page;
             return View(user);
         }
     }

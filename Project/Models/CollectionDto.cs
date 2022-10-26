@@ -1,6 +1,6 @@
 ﻿namespace Project.Models
 {
-    public class CollectionDto
+    public class CollectionDto : IHasPages
     {
         public Collection Collection { get; set; }
         public List<CollectionItem> Items { get; set; }

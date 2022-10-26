@@ -48,6 +48,7 @@ namespace Project.Controllers
                 });
             if (!await query.AnyAsync()) return NotFound();
             CollectionDto collection = await query.FirstAsync();
+            collection.Page = page;
             var user = await _userManager.GetUserAsync(User);
             ViewData["IsOwner"] = user == null ? false : await user.OwnsCollectionAsync(collection.Collection, _userManager);
             return View(collection);
