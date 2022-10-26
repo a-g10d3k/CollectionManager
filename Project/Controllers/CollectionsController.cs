@@ -17,6 +17,8 @@ namespace Project.Controllers
         private UserManager<ApplicationUser> _userManager;
         private readonly IHubContext<CommentHub> _hubContext;
 
+        public const int ItemsPerPage = 10;
+
         public CollectionsController(AppDbContext context, UserManager<ApplicationUser> userManager, IHubContext<CommentHub> hubContext)
         {
             _context = context;
@@ -30,16 +32,24 @@ namespace Project.Controllers
         }
 
         [Route("{controller}/{id}", Name = "GetCollection")]
-        public async Task<IActionResult> GetCollection([FromRoute] int id)
+        public async Task<IActionResult> GetCollection([FromRoute] int id, [FromQuery] int page = 1)
         {
+            if (page < 1) page = 1;
             var query = _context.Collections.Where(c => c.Id == id)
                 .Include(c => c.Author)
-                .Include(c => c.Items)
-                .ThenInclude(i => i.CustomStringFields);
+                .Include(c => c.Items).ThenInclude(i => i.CustomStringFields)
+                .Select(c => new CollectionDto()
+                {
+                    Collection = c,
+                    Items = c.Items.OrderBy(i => i.Created)
+                    .Skip((page - 1) * ItemsPerPage)
+                    .Take(ItemsPerPage).ToList(),
+                    MaxPage = c.Items.Count() / (ItemsPerPage + 1) + 1
+                });
             if (!await query.AnyAsync()) return NotFound();
-            Collection collection = await query.FirstAsync();
+            CollectionDto collection = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
-            ViewData["IsOwner"] = user == null ? false : await user.OwnsCollectionAsync(collection, _userManager);
+            ViewData["IsOwner"] = user == null ? false : await user.OwnsCollectionAsync(collection.Collection, _userManager);
             return View(collection);
         }
 
