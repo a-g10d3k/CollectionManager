@@ -23,6 +23,7 @@
     <p class="like btn btn-outline-dark" data-liked="@Model.Liked" data-id="@Model.Id"><i class="bi bi-star @(Model.Liked ? "icon-liked" : "icon-unliked")"></i><span class="like-counter" data-value="@Model.LikeCount">@Model.LikeCount</span></p>
     @if(Model.CurrentUser?.Id == Model.Collection!.AuthorId || (bool)(ViewData["IsAdmin"] ?? false))
     {
+        <a type="button" class="btn btn-outline-primary" href="@Url.Action("EditItem", "Collections", new { id = Model.Id })"><i class="bi bi-pencil"></i>@Localizer["edit_item"]</a>
         <a type="button" class="btn btn-danger" href="@Url.Action("DeleteItem", "Collections", new { id = Model.Id })">@Localizer["delete_item"]</a>
     }
 </p>

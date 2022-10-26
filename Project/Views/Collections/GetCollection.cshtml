@@ -16,6 +16,7 @@
                 @if(ViewData["IsOwner"] as bool? ?? false)
                 {
                     <a type="button" class="btn btn-primary" href="@Url.Action("AddItem", "Collections", new { id = Model.Collection.Id })">@Localizer["add_item"]</a>
+                    <a type="button" class="btn btn-outline-primary" href="@Url.Action("EditCollection", "Collections", new { id = Model.Collection.Id })"><i class="bi bi-pencil"></i>@Localizer["edit_collection"]</a>
                     <a type="button" class="btn btn-danger" href="@Url.Action("DeleteCollection", "Collections", new { id = Model.Collection.Id })">@Localizer["delete_collection"]</a>
                 }
             </p>
