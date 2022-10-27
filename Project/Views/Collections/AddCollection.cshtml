@@ -65,7 +65,7 @@
                         @for(int i = 0; i < 3; ++i)
                         {
                             <div class="input-group expandable-input mt-1" hidden>
-                                <input asp-for="Items[0].CustomIntFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled />
+                                @Html.TextBox($"Items[0].CustomIntFields[{i}].Name", "", new { @class = "form-control", placeholder = @Localizer["custom_field_name"].Value, disabled = "" } )
                             </div>
                         }
                     </div>
@@ -80,7 +80,7 @@
                         @for (int i = 0; i < 3; ++i)
                         {
                             <div class="input-group expandable-input mt-1" hidden>
-                                <input asp-for="Items[0].CustomStringFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled />
+                                @Html.TextBox($"Items[0].CustomStringFields[{i}].Name", "", new { @class = "form-control", placeholder = @Localizer["custom_field_name"].Value, disabled = "" } )
                             </div>
                         }
                     </div>
@@ -95,7 +95,7 @@
                         @for (int i = 0; i < 3; ++i)
                         {
                             <div class="input-group expandable-input mt-1" hidden>
-                                <input asp-for="Items[0].CustomTextAreaFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled> </input>
+                                @Html.TextBox($"Items[0].CustomTextAreaFields[{i}].Name", "", new { @class = "form-control", placeholder = @Localizer["custom_field_name"].Value, disabled = "" } )
                             </div>
                         }
                     </div>
@@ -110,7 +110,7 @@
                         @for (int i = 0; i < 3; ++i)
                         {
                             <div class="input-group expandable-input mt-1" hidden>
-                                <input asp-for="Items[0].CustomBoolFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled />
+                                @Html.TextBox($"Items[0].CustomBoolFields[{i}].Name", "", new { @class = "form-control", placeholder = @Localizer["custom_field_name"].Value, disabled = "" } )
                             </div>
                         }
                     </div>
@@ -125,7 +125,7 @@
                         @for (int i = 0; i < 3; ++i)
                         {
                             <div class="input-group expandable-input mt-1" hidden>
-                                <input asp-for="Items[0].CustomDateFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" disabled />
+                                @Html.TextBox($"Items[0].CustomDateFields[{i}].Name", "", new { @class = "form-control", placeholder = @Localizer["custom_field_name"].Value, disabled = "" } )
                             </div>
                         }
                     </div>
@@ -133,7 +133,7 @@
             </tr>
             <tr>
                 <td>
-                    <input asp-for="Items[0].Name" value="hiddenItem" hidden />
+                    @Html.TextBox($"Items[0].Name", "hiddenItem", new { @class = "form-control", placeholder = @Localizer["custom_field_name"], hidden = "" } )
                     <button type="submit" class="btn btn-primary">@Localizer["add_collection"]</button>
                 </td>
             </tr>
