@@ -50,7 +50,7 @@ namespace Project.Controllers
             CollectionDto collection = await query.FirstAsync();
             collection.Page = page;
             var user = await _userManager.GetUserAsync(User);
-            ViewData["IsOwner"] = user == null ? false : await user.OwnsCollectionAsync(collection.Collection, _userManager);
+            collection.IsOwner = user == null ? false : await user.OwnsCollectionAsync(collection.Collection, _userManager);
             return View(collection);
         }
 

@@ -13,7 +13,7 @@
                 <span class="text-secondary">@Localizer["by"]: 
                     <a href="@Url.Action("GetUser", "Users", new { username = @Model.Collection.Author?.UserName })">@Model.Collection.Author?.UserName</a>
                 </span>
-                @if(ViewData["IsOwner"] as bool? ?? false)
+                @if(Model.IsOwner)
                 {
                     <a type="button" class="btn btn-primary" href="@Url.Action("AddItem", "Collections", new { id = Model.Collection.Id })">@Localizer["add_item"]</a>
                     <a type="button" class="btn btn-outline-primary" href="@Url.Action("EditCollection", "Collections", new { id = Model.Collection.Id })"><i class="bi bi-pencil"></i>@Localizer["edit_collection"]</a>
