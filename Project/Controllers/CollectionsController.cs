@@ -264,7 +264,7 @@ namespace Project.Controllers
             item.Liked = user != null && await _context.Likes.Where(l => l.UserId == user.Id && l.ItemId == item.Id).AnyAsync();
             item.IsAdmin = user != null && await _userManager.IsInRoleAsync(user, "Admin");
             bool isOwner = user == null ? false : await user.OwnsCollectionAsync(item.Collection!, _userManager);
-            ViewData["IsOwner"] = isOwner;
+            item.IsOwner = isOwner;
             return View(item);
         }
 

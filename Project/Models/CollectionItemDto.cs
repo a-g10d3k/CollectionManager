@@ -16,7 +16,7 @@
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public ApplicationUser? CurrentUser { get; set; }
         public bool IsAdmin { get; set; }
-
+        public bool IsOwner { get; set; } = false;
         public int LikeCount { get; set; }
         public Collection? Collection { get; set; }
     }
