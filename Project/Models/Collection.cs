@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project.Models
@@ -9,6 +10,7 @@ namespace Project.Models
         public const int MaxDescriptionLength = 1000;
         public const string AllowedTopics = "Books|Stamps|Coins";
         [Required]
+        [BindNever]
         public int Id { get; set; }
 
         [Required]
@@ -16,9 +18,11 @@ namespace Project.Models
         public string Name { get; set; }
 
         [DataType(DataType.DateTime)]
+        [BindNever]
         public DateTime Created { get; set; }
 
         [DataType(DataType.DateTime)]
+        [BindNever]
         public DateTime Modified { get; set; }
 
         [DataType(DataType.MultilineText)]
@@ -30,12 +34,16 @@ namespace Project.Models
         public string Topic { get; set; }
 
         [ForeignKey("CollectionImage")]
+        [BindNever]
         public int? ImageId { get; set; }
+        [BindNever]
         public CollectionImage? Image { get; set; }
 
         public List<CollectionItem> Items { get; set; } = new List<CollectionItem>();
 
+        [BindNever]
         public string? AuthorId { get; set; }
+        [BindNever]
         public ApplicationUser? Author { get; set; }
 
         public void UpdateFrom(Collection collection)

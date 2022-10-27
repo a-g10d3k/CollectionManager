@@ -83,13 +83,14 @@ namespace Project.Controllers
         [Route("{controller}/add")]
         public async Task<IActionResult> PostCollection(Collection collection, [FromForm(Name = "collectionImage")] IFormFile? collectionImage)
         {
+            if (!ModelState.IsValid) return View("AddCollection");
             collection.Created = DateTime.Now;
             collection.Modified = collection.Created;
             var author = await _userManager.GetUserAsync(User);
             collection.Items[0].Hidden = true;
             collection.Items[0].Name = "hiddenItem";
+            collection.Items = new List<CollectionItem> { collection.Items[0] };
             author.Collections.Add(collection);
-            if (!ModelState.IsValid) return View("AddCollection");
             if (collectionImage != null && collectionImage.Length <= CollectionImage.MaxSize)
             {
                 collection.Image = new CollectionImage(

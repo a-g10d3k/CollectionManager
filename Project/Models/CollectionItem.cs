@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project.Models
@@ -42,6 +43,7 @@ namespace Project.Models
         }
 
         [Required]
+        [BindNever]
         public int Id { get; set; }
 
         [Required]
@@ -50,13 +52,17 @@ namespace Project.Models
         public string Name { get; set; }
 
         [DataType(DataType.DateTime)]
+        [BindNever]
         public DateTime Created { get; set; }
 
         [DataType(DataType.DateTime)]
+        [BindNever]
         public DateTime Modified { get; set; }
 
+        [BindNever]
         public bool Hidden { get; set; }
 
+        [BindNever]
         public List<Tag> Tags { get; set; } = new List<Tag>();
 
         public List<CustomIntField> CustomIntFields { get; set; } = new List<CustomIntField>();
@@ -65,9 +71,12 @@ namespace Project.Models
         public List<CustomBoolField> CustomBoolFields { get; set; } = new List<CustomBoolField>();
         public List<CustomDateField> CustomDateFields { get; set; } = new List<CustomDateField>();
 
+        [BindNever]
         public List<Like> Likes { get; set; } = new List<Like>();
+        [BindNever]
         public List<Comment> Comments { get; set; } = new List<Comment>();
         [ForeignKey("CollectionId")]
+        [BindNever]
         public Collection? Collection { get; set; }
     }
 }
