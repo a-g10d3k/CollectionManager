@@ -117,22 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="by" xml:space="preserve">
-    <value>przez</value>
+  <data name="bool_fields" xml:space="preserve">
+    <value>Pola wyboru</value>
   </data>
-  <data name="in" xml:space="preserve">
-    <value>w</value>
+  <data name="collection_description" xml:space="preserve">
+    <value>Opis</value>
   </data>
-  <data name="largest_collections" xml:space="preserve">
-    <value>Największe kolekcje</value>
+  <data name="collection_name" xml:space="preserve">
+    <value>Nazwa</value>
+  </data>
+  <data name="collection_topic" xml:space="preserve">
+    <value>Temat</value>
+  </data>
+  <data name="custom_field_name" xml:space="preserve">
+    <value>Nazwa</value>
+  </data>
+  <data name="date_fields" xml:space="preserve">
+    <value>Pola daty</value>
+  </data>
+  <data name="edit_collection" xml:space="preserve">
+    <value>Zapisz zmiany</value>
+  </data>
+  <data name="image" xml:space="preserve">
+    <value>Obraz</value>
+  </data>
+  <data name="int_fields" xml:space="preserve">
+    <value>Pola liczbowe</value>
   </data>
   <data name="page_title" xml:space="preserve">
-    <value>Strona Główna</value>
+    <value>Edit collection</value>
   </data>
-  <data name="popular_tags" xml:space="preserve">
-    <value>Popularne tagi</value>
+  <data name="string_fields" xml:space="preserve">
+    <value>Pola tekstowe</value>
   </data>
-  <data name="recent_items" xml:space="preserve">
-    <value>Niedawno dodane</value>
+  <data name="textarea_fields" xml:space="preserve">
+    <value>Wieloliniowe pola tekstowe</value>
   </data>
 </root>

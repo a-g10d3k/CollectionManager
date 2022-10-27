@@ -117,22 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="by" xml:space="preserve">
-    <value>przez</value>
+  <data name="no_image" xml:space="preserve">
+    <value>Brak obrau</value>
   </data>
-  <data name="in" xml:space="preserve">
-    <value>w</value>
+  <data name="page" xml:space="preserve">
+    <value>Strona</value>
   </data>
-  <data name="largest_collections" xml:space="preserve">
-    <value>Największe kolekcje</value>
+  <data name="users_collections" xml:space="preserve">
+    <value>Kolekcje {0}</value>
   </data>
-  <data name="page_title" xml:space="preserve">
-    <value>Strona Główna</value>
-  </data>
-  <data name="popular_tags" xml:space="preserve">
-    <value>Popularne tagi</value>
-  </data>
-  <data name="recent_items" xml:space="preserve">
-    <value>Niedawno dodane</value>
+  <data name="view_collection" xml:space="preserve">
+    <value>Obejrzyj</value>
   </data>
 </root>

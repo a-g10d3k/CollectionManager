@@ -117,22 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="by" xml:space="preserve">
-    <value>przez</value>
+  <data name="bool_fields" xml:space="preserve">
+    <value>Checkboxes</value>
   </data>
-  <data name="in" xml:space="preserve">
-    <value>w</value>
+  <data name="collection_description" xml:space="preserve">
+    <value>Description</value>
   </data>
-  <data name="largest_collections" xml:space="preserve">
-    <value>Największe kolekcje</value>
+  <data name="collection_name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="collection_topic" xml:space="preserve">
+    <value>Topic</value>
+  </data>
+  <data name="custom_field_name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="date_fields" xml:space="preserve">
+    <value>Date fields</value>
+  </data>
+  <data name="edit_collection" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="image" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="int_fields" xml:space="preserve">
+    <value>Number fields</value>
   </data>
   <data name="page_title" xml:space="preserve">
-    <value>Strona Główna</value>
+    <value>Edit collection</value>
   </data>
-  <data name="popular_tags" xml:space="preserve">
-    <value>Popularne tagi</value>
+  <data name="string_fields" xml:space="preserve">
+    <value>Text fields</value>
   </data>
-  <data name="recent_items" xml:space="preserve">
-    <value>Niedawno dodane</value>
+  <data name="textarea_fields" xml:space="preserve">
+    <value>Multi-line text fields</value>
   </data>
 </root>

@@ -120,6 +120,12 @@
   <data name="admin_panel" xml:space="preserve">
     <value>Panel Administracyjny</value>
   </data>
+  <data name="Books" xml:space="preserve">
+    <value>Książki</value>
+  </data>
+  <data name="Coins" xml:space="preserve">
+    <value>Monety</value>
+  </data>
   <data name="home" xml:space="preserve">
     <value>Strona Główna</value>
   </data>
@@ -134,5 +140,11 @@
   </data>
   <data name="register" xml:space="preserve">
     <value>Zarejestruj</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Szukaj</value>
+  </data>
+  <data name="Stamps" xml:space="preserve">
+    <value>Znaczki</value>
   </data>
 </root>

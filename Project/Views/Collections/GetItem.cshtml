@@ -2,7 +2,7 @@
 @inject IViewLocalizer Localizer;
 @model CollectionItemDto
 @{
-    ViewData["Title"] = @Localizer["page_title"];
+    ViewData["Title"] = @Model.Name;
 }
 @section Scripts{
     <script type="text/javascript">

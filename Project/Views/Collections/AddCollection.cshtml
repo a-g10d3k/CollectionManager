@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization;
 @inject IViewLocalizer Localizer;
+@inject IHtmlLocalizer<Project.Localization.SharedResources> SharedLocalizer;
 @model Collection
 @{
     ViewData["Title"] = @Localizer["page_title"];
@@ -30,9 +31,9 @@
                     <div class="mb-1">
                         <label asp-for="Topic" class="form-label">@Localizer["collection_topic"]</label>
                         <select asp-for="Topic" class="form-select">
-                            <option value="Books">@Localizer["books"]</option>
-                            <option value="Stamps">@Localizer["stamps"]</option>
-                            <option value="Coins">@Localizer["coins"]</option>
+                            <option value="Books">@SharedLocalizer["Books"]</option>
+                            <option value="Stamps">@SharedLocalizer["Stamps"]</option>
+                            <option value="Coins">@SharedLocalizer["Coins"]</option>
                         </select>
                     </div>
                 </td>
