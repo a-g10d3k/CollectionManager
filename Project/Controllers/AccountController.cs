@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Project.Data;
 using Project.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Project.Controllers
 {
@@ -131,6 +132,14 @@ namespace Project.Controllers
         {
             var admins = await _userManager.GetUsersInRoleAsync("Admin");
             if (admins.Count > 0 && admins.Any(user => !user.Blocked)) return;
+            var currentDefaultAdmin = await _context.Users.Where(u => u.UserName == _configuration["DefaultAdminUsername"])
+                .FirstOrDefaultAsync();
+            if (currentDefaultAdmin != null && currentDefaultAdmin.Blocked)
+            {
+                currentDefaultAdmin.Blocked = false;
+                await _context.SaveChangesAsync();
+                return;
+            }
             var user = new ApplicationUser
             {
                 UserName = _configuration["DefaultAdminUsername"],
