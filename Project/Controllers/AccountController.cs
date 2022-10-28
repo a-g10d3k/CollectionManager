@@ -13,14 +13,16 @@ namespace Project.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IConfiguration _configuration;
 
-        public AccountController(ILogger<AccountController> logger, AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(ILogger<AccountController> logger, AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -34,6 +36,8 @@ namespace Project.Controllers
         [Route("{controller}/Login")]
         public async Task<IActionResult> LoginPost(LoginModel model)
         {
+            await CreateRoles();
+            await CreateDefaultAdmin();
             if (!ModelState.IsValid) return View("Login", model);
             var user = await _userManager.FindByNameAsync(model.Username);
             if (user != null && user.Blocked)
@@ -74,6 +78,8 @@ namespace Project.Controllers
         [Route("{controller}/Register")]
         public async Task<IActionResult> RegisterPost(RegisterModel model)
         {
+            await CreateRoles();
+            await CreateDefaultAdmin();
             if (!ModelState.IsValid) return View("Register", model);
             var user = new ApplicationUser
             {
@@ -106,8 +112,7 @@ namespace Project.Controllers
             return LocalRedirect("/");
         }
 
-        [Route("{controller}/CreateRoles")]
-        public async Task<IActionResult> CreateRoles()
+        private async Task CreateRoles()
         {
 
             if (!await _roleManager.RoleExistsAsync("Admin"))
@@ -117,10 +122,27 @@ namespace Project.Controllers
             }
             if (!await _roleManager.RoleExistsAsync("User"))
             {
-                var adminRole = new IdentityRole("User");
-                await _roleManager.CreateAsync(adminRole);
+                var userRole = new IdentityRole("User");
+                await _roleManager.CreateAsync(userRole);
             }
-            return Ok();
+        }
+
+        private async Task CreateDefaultAdmin()
+        {
+            var admins = await _userManager.GetUsersInRoleAsync("Admin");
+            if (admins.Count > 0 && admins.Any(user => !user.Blocked)) return;
+            var user = new ApplicationUser
+            {
+                UserName = _configuration["DefaultAdminUsername"],
+                Email = _configuration["DefaultAdminEmail"],
+                LastLogin = DateTime.Now,
+                Created = DateTime.Now
+            };
+            var result = await _userManager.CreateAsync(user, _configuration["DefaultAdminPassword"]);
+            if (!result.Succeeded) return;
+            await _userManager.AddToRoleAsync(user, "User");
+            await _userManager.AddToRoleAsync(user, "Admin");
+            _logger.LogInformation($"Default admin {user.UserName} was created.");
         }
     }
 }

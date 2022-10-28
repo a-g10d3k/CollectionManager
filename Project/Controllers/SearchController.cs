@@ -28,7 +28,8 @@ namespace Project.Controllers
                 i => EF.Functions.FreeText(i.Name, searchTerm) ||
                 i.CustomStringFields.Any(f => EF.Functions.FreeText(f.Value, searchTerm)) ||
                 i.CustomTextAreaFields.Any(f => EF.Functions.FreeText(f.Value, searchTerm)) ||
-                i.Tags.Any(t => EF.Functions.FreeText(t.Name, searchTerm))
+                i.Tags.Any(t => EF.Functions.FreeText(t.Name, searchTerm)) ||
+                i.Comments.Any(c => EF.Functions.FreeText(c.Text, searchTerm))
                 )
                 .Include(i => i.Collection)
                 .ThenInclude(i => i.Author)
