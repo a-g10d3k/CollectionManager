@@ -18,6 +18,7 @@ $('form.add-comment').submit(function (e) {
         body: JSON.stringify({ commentText: $(this.elements['commentText']).val() })
     }).then((response) => {
         if (!response.ok) alert('There was an issue processing the request: ' + response.status);
+        $('form.add-comment textarea[name="commentText"]').val('');
     });
 });
 
