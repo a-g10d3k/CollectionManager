@@ -9,19 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\Views\Shared\**" />
     <Compile Remove="wwwroot\NewFolder\**" />
+    <Content Remove="Resources\Views\Shared\**" />
     <Content Remove="wwwroot\NewFolder\**" />
+    <EmbeddedResource Remove="Resources\Views\Shared\**" />
     <EmbeddedResource Remove="wwwroot\NewFolder\**" />
+    <None Remove="Resources\Views\Shared\**" />
     <None Remove="wwwroot\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="Resources\Views\Shared\_Layout.en.resx" />
-    <EmbeddedResource Remove="Resources\Views\Shared\_Layout.pl.resx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,7 +41,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Resources\Views\Shared\" />
   </ItemGroup>
 
   <ItemGroup>

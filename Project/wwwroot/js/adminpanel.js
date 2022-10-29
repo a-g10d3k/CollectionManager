@@ -7,26 +7,26 @@ const grid = new gridjs.Grid({
             id: 1,
             formatter: (cell, row) => gridjs.html(`<input type="checkbox" id="checkbox-${row.cells[1].data}" onclick="selectUser('${row.cells[1].data}')"/>`)
         },
-        'Id',
-        'Name',
-        'E-mail',
+        localization.id,
+        localization.name,
+        localization.email,
         {
-            name: 'Last login time',
+            name: localization.lastLogin,
             hidden: true
         },
         {
-            name: 'Registration time',
+            name: localization.registrationTime,
             hidden: true
         },
         {
-            name: 'Status',
+            name: localization.status,
             id: 7,
-            formatter: cell => gridjs.html(`<span class="fw-bold ${cell ? 'text-danger' : 'text-success'}">${cell ? 'Blocked' : 'Active'}</span>`)
+            formatter: cell => gridjs.html(`<span class="fw-bold ${cell ? 'text-danger' : 'text-success'}">${cell ? localization.blocked : localization.active}</span>`)
         },
         {
-            name: 'Admin',
+            name: localization.admin,
             id: 8,
-            formatter: cell => gridjs.html(`<span class="fw-bold ${cell ? 'text-success' : 'text-dark'}">${cell ? 'Yes' : 'No'}</span>`)
+            formatter: cell => gridjs.html(`<span class="fw-bold ${cell ? 'text-success' : 'text-dark'}">${cell ? localization.yes : localization.no}</span>`)
         }
     ],
     data: () => {
