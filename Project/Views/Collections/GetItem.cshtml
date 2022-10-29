@@ -28,55 +28,56 @@
     }
 </p>
 <p class="text-secondary">@Localizer["last_modified"]: @Model.Modified</p>
-
-<table class="table">
-    <tbody>
-        @foreach(var field in Model.CustomIntFields)
-        {
+<div class="table-responsive">
+    <table class="table">
+        <tbody>
+            @foreach(var field in Model.CustomIntFields)
+            {
+                <tr>
+                    <td>@field.Name</td>
+                    <td>@field.Value</td>
+                </tr>
+            }
+            @foreach(var field in Model.CustomStringFields)
+            {
+                <tr>
+                    <td>@field.Name</td>
+                    <td>@field.Value</td>
+                </tr>
+            }
+            @foreach(var field in Model.CustomTextAreaFields)
+            {
+                <tr>
+                    <td>@field.Name</td>
+                    <td style="white-space:pre-wrap">@field.Value</td>
+                </tr>
+            }
+            @foreach(var field in Model.CustomBoolFields)
+            {
+                <tr>
+                    <td>@field.Name</td>
+                    <td><i class="bi @((bool)field.Value! ? "bi-check-lg text-success" : "bi-x-lg text-danger")"></i></td>
+                </tr>
+            }
+            @foreach(var field in Model.CustomDateFields)
+            {
+                <tr>
+                    <td>@field.Name</td>
+                    <td>@DateOnly.FromDateTime((DateTime)field.Value!)</td>
+                </tr>
+            }
             <tr>
-                <td>@field.Name</td>
-                <td>@field.Value</td>
+                    <td>@Localizer["tags"]</td>
+                    <td colspan="3">
+                    @foreach(var tag in Model.Tags)
+                    {
+                        <a href="@Url.Action("Search", "Search", new { searchTerm = @tag.Name } )" class="badge bg-secondary">@tag.Name</a>
+                    }
+                    </td>
             </tr>
-        }
-        @foreach(var field in Model.CustomStringFields)
-        {
-            <tr>
-                <td>@field.Name</td>
-                <td>@field.Value</td>
-            </tr>
-        }
-        @foreach(var field in Model.CustomTextAreaFields)
-        {
-            <tr>
-                <td>@field.Name</td>
-                <td style="white-space:pre-wrap">@field.Value</td>
-            </tr>
-        }
-        @foreach(var field in Model.CustomBoolFields)
-        {
-            <tr>
-                <td>@field.Name</td>
-                <td><i class="bi @((bool)field.Value! ? "bi-check-lg text-success" : "bi-x-lg text-danger")"></i></td>
-            </tr>
-        }
-        @foreach(var field in Model.CustomDateFields)
-        {
-            <tr>
-                <td>@field.Name</td>
-                <td>@DateOnly.FromDateTime((DateTime)field.Value!)</td>
-            </tr>
-        }
-        <tr>
-                <td>@Localizer["tags"]</td>
-                <td colspan="3">
-                @foreach(var tag in Model.Tags)
-                {
-                    <a href="@Url.Action("Search", "Search", new { searchTerm = @tag.Name } )" class="badge bg-secondary">@tag.Name</a>
-                }
-                </td>
-        </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 @if(User.Identity!.Name != null)
 {
     <form data-item-id="@Model.Id" class="add-comment mb-3" class="mb-3" action="@Url.Action("AddComment", "Collections", new { itemId = @Model.Id })" method="post">
