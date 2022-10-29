@@ -10,7 +10,9 @@
     <script src="~/js/formexpander.js"></script>
     <script src="~/js/tags.js"></script>
 }
-
+<div>
+    @Html.ValidationSummary(false, "", new { @class = "text-danger mt-3" })
+</div>
 <form method="post">
         <table class="table">
             <tbody>
@@ -120,6 +122,3 @@
         </tbody>
     </table>
 </form>
-<div>
-        @Html.ValidationSummary(false, "", new { @class = "text-danger mt-3" })
-</div>

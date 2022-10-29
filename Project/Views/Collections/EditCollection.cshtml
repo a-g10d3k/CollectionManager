@@ -10,7 +10,9 @@
     <script src="https://unpkg.com/stackedit-js@1.0.7/docs/lib/stackedit.min.js"></script>
     <script src="~/js/description-editor.js"></script>
 }
-
+<div>
+        @Html.ValidationSummary(false, "", new { @class = "text-danger mt-3" })
+</div>
 <form method="post" enctype="multipart/form-data">
     <table class="table">
         <tbody>
@@ -118,6 +120,3 @@
         </tbody>
     </table>
 </form>
-<div>
-        @Html.ValidationSummary(false, "", new { @class = "text-danger mt-3" })
-</div>
