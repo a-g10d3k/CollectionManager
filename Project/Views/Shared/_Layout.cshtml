@@ -18,14 +18,15 @@
 <body>
     <script src="~/js/darkmode.js"></script>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light box-shadow border-bottom mb-3">
+        <nav class="navbar navbar-expand-xl navbar-toggleable-xl navbar-light bg-light box-shadow border-bottom mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Collection Manager</a>
+                <div></div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-xl-inline-flex justify-content-between">
+                    <div class="d-xl-none d-block mt-2"><partial name="SearchBar" /></div>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">@SharedLocalizer["home"].Value</a>
@@ -37,30 +38,13 @@
                             </li>
                         }
                     </ul>
-                    <div class="dropdown mx-3">
-                        <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-translate"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a asp-controller="Home" asp-action="LanguageSelect" asp-route-returnUrl="@Context.Request.Path.Value" asp-route-language="en" class="dropdown-item">English</a></li>
-                            <li><a asp-controller="Home" asp-action="LanguageSelect" asp-route-returnUrl="@Context.Request.Path.Value" asp-route-language="pl" class="dropdown-item">Polski</a></li>
-                        </ul>
+                    <div class="d-xl-block d-none mx-3">
+                        <partial name="LanguageSelect" />
                     </div>
-                    <div>
-                        <div class="input-group">
-                            <input type="radio" class="btn-check" name="darkmode-toggle" id="darkmode-toggle-light" value="false" autocomplete="off" checked>
-                            <label class="btn btn-outline-dark" for="darkmode-toggle-light"><i class="bi bi-brightness-high"></i></label>
-                            <input type="radio" class="btn-check" name="darkmode-toggle" id="darkmode-toggle-dark" value="true" autocomplete="off">
-                            <label class="btn btn-outline-dark" for="darkmode-toggle-dark"><i class="bi bi-moon"></i></label>
-                            <script src="~/js/darkmode-toggle.js"></script>
-                        </div>
+                    <div class="d-xl-block d-none">
+                        <partial name="DarkmodeToggle" />
                     </div>
-                    <form class="d-flex px-3" role="search" action="@Url.Action("Search", "Search")">
-                        <div class="input-group">
-                            <input name="searchTerm" class="form-control" type="search" placeholder="@SharedLocalizer["search"]">
-                            <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
-                        </div>
-                    </form>
+                    <div class="d-xl-block d-none"><partial name="SearchBar" /></div>
                     <ul class="navbar-nav me-auto">
                         @if (User.Identity!.Name != null)
                         {
@@ -82,6 +66,10 @@
                             </li>
                         }
                     </ul>
+                    <div class="d-xl-none d-flex flex-row my-3">
+                        <div class="mr-3"><partial name="LanguageSelect" /></div>
+                        <div><partial name="DarkmodeToggle" /></div>
+                    </div>
                 </div>
             </div>
         </nav>

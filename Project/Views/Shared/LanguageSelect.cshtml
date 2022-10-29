@@ -1,0 +1,9 @@
+﻿<div class="dropdown">
+    <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <i class="bi bi-translate"></i>
+    </button>
+    <ul class="dropdown-menu">
+        <li><a asp-controller="Home" asp-action="LanguageSelect" asp-route-returnUrl="@Context.Request.Path.Value" asp-route-language="en" class="dropdown-item">English</a></li>
+        <li><a asp-controller="Home" asp-action="LanguageSelect" asp-route-returnUrl="@Context.Request.Path.Value" asp-route-language="pl" class="dropdown-item">Polski</a></li>
+    </ul>
+</div>
