@@ -32,7 +32,7 @@ namespace Project.Controllers
         }
 
         [Route("{controller}/{id}", Name = "GetCollection")]
-        public async Task<IActionResult> GetCollection([FromRoute] int id, [FromQuery] int page = 1)
+        public async Task<IActionResult> GetCollection([FromRoute] int id, [FromQuery] int page = 1, [FromQuery] bool sortAscending = true)
         {
             if (page < 1) page = 1;
             var query = _context.Collections.Where(c => c.Id == id)
@@ -41,7 +41,9 @@ namespace Project.Controllers
                 .Select(c => new CollectionDto()
                 {
                     Collection = c,
-                    Items = c.Items.OrderBy(i => i.Created)
+                    Items = (sortAscending ? 
+                    c.Items.OrderBy(i => i.Created) :
+                    c.Items.OrderByDescending(i => i.Created))
                     .Skip((page - 1) * ItemsPerPage)
                     .Take(ItemsPerPage).ToList(),
                     MaxPage = (c.Items.Count() - 1) / ItemsPerPage + 1

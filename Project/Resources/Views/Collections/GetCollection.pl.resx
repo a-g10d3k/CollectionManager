@@ -138,7 +138,16 @@
   <data name="last_modified" xml:space="preserve">
     <value>Data ostatniej modyfikacji</value>
   </data>
+  <data name="newest" xml:space="preserve">
+    <value>Od najnowszych</value>
+  </data>
+  <data name="oldest" xml:space="preserve">
+    <value>Od najstarszych</value>
+  </data>
   <data name="page" xml:space="preserve">
     <value>Strona</value>
+  </data>
+  <data name="sort_by" xml:space="preserve">
+    <value>Sortuj</value>
   </data>
 </root>

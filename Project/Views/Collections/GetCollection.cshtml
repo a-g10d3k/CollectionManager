@@ -50,6 +50,21 @@
             <div id="itemCollapse" class="accordion-collapse collapse show">
                 <div class="accordion-body">
                     <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            @Localizer["sort_by"]
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="@Url.Action("GetCollection", "Collections", new { id = @Model.Collection.Id, page = @Model.Page, sortAscending = true } )">@Localizer["oldest"]</a></li>
+                                            <li><a class="dropdown-item" href="@Url.Action("GetCollection", "Collections", new { id = @Model.Collection.Id, page = @Model.Page, sortAscending = false } )">@Localizer["newest"]</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </thead>
                         <tbody>
                             @foreach(var item in Model.Items)
                             {
