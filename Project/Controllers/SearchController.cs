@@ -17,8 +17,8 @@ namespace Project.Controllers
         [Route("{controller}", Name="Search")]
         public async Task<IActionResult> Search([FromQuery]string searchTerm)
         {
-            if (searchTerm == null) return View();
             SearchModel model = new SearchModel();
+            if (searchTerm == null) return View(model);
             model.Collections = await _context.Collections
                 .FromSqlRaw("Select * FROM Collections WHERE FREETEXT((Name, Description), {0})", searchTerm)
                 .Include(c => c.Author)
