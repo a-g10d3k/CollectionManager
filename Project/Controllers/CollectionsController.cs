@@ -38,6 +38,7 @@ namespace Project.Controllers
             var query = _context.Collections.Where(c => c.Id == id)
                 .Include(c => c.Author)
                 .Include(c => c.Items).ThenInclude(i => i.CustomStringFields)
+                .Include(c => c.Items).ThenInclude(i => i.CustomDateFields)
                 .Select(c => new CollectionDto()
                 {
                     Collection = c,

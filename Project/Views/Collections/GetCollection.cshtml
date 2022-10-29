@@ -71,18 +71,37 @@
                                 if (item.Hidden) continue;
                                 <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("Items", "Collections", new { id = item.Id })'">
                                     <td>@item.Name</td>
-                                    @for(int i = 0; i < 3; ++i)
+                                    @{
+                                        List<(string Name, string? Value)> fields = new List<(string, string?)>();
+                                        for(int i = 0, s = 0, d = 0; i < 3; ++i)
+                                        {
+                                            if(s < item.CustomStringFields.Count)
+                                            {
+                                                fields.Add((
+                                                    item.CustomStringFields[s].Name,
+                                                    item.CustomStringFields[s].Value
+                                                ));
+                                                ++s;
+                                            }
+                                            else if(d < item.CustomDateFields.Count)
+                                            {
+                                                fields.Add((
+                                                    item.CustomDateFields[d].Name,
+                                                    (DateOnly.FromDateTime((DateTime)item.CustomDateFields[d].Value!)).ToString()
+                                                ));
+                                                ++d;
+                                            }
+                                        }
+                                    }
+                                    @foreach(var field in fields)
                                     {
                                         <td>
-                                            @if (item.CustomStringFields.Count > i)
-                                            {
-                                                var field = item.CustomStringFields[i];
-                                                <div class="form-floating">
-                                                    <span style="font-size:0.7em" class="text-secondary">@(field.Name):</span>@field.Value
-                                                </div>
-                                            }
+                                            <div class="form-floating">
+                                                <span style="font-size:0.7em" class="text-secondary">@(field.Name):</span>@field.Value
+                                            </div>
                                         </td>
                                     }
+
                                 </tr>
                             }
                         </tbody>
