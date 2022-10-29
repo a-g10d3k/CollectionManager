@@ -59,15 +59,8 @@
             <tr>
                 <td>
                     <div class="form-expandable">
-                        <h6>@Localizer["int_fields"]</h6>
-                        <button type="button" class="btn btn-outline-primary form-expand"><i class="bi bi-plus"></i></button>
-                        <button type="button" class="btn btn-outline-danger form-collapse"><i class="bi bi-dash"></i></button>
-                        @for(int i = 0; i < 3; ++i)
-                        {
-                            <div class="input-group expandable-input mt-1" hidden>
-                                @Html.TextBox($"Items[0].CustomIntFields[{i}].Name", "", new { @class = "form-control", placeholder = @Localizer["custom_field_name"].Value, disabled = "" } )
-                            </div>
-                        }
+                        <h6>@Localizer["int_fields"]</h6>  
+                        @await Html.PartialAsync("AddCollectionFieldPartial", "CustomIntFields")
                     </div>
                 </td>
             </tr>
@@ -75,14 +68,7 @@
                 <td>
                     <div class="form-expandable">
                         <h6>@Localizer["string_fields"]</h6>
-                        <button type="button" class="btn btn-outline-primary form-expand"><i class="bi bi-plus"></i></button>
-                        <button type="button" class="btn btn-outline-danger form-collapse"><i class="bi bi-dash"></i></button>
-                        @for (int i = 0; i < 3; ++i)
-                        {
-                            <div class="input-group expandable-input mt-1" hidden>
-                                @Html.TextBox($"Items[0].CustomStringFields[{i}].Name", "", new { @class = "form-control", placeholder = @Localizer["custom_field_name"].Value, disabled = "" } )
-                            </div>
-                        }
+                            @await Html.PartialAsync("AddCollectionFieldPartial", "CustomStringFields")
                     </div>
                 </td>
             </tr>
@@ -90,14 +76,7 @@
                 <td>
                     <div class="form-expandable">
                         <h6>@Localizer["textarea_fields"]</h6>
-                        <button type="button" class="btn btn-outline-primary form-expand"><i class="bi bi-plus"></i></button>
-                        <button type="button" class="btn btn-outline-danger form-collapse"><i class="bi bi-dash"></i></button>
-                        @for (int i = 0; i < 3; ++i)
-                        {
-                            <div class="input-group expandable-input mt-1" hidden>
-                                @Html.TextBox($"Items[0].CustomTextAreaFields[{i}].Name", "", new { @class = "form-control", placeholder = @Localizer["custom_field_name"].Value, disabled = "" } )
-                            </div>
-                        }
+                        @await Html.PartialAsync("AddCollectionFieldPartial", "CustomTextAreaFields")
                     </div>
                 </td>
             </tr>
@@ -105,14 +84,7 @@
                 <td>
                     <div class="form-expandable">
                         <h6>@Localizer["bool_fields"]</h6>
-                        <button type="button" class="btn btn-outline-primary form-expand"><i class="bi bi-plus"></i></button>
-                        <button type="button" class="btn btn-outline-danger form-collapse"><i class="bi bi-dash"></i></button>
-                        @for (int i = 0; i < 3; ++i)
-                        {
-                            <div class="input-group expandable-input mt-1" hidden>
-                                @Html.TextBox($"Items[0].CustomBoolFields[{i}].Name", "", new { @class = "form-control", placeholder = @Localizer["custom_field_name"].Value, disabled = "" } )
-                            </div>
-                        }
+                        @await Html.PartialAsync("AddCollectionFieldPartial", "CustomBoolFields")
                     </div>
                 </td>
             </tr>
@@ -120,14 +92,7 @@
                 <td>
                     <div class="form-expandable">
                         <h6>@Localizer["date_fields"]</h6>
-                        <button type="button" class="btn btn-outline-primary form-expand"><i class="bi bi-plus"></i></button>
-                        <button type="button" class="btn btn-outline-danger form-collapse"><i class="bi bi-dash"></i></button>
-                        @for (int i = 0; i < 3; ++i)
-                        {
-                            <div class="input-group expandable-input mt-1" hidden>
-                                @Html.TextBox($"Items[0].CustomDateFields[{i}].Name", "", new { @class = "form-control", placeholder = @Localizer["custom_field_name"].Value, disabled = "" } )
-                            </div>
-                        }
+                        @await Html.PartialAsync("AddCollectionFieldPartial", "CustomDateFields")
                     </div>
                 </td>
             </tr>
