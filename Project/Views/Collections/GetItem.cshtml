@@ -15,18 +15,22 @@
 }
 
 <div class="h-100 p-5 bg-light border rounded-3">
-<p>
+<div class="d-flex flex-row align-items-center">
+    <p>
     <span class="h1">@Model.Name</span>
     <span class="text-secondary">@Localizer["in"] 
         <a asp-controller="Collections" asp-action="GetCollection" asp-route-id="@Model.Collection?.Id">@Model.Collection?.Name</a>
     </span>
-    <p class="like btn btn-outline-dark" data-liked="@Model.Liked" data-id="@Model.Id"><i class="bi bi-star @(Model.Liked ? "icon-liked" : "icon-unliked")"></i><span class="like-counter" data-value="@Model.LikeCount">@Model.LikeCount</span></p>
+    </p>
+    <button class="like btn btn-outline-dark mx-3" type="button" data-liked="@Model.Liked" data-id="@Model.Id"><i class="bi bi-star @(Model.Liked ? "icon-liked" : "icon-unliked")"></i><span class="like-counter" data-value="@Model.LikeCount">@Model.LikeCount</span></button>
+</div>
     @if(Model.IsOwner || Model.IsAdmin)
     {
+        <div>
         <a type="button" class="btn btn-outline-primary" href="@Url.Action("EditItem", "Collections", new { id = Model.Id })"><i class="bi bi-pencil"></i>@Localizer["edit_item"]</a>
         <a type="button" class="btn btn-danger" href="@Url.Action("DeleteItem", "Collections", new { id = Model.Id })">@Localizer["delete_item"]</a>
+        </div>
     }
-</p>
 <p class="text-secondary">@Localizer["last_modified"]: @Model.Modified</p>
 <div class="table-responsive">
     <table class="table">

@@ -23,16 +23,16 @@ const localization = {
     <script src="~/js/adminpanel.js"></script>
 }
 <ul class="nav my-1">
-    <li class="nav-item mx-1">
+    <li class="nav-item m-1">
         <button type="button" class="btn btn-danger" onclick="setBlockStatus(true)"><i class="bi bi-lock-fill"></i>@Localizer["block"]</button>
     </li>
-    <li class="nav-item mx-1">
+    <li class="nav-item m-1">
         <button type="button" class="btn btn-success" onclick="setBlockStatus(false)"><i class="bi bi-unlock-fill"></i>@Localizer["unblock"]</button>
     </li>
-    <li class="nav-item mx-1">
+    <li class="nav-item m-1">
         <button type="button" class="btn btn-outline-danger" onclick="deleteUsers()"><i class="bi bi-person-x-fill"></i>@Localizer["delete"]</button>
     </li>
-    <li class="nav-item mx-1">
+    <li class="nav-item m-1">
         @Localizer["set_admin"]
         <button type="button" class="btn btn-outline-success" onclick="setAdminStatus(true)"><i class="bi bi-check"></i></button>
         <button type="button" class="btn btn-outline-danger" onclick="setAdminStatus(false)"><i class="bi bi-x"></i></button>
