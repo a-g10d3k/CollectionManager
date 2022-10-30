@@ -66,19 +66,24 @@
                     </div>
                 </td>
             </tr>
+            @if(Model.Items[0].CustomIntFields.Count > 0)
+            {
             <tr>
-                    <td>
-                        <div class="form-expandable">
-                            <h6>@Localizer["int_fields"]</h6>
-                            @for (int i = 0; i < Model.Items[0].CustomIntFields.Count; ++i)
-                            {
-                            <div class="input-group expandable-input mb-1">
-                                <input asp-for="Items[0].CustomIntFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" />
-                            </div>
-                            }
+                <td>
+                    <div class="form-expandable">
+                        <h6>@Localizer["int_fields"]</h6>
+                        @for (int i = 0; i < Model.Items[0].CustomIntFields.Count; ++i)
+                        {
+                        <div class="input-group expandable-input mb-1">
+                            <input asp-for="Items[0].CustomIntFields[i].Name" class="form-control" placeholder="@Localizer["custom_field_name"]" />
+                        </div>
+                        }
                     </div>
                 </td>
             </tr>
+            }
+            @if(Model.Items[0].CustomStringFields.Count > 0)
+            {
             <tr>
                 <td>
                     <div class="form-expandable">
@@ -92,6 +97,9 @@
                     </div>
                 </td>
             </tr>
+            }
+            @if(Model.Items[0].CustomTextAreaFields.Count > 0)
+            {
             <tr>
                 <td>
                     <div class="form-expandable">
@@ -105,6 +113,9 @@
                     </div>
                 </td>
             </tr>
+            }
+            @if(Model.Items[0].CustomBoolFields.Count > 0)
+            {
             <tr>
                 <td>
                     <div class="form-expandable">
@@ -118,6 +129,9 @@
                     </div>
                 </td>
             </tr>
+            }
+            @if(Model.Items[0].CustomDateFields.Count > 0)
+            {
             <tr>
                 <td>
                     <div class="form-expandable">
@@ -131,6 +145,7 @@
                     </div>
                 </td>
             </tr>
+            }
             <tr>
                 <td>
                     <input asp-for="Items[0].Name" value="hiddenItem" hidden/>
