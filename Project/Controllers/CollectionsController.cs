@@ -180,7 +180,7 @@ namespace Project.Controllers
             item.Modified = DateTime.Now;
             foreach (var tag in tags) item.Tags.Add(new Tag() { Name = tag });
             collection.Items.Add(item);
-            if (!ModelState.IsValid) return View("AddItem");
+            if (!ModelState.IsValid) return View("AddItem", item);
             _context.CollectionItems.Add(item);
             await _context.SaveChangesAsync();
             return RedirectToAction("GetItem", new { id = item.Id });
