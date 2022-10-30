@@ -89,6 +89,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script>
     <script src="~/js/markdown-display.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>
+    <script>
+        const confirmMessage = '@SharedLocalizer["confirm"]';
+    </script>
+    <script src="~/js/confirm.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

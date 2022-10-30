@@ -126,6 +126,9 @@
   <data name="coins" xml:space="preserve">
     <value>Coins</value>
   </data>
+  <data name="confirm" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
   <data name="error_invalidtopic" xml:space="preserve">
     <value>Disallowed collection topic</value>
   </data>

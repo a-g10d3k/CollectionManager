@@ -28,7 +28,7 @@
     {
         <div>
         <a type="button" class="btn btn-outline-primary" href="@Url.Action("EditItem", "Collections", new { id = Model.Id })"><i class="bi bi-pencil"></i>@Localizer["edit_item"]</a>
-        <a type="button" class="btn btn-danger" href="@Url.Action("DeleteItem", "Collections", new { id = Model.Id })">@Localizer["delete_item"]</a>
+        <a type="button" class="btn btn-danger confirm" href="@Url.Action("DeleteItem", "Collections", new { id = Model.Id })">@Localizer["delete_item"]</a>
         </div>
     }
 <p class="text-secondary">@Localizer["last_modified"]: @Model.Modified</p>

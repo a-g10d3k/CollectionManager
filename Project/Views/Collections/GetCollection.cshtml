@@ -18,7 +18,7 @@
                 {
                     <a type="button" class="btn btn-primary m-2" href="@Url.Action("AddItem", "Collections", new { id = Model.Collection.Id })">@Localizer["add_item"]</a>
                     <a type="button" class="btn btn-outline-primary m-2" href="@Url.Action("EditCollection", "Collections", new { id = Model.Collection.Id })"><i class="bi bi-pencil"></i>@Localizer["edit_collection"]</a>
-                    <a type="button" class="btn btn-danger m-2" href="@Url.Action("DeleteCollection", "Collections", new { id = Model.Collection.Id })">@Localizer["delete_collection"]</a>
+                    <a type="button" class="btn btn-danger m-2 confirm" href="@Url.Action("DeleteCollection", "Collections", new { id = Model.Collection.Id })">@Localizer["delete_collection"]</a>
                 }
             <p class="card-text"><small class="text-muted">@Localizer["last_modified"]: @Model.Collection.Modified</small></p>
         </div>
@@ -70,7 +70,10 @@
                             {
                                 if (item.Hidden) continue;
                                 <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("Items", "Collections", new { id = item.Id })'">
-                                    <td>@item.Name</td>
+                                    <td>
+                                        @item.Name
+                                        <a href="@Url.Action("DeleteItem", "Collections", new { id = item.Id })" class="text-danger confirm">@Localizer["delete_item"]</a>
+                                    </td>
                                     @{
                                         List<(string Name, string? Value)> fields = new List<(string, string?)>();
                                         for(int i = 0, s = 0, d = 0; i < 3; ++i)
