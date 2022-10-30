@@ -118,15 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="by" xml:space="preserve">
-    <value>by</value>
+    <value>przez</value>
   </data>
   <data name="in" xml:space="preserve">
-    <value>in</value>
+    <value>w</value>
   </data>
   <data name="page_title" xml:space="preserve">
-    <value>Search results</value>
+    <value>Wyniki wyszukiwania</value>
   </data>
   <data name="search_results" xml:space="preserve">
-    <value>search results</value>
+    <value>Wyniki wyszukiwania</value>
   </data>
 </root>
