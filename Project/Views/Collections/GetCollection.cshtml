@@ -78,7 +78,7 @@
                                             if(s < item.CustomStringFields.Count)
                                             {
                                                 fields.Add((
-                                                    item.CustomStringFields[s].Name,
+                                                    Model.TemplateItem.CustomStringFields[s].Name,
                                                     item.CustomStringFields[s].Value
                                                 ));
                                                 ++s;
@@ -86,7 +86,7 @@
                                             else if(d < item.CustomDateFields.Count)
                                             {
                                                 fields.Add((
-                                                    item.CustomDateFields[d].Name,
+                                                    Model.TemplateItem.CustomDateFields[d].Name,
                                                     (DateOnly.FromDateTime((DateTime)item.CustomDateFields[d].Value!)).ToString()
                                                 ));
                                                 ++d;

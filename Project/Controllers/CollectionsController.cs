@@ -43,11 +43,12 @@ namespace Project.Controllers
                 {
                     Collection = c,
                     Items = (sortAscending ? 
-                    c.Items.OrderBy(i => i.Created) :
-                    c.Items.OrderByDescending(i => i.Created))
+                    c.Items.Where(i => !i.Hidden).OrderBy(i => i.Created) :
+                    c.Items.Where(i => !i.Hidden).OrderByDescending(i => i.Created))
                     .Skip((page - 1) * ItemsPerPage)
                     .Take(ItemsPerPage).ToList(),
-                    MaxPage = (c.Items.Count() - 1) / ItemsPerPage + 1
+                    MaxPage = (c.Items.Count() - 1) / ItemsPerPage + 1,
+                    TemplateItem = c.Items.First()
                 });
             if (!await query.AnyAsync()) return NotFound();
             CollectionDto collection = await query.FirstAsync();
@@ -249,8 +250,12 @@ namespace Project.Controllers
                 .Include(i => i.CustomBoolFields)
                 .Include(i => i.CustomDateFields)
                 .Include(i => i.Tags)
-                .Include(i => i.Collection)
-                .ThenInclude(c => c.Author)
+                .Include(i => i.Collection).ThenInclude(c => c.Items).ThenInclude(i => i.CustomIntFields)
+                .Include(i => i.Collection).ThenInclude(c => c.Items).ThenInclude(i => i.CustomStringFields)
+                .Include(i => i.Collection).ThenInclude(c => c.Items).ThenInclude(i => i.CustomTextAreaFields)
+                .Include(i => i.Collection).ThenInclude(c => c.Items).ThenInclude(i => i.CustomBoolFields)
+                .Include(i => i.Collection).ThenInclude(c => c.Items).ThenInclude(i => i.CustomDateFields)
+                .Include(i => i.Collection).ThenInclude(c => c.Author)
                 .Include(i => i.Comments)
                 .Select(i => new CollectionItemDto()
                 {
@@ -266,7 +271,8 @@ namespace Project.Controllers
                     Collection = i.Collection,
                     LikeCount = i.Likes.Count(),
                     Comments = (List<Comment>)i.Comments.OrderByDescending(c => c.Created),
-                    Tags = i.Tags
+                    Tags = i.Tags,
+                    TemplateItem = i.Collection.Items.First()
                 });
             if(!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();

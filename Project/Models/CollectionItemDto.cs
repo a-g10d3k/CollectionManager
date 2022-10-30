@@ -19,5 +19,6 @@
         public bool IsOwner { get; set; } = false;
         public int LikeCount { get; set; }
         public Collection? Collection { get; set; }
+        public CollectionItem TemplateItem { get; set; }
     }
 }

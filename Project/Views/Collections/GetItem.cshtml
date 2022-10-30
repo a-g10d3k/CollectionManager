@@ -35,39 +35,39 @@
 <div class="table-responsive">
     <table class="table">
         <tbody>
-            @foreach(var field in Model.CustomIntFields)
+            @for(int i = 0; i < Model.CustomIntFields.Count; ++i)
             {
                 <tr>
-                    <td>@field.Name</td>
-                    <td>@field.Value</td>
+                    <td>@Model.TemplateItem.CustomIntFields[i].Name</td>
+                    <td>@Model.CustomIntFields[i].Value</td>
                 </tr>
             }
-            @foreach(var field in Model.CustomStringFields)
+            @for(int i = 0; i < Model.CustomStringFields.Count; ++i)
             {
                 <tr>
-                    <td>@field.Name</td>
-                    <td>@field.Value</td>
+                    <td>@Model.TemplateItem.CustomStringFields[i].Name</td>
+                    <td>@Model.CustomStringFields[i].Value</td>
                 </tr>
             }
-            @foreach(var field in Model.CustomTextAreaFields)
+            @for(int i = 0; i < Model.CustomTextAreaFields.Count; ++i)
             {
                 <tr>
-                    <td>@field.Name</td>
-                    <td style="white-space:pre-wrap">@field.Value</td>
+                    <td>@Model.TemplateItem.CustomTextAreaFields[i].Name</td>
+                    <td>@Model.CustomTextAreaFields[i].Value</td>
                 </tr>
             }
-            @foreach(var field in Model.CustomBoolFields)
+            @for(int i = 0; i < Model.CustomBoolFields.Count; ++i)
             {
                 <tr>
-                    <td>@field.Name</td>
-                    <td><i class="bi @((bool)field.Value! ? "bi-check-lg text-success" : "bi-x-lg text-danger")"></i></td>
+                    <td>@Model.TemplateItem.CustomBoolFields[i].Name</td>
+                    <td>@Model.CustomBoolFields[i].Value</td>
                 </tr>
             }
-            @foreach(var field in Model.CustomDateFields)
+            @for(int i = 0; i < Model.CustomDateFields.Count; ++i)
             {
                 <tr>
-                    <td>@field.Name</td>
-                    <td>@DateOnly.FromDateTime((DateTime)field.Value!)</td>
+                    <td>@Model.TemplateItem.CustomDateFields[i].Name</td>>
+                    <td>@DateOnly.FromDateTime((DateTime)Model.CustomDateFields[i].Value!)</td>
                 </tr>
             }
             <tr>
