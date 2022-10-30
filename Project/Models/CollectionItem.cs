@@ -46,9 +46,10 @@ namespace Project.Models
         [BindNever]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "error_required")]
         [DataType(DataType.Text)]
-        [MaxLength(MaxNameLength)]
+        [Display(Name = "name_name")]
+        [MaxLength(MaxNameLength, ErrorMessage = "error_maxlength")]
         public string Name { get; set; }
 
         [DataType(DataType.DateTime)]

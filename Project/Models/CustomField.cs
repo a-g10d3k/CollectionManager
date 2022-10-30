@@ -9,8 +9,8 @@ namespace Project.Models
         [Required]
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(MaxNameLength)]
+        [Required(ErrorMessage = "error_required_customfield_name")]
+        [MaxLength(MaxNameLength, ErrorMessage = "error_maxlength_customfield_name")]
         public string Name { get; set; }
 
         public int? ItemId { get; set; }

@@ -13,8 +13,9 @@ namespace Project.Models
         [BindNever]
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(MaxNameLength)]
+        [Required(ErrorMessage = "error_required")]
+        [Display(Name = "name_name")]
+        [MaxLength(MaxNameLength, ErrorMessage = "error_maxlength")]
         public string Name { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -26,11 +27,13 @@ namespace Project.Models
         public DateTime Modified { get; set; }
 
         [DataType(DataType.MultilineText)]
-        [MaxLength(MaxDescriptionLength)]
+        [Display(Name = "name_description")]
+        [MaxLength(MaxDescriptionLength, ErrorMessage = "error_maxlength")]
         public string? Description { get; set; }
 
-        [Required]
-        [RegularExpression(AllowedTopics)] 
+        [Display(Name = "name_topic")]
+        [Required(ErrorMessage = "error_required")]
+        [RegularExpression(AllowedTopics, ErrorMessage = "error_invalidtopic")] 
         public string Topic { get; set; }
 
         [ForeignKey("CollectionImage")]

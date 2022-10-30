@@ -5,7 +5,7 @@ namespace Project.Models
     {
         public const int MaxValueLength = 50;
 
-        [MaxLength(MaxValueLength)]
+        [MaxLength(MaxValueLength, ErrorMessage = "error_maxlength_customfield_string")]
         public string? Value { get; set; }
     }
 }

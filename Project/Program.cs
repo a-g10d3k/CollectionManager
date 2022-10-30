@@ -33,7 +33,10 @@ namespace Project
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
             builder.Services.AddMvc()
                 .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(Project.Localization.SharedResources));
+                });
 
             builder.Services.AddSignalR();
 

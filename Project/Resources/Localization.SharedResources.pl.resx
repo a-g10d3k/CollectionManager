@@ -126,6 +126,27 @@
   <data name="Coins" xml:space="preserve">
     <value>Monety</value>
   </data>
+  <data name="error_invalidtopic" xml:space="preserve">
+    <value>Niedozwolony temat kolekcji</value>
+  </data>
+  <data name="error_maxlength" xml:space="preserve">
+    <value>{0} nie może przekraczać {1} znaków</value>
+  </data>
+  <data name="error_maxlength_customfield_name" xml:space="preserve">
+    <value>Nazwa pola nie może być dłuższa niż {1} znaków</value>
+  </data>
+  <data name="error_maxlength_customfield_string" xml:space="preserve">
+    <value>Długość pola tekstowego nie może przekraczać {1} znaków</value>
+  </data>
+  <data name="error_maxlength_customfield_textarea" xml:space="preserve">
+    <value>Długość wieloliniowego pola tekstowego nie może przekraczać {1} znaków</value>
+  </data>
+  <data name="error_required" xml:space="preserve">
+    <value>Pole {0} nie może być puste</value>
+  </data>
+  <data name="error_required_customfield_name" xml:space="preserve">
+    <value>Nazwa pola nie może być pusta</value>
+  </data>
   <data name="home" xml:space="preserve">
     <value>Strona Główna</value>
   </data>
@@ -137,6 +158,15 @@
   </data>
   <data name="log_out" xml:space="preserve">
     <value>Wyloguj</value>
+  </data>
+  <data name="model_description" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="model_name" xml:space="preserve">
+    <value>Nazwa</value>
+  </data>
+  <data name="name_topic" xml:space="preserve">
+    <value>Temat</value>
   </data>
   <data name="register" xml:space="preserve">
     <value>Zarejestruj</value>

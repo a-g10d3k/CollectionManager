@@ -126,6 +126,27 @@
   <data name="coins" xml:space="preserve">
     <value>Coins</value>
   </data>
+  <data name="error_invalidtopic" xml:space="preserve">
+    <value>Disallowed collection topic</value>
+  </data>
+  <data name="error_maxlength" xml:space="preserve">
+    <value>{0} can't be longer than {1} characters</value>
+  </data>
+  <data name="error_maxlength_customfield_name" xml:space="preserve">
+    <value>Field name can't be longer than {1} characters</value>
+  </data>
+  <data name="error_maxlength_customfield_string" xml:space="preserve">
+    <value>Text field can't be longer than {1} characters</value>
+  </data>
+  <data name="error_maxlength_customfield_textarea" xml:space="preserve">
+    <value>Multi-line field can't be longer than {1} characters</value>
+  </data>
+  <data name="error_required" xml:space="preserve">
+    <value>The {0} field is required</value>
+  </data>
+  <data name="error_required_customfield_name" xml:space="preserve">
+    <value>Field name cannot be empty</value>
+  </data>
   <data name="home" xml:space="preserve">
     <value>Home</value>
   </data>
@@ -137,6 +158,15 @@
   </data>
   <data name="log_out" xml:space="preserve">
     <value>Log out</value>
+  </data>
+  <data name="name_description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="name_name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="name_topic" xml:space="preserve">
+    <value>Topic</value>
   </data>
   <data name="register" xml:space="preserve">
     <value>Register</value>
