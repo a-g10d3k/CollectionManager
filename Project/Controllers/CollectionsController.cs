@@ -68,7 +68,6 @@ namespace Project.Controllers
             var collection = await query.FirstAsync();
             var user = await _userManager.GetUserAsync(User);
             if (user == null ? true : !await user.OwnsCollectionAsync(collection, _userManager)) return Forbid();
-
             _context.Collections.Remove(collection);
             await _context.SaveChangesAsync();
             return RedirectToAction("GetUser", "Users", new { username = collection.Author!.UserName });
@@ -401,7 +400,6 @@ namespace Project.Controllers
                 Count = t.Count()
             })
             .OrderByDescending(t => t.Count).ToListAsync();
-
             return Ok(tags);
         }
     }
