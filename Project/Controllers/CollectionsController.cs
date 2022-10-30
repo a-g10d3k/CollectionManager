@@ -129,7 +129,7 @@ namespace Project.Controllers
         [Authorize]
         [HttpPost]
         [Route("{controller}/{id}/Edit", Name = "PostEditCollection")]
-        public async Task<IActionResult> PostEditCollection([FromRoute] int id, Collection newCollection)
+        public async Task<IActionResult> PostEditCollection([FromRoute] int id, Collection newCollection, [FromForm(Name = "collectionImage")] IFormFile? collectionImage)
         {
             if (!ModelState.IsValid) return View("EditCollection");
             var query = _context.Collections.Where(c => c.Id == id)
@@ -144,6 +144,13 @@ namespace Project.Controllers
             if (user == null ? true : !await user.OwnsCollectionAsync(oldCollection, _userManager)) return Forbid();
             oldCollection.Modified = DateTime.Now;
             oldCollection.UpdateFrom(newCollection);
+            if (collectionImage != null && collectionImage.Length <= CollectionImage.MaxSize)
+            {
+                oldCollection.Image = new CollectionImage(
+                    await collectionImage!.ToBytesAsync(),
+                    collectionImage.ContentType
+                    );
+            }
             await _context.SaveChangesAsync();
             return RedirectToAction("GetCollection", new { id = oldCollection.Id });
         }

@@ -8,7 +8,19 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script src="https://unpkg.com/stackedit-js@1.0.7/docs/lib/stackedit.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
     <script src="~/js/description-editor.js"></script>
+    <script>
+        @if(Model.ImageId != null)
+        {
+            @:const imageUrl = "@Url.Action("GetImage", "Collections", new { id = Model.ImageId } )";
+        } else
+        {
+            @:const imageUrl = null;
+        }
+    </script>
+    <script src="~/js/image-upload.js"></script>
 }
 <div>
         @Html.ValidationSummary(false, "", new { @class = "text-danger mt-3" })
@@ -43,6 +55,14 @@
                         <a id="edit-description" class="btn btn-outline-primary"><i class="bi bi-pencil"></i></a>
                         <textarea asp-for="Description" class="form-control" id="description-textarea" readonly hidden></textarea>
                         <div id="description" class="bg-light p-2 mt-3 rounded border" style="min-height:30px;"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="mb-1">
+                        <label for="image" class="form-label">@Localizer["image"]:</label>
+                        <input name="collectionImage" type="file" class="filepond">
                     </div>
                 </td>
             </tr>
