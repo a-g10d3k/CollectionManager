@@ -72,7 +72,10 @@
                                 <tr style="cursor:pointer" onclick="window.location.href = '@Url.Action("Items", "Collections", new { id = item.Id })'">
                                     <td>
                                         @item.Name
-                                        <a href="@Url.Action("DeleteItem", "Collections", new { id = item.Id })" class="text-danger confirm">@Localizer["delete_item"]</a>
+                                        @if (Model.IsOwner)
+                                        {
+                                            <a href="@Url.Action("DeleteItem", "Collections", new { id = item.Id })" class="text-danger confirm">@Localizer["delete_item"]</a>
+                                        }
                                     </td>
                                     @{
                                         List<(string Name, string? Value)> fields = new List<(string, string?)>();
