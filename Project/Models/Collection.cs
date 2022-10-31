@@ -8,6 +8,7 @@ namespace Project.Models
     {
         public const int MaxNameLength = 50;
         public const int MaxDescriptionLength = 1000;
+        public const int MaxCustomFields = 3;
         public const string AllowedTopics = "Books|Stamps|Coins";
         [Required]
         [BindNever]

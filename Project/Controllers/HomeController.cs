@@ -11,6 +11,8 @@ namespace Project.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _context;
+        public const int MaxRecentItems = 5;
+        public const int MaxLargestCollections = 5;
 
         public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
@@ -25,11 +27,11 @@ namespace Project.Controllers
                 .Include(i => i.Collection)
                 .ThenInclude(c => c.Author)
                 .OrderByDescending(i => i.Created)
-                .Take(5)
+                .Take(MaxRecentItems)
                 .ToListAsync();
             model.LargestCollections = await _context.Collections.OrderByDescending(c => c.Items.Count())
                 .Include(c => c.Author)
-                .Take(5)
+                .Take(MaxLargestCollections)
                 .ToListAsync();
             return View(model);
         }

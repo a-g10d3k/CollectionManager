@@ -4,7 +4,7 @@
 
 <button type="button" class="btn btn-outline-primary form-expand"><i class="bi bi-plus"></i></button>
 <button type="button" class="btn btn-outline-danger form-collapse"><i class="bi bi-dash"></i></button>
-@for (int i = 0; i < 3; ++i)
+@for (int i = 0; i < Collection.MaxCustomFields; ++i)
 {
     <div class="input-group expandable-input mt-1" hidden>
         @Html.TextBox($"Items[0].{Model}[{i}].Name", "", new { @class = "form-control", placeholder = @Localizer["custom_field_name"].Value, disabled = "" } )
