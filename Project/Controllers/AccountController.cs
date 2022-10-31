@@ -82,6 +82,7 @@ namespace Project.Controllers
             await CreateRoles();
             await CreateDefaultAdmin();
             if (!ModelState.IsValid) return View("Register", model);
+            if (model.Username == _configuration["DefaultAdminUsername"]) return Forbid();
             var user = new ApplicationUser
             {
                 UserName = model.Username,
@@ -134,9 +135,10 @@ namespace Project.Controllers
             if (admins.Count > 0 && admins.Any(user => !user.Blocked)) return;
             var currentDefaultAdmin = await _context.Users.Where(u => u.UserName == _configuration["DefaultAdminUsername"])
                 .FirstOrDefaultAsync();
-            if (currentDefaultAdmin != null && currentDefaultAdmin.Blocked)
+            if (currentDefaultAdmin != null)
             {
-                currentDefaultAdmin.Blocked = false;
+                if(currentDefaultAdmin.Blocked) currentDefaultAdmin.Blocked = false;
+                if (!await _userManager.IsInRoleAsync(currentDefaultAdmin, "Admin")) await _userManager.AddToRoleAsync(currentDefaultAdmin, "Admin");
                 await _context.SaveChangesAsync();
                 return;
             }
