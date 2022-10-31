@@ -141,4 +141,7 @@
   <data name="tags" xml:space="preserve">
     <value>Tagi</value>
   </data>
+  <data name="write_comment" xml:space="preserve">
+    <value>Napisz komentarz...</value>
+  </data>
 </root>

@@ -93,7 +93,7 @@
 @if(User.Identity!.Name != null)
 {
     <form data-item-id="@Model.Id" class="add-comment mb-3" class="mb-3" action="@Url.Action("AddComment", "Collections", new { itemId = @Model.Id })" method="post">
-        <textarea name="commentText" class="form-control mb-1"></textarea>
+        <textarea name="commentText" class="form-control mb-1" placeholder="@Localizer["write_comment"]"></textarea>
         <input type="submit" class="btn btn-primary" value="@Localizer["submit_comment"]">
     </form>
 }
