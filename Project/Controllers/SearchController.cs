@@ -9,6 +9,8 @@ namespace Project.Controllers
     {
         private readonly AppDbContext _context;
 
+        public const int MaxResults = 100;
+
         public SearchController(AppDbContext context)
         {
             _context = context;
@@ -22,6 +24,7 @@ namespace Project.Controllers
             model.Collections = await _context.Collections
                 .FromSqlRaw("Select * FROM Collections WHERE FREETEXT((Name, Description), {0})", searchTerm)
                 .Include(c => c.Author)
+                .Take(MaxResults)
                 .ToListAsync();
             model.Items = await _context.CollectionItems
                 .Where(
@@ -32,7 +35,8 @@ namespace Project.Controllers
                 i.Comments.Any(c => EF.Functions.FreeText(c.Text, searchTerm))
                 )
                 .Include(i => i.Collection)
-                .ThenInclude(i => i.Author)
+                .ThenInclude(c => c.Author)
+                .Take(MaxResults)
                 .ToListAsync();
             return View(model);
         }
