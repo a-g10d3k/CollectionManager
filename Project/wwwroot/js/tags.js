@@ -21,3 +21,5 @@ tagInput.selectize({
         });
     }
 });
+
+$('.selectize-input input').attr('maxlength', '25');
