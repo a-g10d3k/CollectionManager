@@ -93,7 +93,8 @@
                                             {
                                                 fields.Add((
                                                     Model.TemplateItem.CustomDateFields[d].Name,
-                                                    (DateOnly.FromDateTime((DateTime)item.CustomDateFields[d].Value!)).ToString()
+                                                    item.CustomDateFields[d].Value != null ?
+                                                    (DateOnly.FromDateTime((DateTime)item.CustomDateFields[d].Value)).ToString() : null
                                                 ));
                                                 ++d;
                                             }

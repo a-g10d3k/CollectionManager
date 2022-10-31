@@ -67,7 +67,7 @@
             {
                 <tr>
                     <td>@Model.TemplateItem.CustomDateFields[i].Name</td>>
-                    <td>@DateOnly.FromDateTime((DateTime)Model.CustomDateFields[i].Value!)</td>
+                    <td>@(Model.CustomDateFields[i].Value != null ? DateOnly.FromDateTime((DateTime)Model.CustomDateFields[i].Value!) : null)</td>
                 </tr>
             }
             <tr>
