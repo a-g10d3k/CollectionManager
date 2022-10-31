@@ -37,21 +37,32 @@ namespace Project.Controllers
             if (page < 1) page = 1;
             var query = _context.Collections.Where(c => c.Id == id)
                 .Include(c => c.Author)
-                .Include(c => c.Items).ThenInclude(i => i.CustomStringFields)
-                .Include(c => c.Items).ThenInclude(i => i.CustomDateFields)
+                .Include(
+                    c => 
+                    (sortAscending ? 
+                        c.Items
+                        .Where(i => !i.Hidden)
+                        .OrderBy(i => i.Created) :
+                        c.Items
+                        .Where(i => !i.Hidden)
+                        .OrderByDescending(i => i.Created)
+                    )
+                    .Skip((page - 1) * ItemsPerPage)
+                    .Take(ItemsPerPage))
+                .ThenInclude(i => i.CustomStringFields)
+                .Include(c => c.Items)
+                .ThenInclude(i => i.CustomDateFields)
                 .Select(c => new CollectionDto()
                 {
                     Collection = c,
-                    Items = (sortAscending ? 
-                    c.Items.Where(i => !i.Hidden).OrderBy(i => i.Created) :
-                    c.Items.Where(i => !i.Hidden).OrderByDescending(i => i.Created))
-                    .Skip((page - 1) * ItemsPerPage)
-                    .Take(ItemsPerPage).ToList(),
                     MaxPage = (c.Items.Count() - 1) / ItemsPerPage + 1,
-                    TemplateItem = c.Items.First()
                 });
             if (!await query.AnyAsync()) return NotFound();
             CollectionDto collection = await query.FirstAsync();
+            collection.Items = collection.Collection.Items;
+            collection.TemplateItem = await _context.CollectionItems.Where(i => i.Collection == collection.Collection && i.Hidden)
+                .Include(i => i.CustomStringFields)
+                .Include(i => i.CustomDateFields).FirstAsync();
             collection.Page = page;
             var user = await _userManager.GetUserAsync(User);
             collection.IsOwner = user == null ? false : await user.OwnsCollectionAsync(collection.Collection, _userManager);
@@ -249,11 +260,6 @@ namespace Project.Controllers
                 .Include(i => i.CustomBoolFields)
                 .Include(i => i.CustomDateFields)
                 .Include(i => i.Tags)
-                .Include(i => i.Collection).ThenInclude(c => c.Items).ThenInclude(i => i.CustomIntFields)
-                .Include(i => i.Collection).ThenInclude(c => c.Items).ThenInclude(i => i.CustomStringFields)
-                .Include(i => i.Collection).ThenInclude(c => c.Items).ThenInclude(i => i.CustomTextAreaFields)
-                .Include(i => i.Collection).ThenInclude(c => c.Items).ThenInclude(i => i.CustomBoolFields)
-                .Include(i => i.Collection).ThenInclude(c => c.Items).ThenInclude(i => i.CustomDateFields)
                 .Include(i => i.Collection).ThenInclude(c => c.Author)
                 .Include(i => i.Comments)
                 .Select(i => new CollectionItemDto()
@@ -270,11 +276,17 @@ namespace Project.Controllers
                     Collection = i.Collection,
                     LikeCount = i.Likes.Count(),
                     Comments = (List<Comment>)i.Comments.OrderByDescending(c => c.Created),
-                    Tags = i.Tags,
-                    TemplateItem = i.Collection.Items.First()
+                    Tags = i.Tags
                 });
             if(!await query.AnyAsync()) return NotFound();
             var item = await query.FirstAsync();
+            item.TemplateItem = await _context.CollectionItems
+                .Where(i => i.Collection == item.Collection && i.Hidden)
+                .Include(i => i.CustomIntFields)
+                .Include(i => i.CustomStringFields)
+                .Include(i => i.CustomTextAreaFields)
+                .Include(i => i.CustomBoolFields)
+                .Include(i => i.CustomDateFields).FirstAsync();
             var user = await _userManager.GetUserAsync(User);
             item.CurrentUser = user;
             item.Liked = user != null && await _context.Likes.Where(l => l.UserId == user.Id && l.ItemId == item.Id).AnyAsync();
